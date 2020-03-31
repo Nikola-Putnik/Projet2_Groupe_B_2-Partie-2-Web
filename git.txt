@@ -1,0 +1,7 @@
+GIT Bash
+
+#change directory
+cd /c/Users/Nikola/Projet2/flask-tutorial
+
+#suppression du dossier "venv"
+git rm -r venv/
