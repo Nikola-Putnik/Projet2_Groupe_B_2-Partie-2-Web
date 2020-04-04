@@ -1,26 +1,545 @@
-html { font-family: sans-serif; background: #eee; padding: 1rem; }
-body { max-width: 960px; margin: 0 auto; background: white; }
-h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
-a { color: #377ba8; }
-hr { border: none; border-top: 1px solid lightgray; }
-nav { background: lightgray; display: flex; align-items: center; padding: 0 0.5rem; }
-nav h1 { flex: auto; margin: 0; }
-nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
-nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
-nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
-.content { padding: 0 1rem 1rem; }
-.content > header { border-bottom: 1px solid lightgray; display: flex; align-items: flex-end; }
-.content > header h1 { flex: auto; margin: 1rem 0 0.25rem 0; }
-.flash { margin: 1em 0; padding: 1em; background: #cae6f6; border: 1px solid #377ba8; }
-.post > header { display: flex; align-items: flex-end; font-size: 0.85em; }
-.post > header > div:first-of-type { flex: auto; }
-.post > header h1 { font-size: 1.5em; margin-bottom: 0; }
-.post .about { color: slategray; font-style: italic; }
-.post .body { white-space: pre-line; }
-.content:last-child { margin-bottom: 0; }
-.content form { margin: 1em 0; display: flex; flex-direction: column; }
-.content label { font-weight: bold; margin-bottom: 0.5em; }
-.content input, .content textarea { margin-bottom: 1em; }
-.content textarea { min-height: 12em; resize: vertical; }
-input.danger { color: #cc2f2e; }
-input[type=submit] { align-self: start; min-width: 10em; }
+/**************************************
+GENERAL
+**************************************/
+.wrap{
+    width: 90%;  /* prendra 90% de la largeur de l'écran */
+    max-width: 1200px;  /* défini la largeur maximale */
+    margin: 0 auto;  /* top&bottom right&left, auto -> ajuste automatiquement la margin des deux côtés */
+}
+
+
+
+/* a */
+
+.link-a{  /* 1ère sorte de lien */
+    font-weight: bold;
+    color: darkred;
+}
+
+.link-a:hover{
+    color: red;
+}
+
+
+
+/* forms */
+
+.form-label{
+    text-align: right;
+    padding:  0px 10px 0px 0px;  /* top right bottom left */
+}
+
+.form-input{
+    border-radius: 10px;
+}
+
+.form_response_red{
+    color: darkred;
+}
+
+.pre-form-text{
+    padding-bottom: 20px;
+}
+
+
+
+/* buttons */
+
+.button{
+    border-radius: 20px;
+}
+
+.button.primary{
+    background-color: #2E9AFE;
+    color: black;
+}
+
+.button.primary:hover, .button.primary:focus{
+    background-color: #0080FF;
+    color: black;
+}
+
+.button-grey{
+    background-color: #424242;
+    color: white;
+}
+
+.button-grey:hover{
+    background-color: #1C1C1C;
+    color: white;
+}
+
+#multiple-buttons{
+    padding: 0px 0px 0px 0px;  /* top right bottom left */
+}
+
+
+
+/* p (text) */
+
+.paragraphe{
+    padding-left: 20px;
+}
+
+.safe-text{
+    overflow-wrap: break-word;  /* coupe le mot si il est trop long pour ne pas qu'il sorte de la zone de texte. */
+}
+
+
+
+/* images */
+
+.avatar{
+    object-fit: cover;
+    width: 230px;
+    height: 230px;
+    border-radius: 10px;
+}
+
+.avatar-top-bar{
+    object-fit: cover;
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
+}
+
+
+
+/* modération */
+
+span.reddot{
+	height: 18px;
+    width: 18px;
+    background-color: #DF0101;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+span.greendot{
+	height: 18px;
+    width: 18px;
+    background-color: #00FF00;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.mod-table-title{
+    padding: 15px 0px 5px 10px;  /* top right bottom left */
+    font-weight: bold;
+}
+
+.mod-table-cat-title{
+    font-weight: bold;
+}
+
+.mod-table-input{
+    padding-top: 18px;
+}
+
+.mod-table-input-ok{
+    padding-top: 17px;
+}
+
+
+
+
+/* Pagination: https://foundation.zurb.com/building-blocks/blocks/pagination-pointed.html */
+
+.pagination-pointed .pagination-pointed-button, .pagination-pointed .current, .pagination-pointed .pagination-previous {
+  position: relative;
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #2c3840;
+  color: #fff;
+  outline: 0;
+  text-decoration: none;
+  transition: all 0.2s linear;
+}
+
+.pagination-pointed .pagination-pointed-button:hover, .pagination-pointed .current:hover, .pagination-pointed .pagination-previous:hover {
+  background-color: #41525e;
+}
+
+.pagination-pointed .current {
+  background: dodgerblue;
+}
+
+.pagination-pointed .current:hover {
+  background-color: #0077ea;
+}
+
+.pagination-pointed .pagination-next a {
+  border-radius: 4px 0 0 4px;
+  margin-right: 18px;
+}
+
+.pagination-pointed .pagination-next a:hover::after {
+  border-left: 17px solid #41525e;
+}
+
+.pagination-pointed .pagination-next a::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -18px;
+  width: 0;
+  height: 0;
+  border-top: 17px solid transparent;
+  border-bottom: 17px solid transparent;
+  border-left: 17px solid #2c3840;
+  transition: all 0.2s linear;
+}
+
+.pagination-pointed .pagination-previous {
+  border-radius: 0 4px 4px 0;
+  margin-left: 18px;
+}
+
+.pagination-pointed .pagination-previous:hover::after {
+  border-right: 17px solid #41525e;
+}
+
+.pagination-pointed .pagination-previous::before {
+  content: "";
+}
+
+.pagination-pointed .pagination-previous::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -18px;
+  width: 0;
+  height: 0;
+  border-bottom: 17px solid transparent;
+  border-top: 17px solid transparent;
+  border-right: 17px solid #2c3840;
+  transition: all 0.2s linear;
+}
+
+
+
+
+.color-darkred{
+    color: darkred;
+}
+
+.titre-1{
+    padding: 15px 0px 5px 0px;  /* top right bottom left */
+}
+
+
+
+
+/**************************************
+MAIN SECTION
+**************************************/
+
+.main{
+    /* background-color: #BDBDBD; */
+	background-color: #E6E6E6;
+}
+
+.page-title{
+    text-align: left;
+    padding: 20px 0px 5px 5px;  /* top right bottom left */
+    font-weight: bold;
+}
+
+.page-title-center{
+    text-align: center;
+    padding: 20px 0px 5px 5px;  /* top right bottom left */
+    font-weight: bold;
+}
+
+.post{
+    border-radius: 10px;
+    /* background-color: #E6E6E6; */
+	background-color: white;
+}
+
+.post-pseudo{
+    padding: 0px 0px 0px 0px;
+    margin: 0px;
+}
+
+.post-text{
+    padding-top: 15px;
+}
+
+.text-aera-post{
+    border-color: #6E6E6E;
+}
+
+
+
+
+/**************************************
+FOOTER
+**************************************/
+
+footer{
+    height: 300px;
+    background-color: #222;
+}
+
+
+
+
+
+/**************************************
+NAVIGATION - MOBILE
+**************************************/
+
+.title-bar{
+    background-color: #222;
+    height: 60px;
+}
+
+#mobile-menu{
+    background-color: #222;
+}
+/*
+#mobile-menu li{
+    list-style: none;
+}
+
+#mobile-menu a{
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: bold;
+    line-height: 2;
+}
+
+#mobile-menu a:hover{
+    color: rgba(255, 255, 255, 0.9);
+}
+*/
+
+.multilevel-accordion-menu .is-accordion-submenu-parent a {
+background: #222;
+}
+.multilevel-accordion-menu .is-accordion-submenu a {
+background: #222;
+}
+.multilevel-accordion-menu .sublevel-1 {
+text-indent: 1rem;
+}
+.multilevel-accordion-menu .sublevel-2 {
+text-indent: 2rem;
+}
+.multilevel-accordion-menu .sublevel-3 {
+text-indent: 3rem;
+}
+.multilevel-accordion-menu .sublevel-4 {
+text-indent: 4rem;
+}
+.multilevel-accordion-menu .sublevel-5 {
+text-indent: 5rem;
+}
+.multilevel-accordion-menu .sublevel-6 {
+text-indent: 6rem;
+}
+.multilevel-accordion-menu a {
+color: #fefefe;
+box-shadow: inset 0 -1px #41444a;
+}
+.multilevel-accordion-menu a::after {
+border-color: #fefefe transparent transparent;
+}
+.multilevel-accordion-menu .menu > li:not(.menu-text) > a {
+padding: 1.2rem 1rem;
+}
+
+/*
+.multilevel-accordion-menu .is-accordion-submenu-parent[aria-expanded="true"] a.subitem::before {
+content: "\f016";
+font-family: FontAwesome;
+margin-right: 1rem;
+}
+.multilevel-accordion-menu .is-accordion-submenu-parent[aria-expanded="true"] a::before {
+content: "\f07c";
+font-family: FontAwesome;
+margin-right: 1rem;
+}
+.multilevel-accordion-menu .is-accordion-submenu-parent[aria-expanded="false"] a::before {
+content: "\f07b";
+font-family: FontAwesome;
+margin-right: 1rem;
+}
+*/
+
+
+/**************************************
+NAVIGATION - DESKTOP
+**************************************/
+.nav-desktop{
+    background-color: #222;
+    height: 70px;
+    padding: 0;
+}
+
+.nav-desktop-font{
+    background-color: #222;
+}
+
+.nav-desktop-container{
+    padding: 0;
+}
+
+.nav-desktop .menu-desktop{
+    line-height: 70px;
+    background-color: transparent;
+}
+
+.nav-desktop .menu-desktop .menu-deroulant{
+    line-height: 70px;
+    background-color: #222;
+    border: 0px;
+}
+
+.site-logo{
+    color: white;
+    line-height: 70px;
+    padding: 7px 15px 0px 15px;  /* top right bottom left */
+}
+
+.menu-desktop > li > a{
+    display: inline-block;
+    line-height: 48px;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: white;
+}
+
+.menu-desktop > li > a:hover{
+    background-color: rgba(255,255,255, 0.2);  /* le dernier élément défini l opacité */
+}
+
+.site-logo-link{
+    color: white;
+}
+
+.site-logo-link:hover{
+    color: white;
+}
+
+.dropdown.menu > li.is-active > a {
+  background: transparent;
+  color: white;
+  background-color: rgba(255,255,255, 0.2);  /* le dernier élément défini l opacité */
+}
+
+.dropdown.menu > li.is-dropdown-submenu-parent > a::after {
+    border-width: 0px;  /* fait disparaitre la flèche de dropdown */
+}
+
+.menu-deroulant > li > a{
+    color: white;
+    background-color: #222;
+    line-height: 35px;
+}
+
+.menu-deroulant > li > a:hover{
+    background-color: rgba(255,255,255, 0.2);  /* le dernier élément défini l opacité */
+}
+
+
+/**************************************
+HERO
+**************************************/
+.hero{
+    background-color: #A4A4A4;
+    padding: 50px 0px 50px 0px;  /* top right bottom left */
+}
+
+
+
+
+
+
+
+
+
+/**************************************
+INTÉGRATIONS
+**************************************/
+
+/* LIKE BUTTON - url: https://foundation.zurb.com/building-blocks/blocks/button-like.html */
+
+.button-like {
+  border: 2px solid #8a8a8a;
+  background-color: transparent;
+  text-decoration: none;
+  padding: 1rem;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  display: inline-block;
+  border-radius: 3rem;
+  color: #8a8a8a;
+  transition: all ease 0.4s;
+}
+
+.button-like span {
+  margin-left: 0.5rem;
+}
+
+.button-like .fa,
+.button-like span {
+  transition: all ease 0.4s;
+}
+
+.button-like:focus {
+  background-color: transparent;
+}
+
+.button-like:focus .fa,
+.button-like:focus span {
+  color: #8a8a8a;
+}
+
+.button-like:hover {
+  border-color: #cc4b37;
+  background-color: transparent;
+}
+
+.button-like:hover .fa,
+.button-like:hover span {
+  color: #cc4b37;
+}
+
+.liked {
+  background-color: #cc4b37;
+  border-color: #cc4b37;
+}
+
+.liked .fa,
+.liked span {
+  color: #fefefe;
+}
+
+.liked:focus {
+  background-color: #cc4b37;
+}
+
+.liked:focus .fa,
+.liked:focus span {
+  color: #fefefe;
+}
+
+.liked:hover {
+  background-color: #cc4b37;
+  border-color: #cc4b37;
+}
+
+.liked:hover .fa,
+.liked:hover span {
+  color: #fefefe;
+}

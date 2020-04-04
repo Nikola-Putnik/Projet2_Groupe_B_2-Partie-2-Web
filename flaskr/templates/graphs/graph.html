@@ -2,44 +2,59 @@
 <html>
 
     <head>
+	
+		<link rel="stylesheet" href="{{ url_for('static', filename='foundation.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		
         <meta charset="utf-8">
 		<meta name="description" content="Une première page web">
 		<meta name="keywords" content="HTML,exemple">
 		<meta name="author" content="Jean Tartempion">
+		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+		
         <title>Titre de la page</title>
+		
     </head>
 	
     <body>
 	    
-		<!--
-		<table align = "center">
-		    <td width="800px" height="800px">
-		        <canvas id="graphique" width="200px" height="200px"></canvas>
-			</td>
-		</table>
-		-->
-		
-		<h1>Nombre de cas par pays</h1>
-		
-		<canvas id="graphique" width="200px" height="200px"></canvas>
-		
-        <script>
-	        // l'identifiant est celui du canevas
-	        var ctx = document.getElementById('graphique').getContext('2d');
-	        // création du graphique
-	        var myChart = new Chart(ctx, {
-	        type: '{{type}}',   // le type du graphique
-	        data: {        // les données
-                labels: {{labels | safe }},
-                datasets: [{
-                            label: 'cases',
-                            data: {{data | safe }}
-                           }]
-	               }
-                 }
-	        );
-        </script>
+		<section class="main">
+            <div class="grid-container">
+
+                <h1 class="page-title">Nombre de cas par pays</h1>
+		        
+				<div class="grid-x">
+					<div class="cell">
+                        <div class="callout post" style="padding-top: 0px;">
+				
+		                    <canvas id="graphique" width="200px" height="200px"></canvas>
+		                    
+                            <script>
+	                            // l'identifiant est celui du canevas
+	                            var ctx = document.getElementById('graphique').getContext('2d');
+	                            // création du graphique
+	                            var myChart = new Chart(ctx, {
+	                            type: '{{type}}',   // le type du graphique
+	                            data: {        // les données
+                                    labels: {{labels | safe }},
+                                    datasets: [{
+                                                label: 'cases',
+												backgroundColor: "#3e95cd", // une liste si on veut en mettre plusieurs: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", ...]
+                                                data: {{data | safe }}
+                                               }]
+	                                }
+                                    }
+	                            );
+                            </script>
+					
+						</div>
+					</div>
+				</div>
+				
+			</div>
+        </section>
 	  
     </body>
 	
