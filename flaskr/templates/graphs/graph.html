@@ -24,7 +24,7 @@
     		<div class="grid-x">
     			<div class="cell">
                     <div class="callout post" style="padding-top: 0px;">
-    		
+    		            
                         <canvas id="graphique" width="200px" height="200px"></canvas>
                         
                         <script>
@@ -32,13 +32,13 @@
                             var ctx = document.getElementById('graphique').getContext('2d');
                             // création du graphique
                             var myChart = new Chart(ctx, {
-                                type: '{{type}}',   // le type du graphique
-                                data: {        // les données
-                                    labels: {{labels | safe }},
+                                type: '{{ type }}',  // le type du graphique
+                                data: {  // les données
+                                    labels: {{ labels | safe }},
                                     datasets: [{
                                         label: 'cases',
-    					                backgroundColor: "darkred", // une liste si on veut en mettre plusieurs: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", ...]
-                                        data: {{data | safe }}
+    					                backgroundColor: "darkred",  // une liste si on veut en mettre plusieurs: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", ...]
+                                        data: {{ data | safe }}
                                     }]
                                 }
                             }
