@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset ="utf-8">
+	<title> Commencement </title>
+	</head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+     <title>Le graphique des moyennes</title>
+    </head>
+    <body>
+      <div> style="width : 50%" </div>
+      <canvas id="myChart" width="400px" height="400px"></canvas>
+      <script>
+	// l'identifiant est celui du canevas
+	var ctx = document.getElementById('myChart').getContext('2d');
+	// création du graphique
+	var myChart = new Chart(ctx, {
+	type: 'bar',   // le type du graphique
+	data: {        // les données
+        labels: ['LEPL1402','LSINF1101-PYTHON','LSINF1252'],
+        datasets: [{
+                    label: 'moyenne',
+                    data: [77,59.3,76.64],
+                    backgroundColor : 'rgb(0,0,255)',
+                    borderColor : 'rgb(150,10,10)',
+                   }]
+	       },
+	       options : {
+	       	title:{text : "Moyenne pour chaque cours"}
+
+
+	       }
+         }
+	);
+      </script>
+	<body>
+	<p>
+		Voila un graphique representant les moyennes pour chaque cours 
+	</p>
+	</body>
+</html>
