@@ -1,0 +1,16 @@
+>>> 09/04/2020
+
+- 2 premiers graphiques ajoutés sur base de la base de donnée sqlite:
+  * LSINF1101 : Graphique en ligne - Nombre de soumissions au cours du temps
+  * LSINF1101 : Graphique en bars - Nombre de soumissions par mois
+- Problèmes constatés :
+  * Temps de chargement assez longs pour chacun des graphs
+
+
+
+>>> 05/04/2020
+
+- base.html sert à présent de squelette aux autres pages.
+- Ajout d'un framework css (Foundation)
+- Ajout d'un menu sur le dessus du site
+- Modification en matière de design (html/css)
