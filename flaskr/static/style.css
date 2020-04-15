@@ -1,6 +1,14 @@
 /**************************************
 GENERAL
 **************************************/
+
+body{
+    /* background-color: #BDBDBD; */
+	background-color: #E6E6E6;
+}
+
+
+
 .wrap{
     width: 90%;  /* prendra 90% de la largeur de l'écran */
     max-width: 1200px;  /* défini la largeur maximale */

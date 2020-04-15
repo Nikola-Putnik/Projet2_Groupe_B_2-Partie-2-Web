@@ -90,7 +90,7 @@ def nbr_to_month_fr(n):
 
 xy = {}
 
-for row in cursor.execute("SELECT submitted_on from submissions WHERE course = 'LSINF1101-PYTHON' ORDER BY submitted_on"):
+for row in cursor.execute("SELECT submitted_on, result from submissions WHERE course = 'LSINF1101-PYTHON' ORDER BY submitted_on"):
     current_date = row[0][:-9] # '2020-02-16T22:57:05'
     current_date_formated = datetime.datetime.strptime(current_date, date_format) # datetime.datetime(2020, 2, 16, 22, 57, 5)
     current_dayDate = current_date_formated.strftime("%B %Y") # '02-16-2020'
@@ -104,7 +104,11 @@ submissions_nbr = list(xy.values())
 
 
 
-
-
 # Toujours fermer la connexion quand elle n'est plus utile
 conn.close()
+
+a = []
+
+def uu():
+    a.append(6)
+    return "uuuuuuuuuuuuuu"

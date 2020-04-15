@@ -1,3 +1,16 @@
+>>> 14/04/2020
+
+- On utilise à présent la bundled version de Chart.js qui inclut Moment.js afin de gérer les dates.
+- L'option time est à présent utilisée, permettant à Chart.js de gérer les lignes du temps.
+- Ajout des graphiques représentant les soumissions (toutes & valides) pour les 3 cours.
+- Diverses corrections et modifications mineures.
+- Problèmes constatés :
+  * Temps de chargement assez longs pour chacun des graphs
+    => solution étudiée : consever certaines variables une fois qu'elles sont calculées, pour ne pas les recalculer lorsqu'on charge la page une seconde fois
+  * Le graphique affichant les soumissions par mois coupe au début et à la fin.
+
+
+
 >>> 09/04/2020
 
 - 2 premiers graphiques ajoutés sur base de la base de donnée sqlite:
