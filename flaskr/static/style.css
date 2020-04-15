@@ -72,8 +72,38 @@ body{
     color: white;
 }
 
+.button-grey:visited {
+    background-color: #424242;
+    color: white;
+}
+
+.button-grey:focus {
+    background-color: #424242;
+    color: white;
+}
+
 .button-grey:hover{
     background-color: #1C1C1C;
+    color: white;
+}
+
+.button-darkred{
+    background-color: darkred;
+    color: white;
+}
+
+.button-darkred:visited {
+    background-color: darkred;
+    color: white;
+}
+
+.button-darkred:focus {
+    background-color: darkred;
+    color: white;
+}
+
+.button-darkred:hover{
+    background-color: #610B0B;
     color: white;
 }
 

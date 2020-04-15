@@ -18,75 +18,89 @@
 
     <section class="main">
         <div class="grid-container">
-    
+		
             <h1 class="page-title">{{ titre }}</h1>
             
     		<div class="grid-x">
     			<div class="cell">
-				    {% if titre == 'Soumissions Python (mois)' %}
+				
+				    {% if 'mois' in titre %}
                         <a class="button large button-grey" href="/{{ cours }}">Défaut</a>
                     {% else %}
                         <a class="button large button-grey" href="/{{ cours }}/months">Par Mois</a>
 		            {% endif %}
-                    <div class="callout post" style="padding-top: 0px;">
 					
-                        <canvas id="graphique"></canvas>
-                        
-                        <script>
-						    // Chart.defaults.global.elements.line.fill = false; ---> TO BE DELETED : remove fills (le "remplissage")
-							
-                            // l'identifiant est celui du canevas
-                            var ctx = document.getElementById('graphique').getContext('2d');
-                            // création du graphique
-                            var myChart = new Chart(ctx, {
-                                type: '{{type}}',  // le type du graphique
-                                data: {  // les données
-								
-								    {% if labels %}
-                                        labels: {{ labels | safe }},
-		                            {% endif %}
-									
-                                    datasets: [{
-                                        label: 'Soumissions',
-    					                backgroundColor: "#3e95cd",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
-										borderColor: "#3e95cd",
-										fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
-                                        //data: {{ data | safe }} ---> TO BE DELETED
-										data: [
-											{% for i in range(data| length) %}  // correspond à: for i in range(len(data))
-										        { x: "{{ dates[i] | safe }}", y: {{ data[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
-										    {% endfor %}
-										]
-                                    }, {
-									    label: 'Soumissions valides',
-    					                backgroundColor: "#3cba9f",
-										borderColor: "#3cba9f",
-										data: [
-											{% for i in range(dataV| length) %}
-										        { x: "{{ datesV[i] | safe }}", y: {{ dataV[i] | safe }} },
-										    {% endfor %}
-										]
-									}]
-                                },
-				                options: {
-				                    scales: {
-				                	    xAxes: [{
-				                		    type: 'time',
-				                			time: {
-				                			    unit: 'month',
-												
-				                			}
-				                		}]
-				                	}
-				                }
-                            });
-                        </script>
-    			
-    			    </div>
+					{% if size == None %}
+						<a class="button large button-darkred" href="?size=large">Agrandir</a>
+                        <div class="callout post" style="padding-top: 0px;">
+                            <canvas id="graphique"></canvas>
+    			        </div>
+					{% elif size == 'large' %}
+					    <a class="button large button-darkred" href="/lsinf1101">Diminuer</a>
+					{% endif %}
+					
     			</div>
     		</div>
     		
     	</div>
+		
+		{% if size == 'large' %}
+		    <div class="callout post" style="padding-top: 0px;">
+			    <canvas id="graphique"></canvas>
+			</div>
+	    {% endif %}
+		
+		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		
     </section>
+	
+	<script>
+		// Chart.defaults.global.elements.line.fill = false; ---> TO BE DELETED : remove fills (le "remplissage")
+		
+        // l'identifiant est celui du canevas
+        var ctx = document.getElementById('graphique').getContext('2d');
+        // création du graphique
+        var myChart = new Chart(ctx, {
+            type: '{{type}}',  // le type du graphique
+            data: {  // les données
+                
+			    {% if labels %}
+                    labels: {{ labels | safe }},
+		        {% endif %}
+			    		        
+                datasets: [{
+                    label: 'Soumissions',
+                    backgroundColor: "#3e95cd",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
+                    borderColor: "#3e95cd",
+                    fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
+                    //data: {{ data | safe }} ---> TO BE DELETED
+                    data: [
+                        {% for i in range(data| length) %}  // correspond à: for i in range(len(data))
+                            { x: "{{ dates[i] | safe }}", y: {{ data[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
+                        {% endfor %}
+                    ]
+                }, {
+                    label: 'Soumissions valides',
+                    backgroundColor: "#3cba9f",
+                    borderColor: "#3cba9f",
+                    data: [
+                        {% for i in range(dataV| length) %}
+                            { x: "{{ datesV[i] | safe }}", y: {{ dataV[i] | safe }} },
+                        {% endfor %}
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'month'
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
 
 {% endblock %}
