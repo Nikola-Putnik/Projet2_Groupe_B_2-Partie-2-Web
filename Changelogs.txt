@@ -1,3 +1,11 @@
+>>> 17/04/2020
+
+- Ajout de la possibilité de régler les dates sur le graphique ("from ... to ...").
+- Le problème du graphique affichant les soumissions par mois qui coupait au début et à la fin a été contourné en affichant un mois de plus au début et à la fin du graphique.
+- Diverses corrections et modifications mineures.
+
+
+
 >>> 15/04/2020
 
 - Ajout d'une option pour agrandir le graphique.

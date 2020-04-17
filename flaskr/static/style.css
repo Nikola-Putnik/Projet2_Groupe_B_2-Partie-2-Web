@@ -34,7 +34,7 @@ body{
 
 .form-label{
     text-align: right;
-    padding:  0px 10px 0px 0px;  /* top right bottom left */
+    padding:  0px 10px 0px 10px;  /* top right bottom left */
 }
 
 .form-input{

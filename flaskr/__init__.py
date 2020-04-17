@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 
 import sqlite3
 import datetime
+
     
 def create_app(test_config=None):
     # create and configure the app
@@ -198,9 +199,37 @@ def create_app(test_config=None):
         titre_page = 'LSINF1101-PYTHON'
         cours = 'lsinf1101'
         
-        size = request.args.get('size')
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
         
-        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size)
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # réglage de l'unité du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m-%d")
+        minD = datetime.datetime.strptime(min, "%Y-%m-%d")
+        difference = maxD - minD
+        if difference < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit = 'day'
+        elif difference < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit = 'week'
+        elif difference < datetime.timedelta(days=720):
+            unit = 'month'
+        else:
+            unit = 'year'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
 
     
     @app.route('/lsinf1101/months')
@@ -221,9 +250,35 @@ def create_app(test_config=None):
         titre_page = 'LSINF1101-PYTHON (mois)'
         cours = 'lsinf1101'
         
-        size = request.args.get('size')
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
         
-        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size)
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # pour une raison inconnue, sur le graphique le 1er et le dernier mois sont coupés, on va donc ajouter un mois au début et à la fin du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m")
+        max = maxD + datetime.timedelta(days=31) # ajouter 31 jours permet d'avancer d'un mois
+        max = max.strftime("%Y-%m")
+        minD = datetime.datetime.strptime(min, "%Y-%m")
+        min = minD - datetime.timedelta(days=15) # enlever entre 1 et 28 jours permet de reculer d'un mois 
+        min = min.strftime("%Y-%m")
+        
+        # l'unité du graphique
+        unit = 'month'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
     
     
     @app.route('/lepl1402')
@@ -244,9 +299,37 @@ def create_app(test_config=None):
         titre_page = 'LEPL1402'
         cours = 'lepl1402'
         
-        size = request.args.get('size')
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
         
-        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size)
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # réglage de l'unité du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m-%d")
+        minD = datetime.datetime.strptime(min, "%Y-%m-%d")
+        difference = maxD - minD
+        if difference < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit = 'day'
+        elif difference < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit = 'week'
+        elif difference < datetime.timedelta(days=720):
+            unit = 'month'
+        else:
+            unit = 'year'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
 
     
     @app.route('/lepl1402/months')
@@ -267,9 +350,35 @@ def create_app(test_config=None):
         titre_page = 'LEPL1402 (mois)'
         cours = 'lepl1402'
         
-        size = request.args.get('size')
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
         
-        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size)
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # pour une raison inconnue, sur le graphique le 1er et le dernier mois sont coupés, on va donc ajouter un mois au début et à la fin du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m")
+        max = maxD + datetime.timedelta(days=31) # ajouter 31 jours permet d'avancer d'un mois
+        max = max.strftime("%Y-%m")
+        minD = datetime.datetime.strptime(min, "%Y-%m")
+        min = minD - datetime.timedelta(days=15) # enlever entre 1 et 28 jours permet de reculer d'un mois 
+        min = min.strftime("%Y-%m")
+        
+        # l'unité du graphique
+        unit = 'month'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
     
     
     @app.route('/lsinf1252')
@@ -290,9 +399,37 @@ def create_app(test_config=None):
         titre_page = 'LSINF1252'
         cours = 'lsinf1252'
         
-        size = request.args.get('size')
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
         
-        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size)
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # réglage de l'unité du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m-%d")
+        minD = datetime.datetime.strptime(min, "%Y-%m-%d")
+        difference = maxD - minD
+        if difference < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit = 'day'
+        elif difference < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit = 'week'
+        elif difference < datetime.timedelta(days=720):
+            unit = 'month'
+        else:
+            unit = 'year'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
 
     
     @app.route('/lsinf1252/months')
@@ -313,9 +450,35 @@ def create_app(test_config=None):
         titre_page = 'LSINF1252 (mois)'
         cours = 'lsinf1252'
         
-        size = request.args.get('size')
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
         
-        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size)
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # pour une raison inconnue, sur le graphique le 1er et le dernier mois sont coupés, on va donc ajouter un mois au début et à la fin du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m")
+        max = maxD + datetime.timedelta(days=31) # ajouter 31 jours permet d'avancer d'un mois
+        max = max.strftime("%Y-%m")
+        minD = datetime.datetime.strptime(min, "%Y-%m")
+        min = minD - datetime.timedelta(days=15) # enlever entre 1 et 28 jours permet de reculer d'un mois 
+        min = min.strftime("%Y-%m")
+        
+        # l'unité du graphique
+        unit = 'month'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
         
     return app
     
