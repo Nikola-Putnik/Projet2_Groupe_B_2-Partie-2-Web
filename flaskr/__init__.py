@@ -237,6 +237,55 @@ def create_app(test_config=None):
                 listemoyenne.append(round(row[0],2))
         return render_template('graphs/graph_moylsinf.html', titre = "Moyenne des exercices pour le cours LSINF1252", type = 'bar', labels = liste_exo, data =listemoyenne)
         conn.close()
+    @app.route('/topexopyt')
+    def topexopyt():
+        import sqlite3
+        conn=sqlite3.connect('data-inginious/inginious.sqlite')
+        cursor=conn.cursor()
+        listecours=[]
+        liste_exo=[]
+        listemoyenne=[]
+        listetopexo=[]
+        listetopmoy=[]
+        for row in cursor.execute("SELECT DISTINCT(course) FROM submissions"):  #Je crée une liste avec les cours 
+            listecours.append(row[0])
+        for row in cursor.execute("SELECT DISTINCT(task) FROM submissions WHERE course ='LSINF1101-PYTHON'"):
+            liste_exo.append(row[0])
+        for i in liste_exo:
+            for row in cursor.execute("SELECT avg(grade) FROM submissions WHERE task='{}'".format(i)):
+                listemoyenne.append((round(row[0],2),i))
+        listemoyenne = sorted(listemoyenne)
+        listetop=(listemoyenne[-11:-1])
+        for x,y in listetop:
+            listetopexo.append(y)
+            listetopmoy.append(x)
+        return render_template('graphs/graphtopexopyt.html', titre=" Les 10 exercices avec la moyenne la plus haute",type='bar',labels = listetopexo,data=listetopmoy)
+        conn.close()
+    @app.route('/worstexopyt')
+    def worstexopyt():
+        import sqlite3
+        conn=sqlite3.connect('data-inginious/inginious.sqlite')
+        cursor=conn.cursor()
+        listecours=[]
+        liste_exo=[]
+        listemoyenne=[]
+        listetopexo=[]
+        listetopmoy=[]
+        for row in cursor.execute("SELECT DISTINCT(course) FROM submissions"):  #Je crée une liste avec les cours 
+            listecours.append(row[0])
+        for row in cursor.execute("SELECT DISTINCT(task) FROM submissions WHERE course ='LSINF1101-PYTHON'"):
+            liste_exo.append(row[0])
+        for i in liste_exo:
+            for row in cursor.execute("SELECT avg(grade) FROM submissions WHERE task='{}'".format(i)):
+                listemoyenne.append((round(row[0],2),i))
+        listemoyenne = sorted(listemoyenne)
+        listetop=(listemoyenne[0:9])
+        for x,y in listetop:
+            listetopexo.append(y)
+            listetopmoy.append(x)
+        return render_template('graphs/graphworstexopyt.html', titre=" Les 10 exercices avec la moyenne la plus basse",type='bar',labels = listetopexo,data=listetopmoy)
+        conn.close()
+
 
     #premier graphique sur les donnees inginious
     #soumissions au cours du temps pour LSINF1101-PYTHON
