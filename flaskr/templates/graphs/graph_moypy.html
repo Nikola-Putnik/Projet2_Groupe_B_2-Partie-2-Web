@@ -23,11 +23,7 @@
             
     		<div class="grid-x">
     			<div class="cell">
-				    {% if titre == 'Moyenne' %}
-                        <a class="button large button-grey" href="graph1">Défaut</a>
-                    {% else %}
-                        <a class="button large button-grey" href="graph1s">Par Mois</a>
-		            {% endif %}
+				    
                     <div class="callout post" style="padding-top: 0px;">
                         <canvas id="graphique" width="200px" height="200px"></canvas>
                         
@@ -42,7 +38,7 @@
                                 data: {  // les données
                                     labels: {{ labels | safe }},
                                     datasets: [{
-                                        label: 'cours',
+                                        label: 'moyenne',
     					                backgroundColor: "#3e95cd",  // une liste si on veut en mettre plusieurs: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", ...]
 										borderColor: "#3e95cd",
                                         data: {{ data | safe }}

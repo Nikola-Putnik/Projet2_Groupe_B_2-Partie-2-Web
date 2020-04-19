@@ -1,0 +1,39 @@
+   <!DOCTYPE html>
+   <html>
+    <head>
+     <meta charset="utf-8">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+     <title>Graphique des moyennes </title>
+    </head>
+    <body>
+      
+      <canvas id="graphique" ></canvas>
+      <script>
+	// l'identifiant est celui du canevas
+	       var ctx = document.getElementById('graphique').getContext('2d');
+         var data ={
+            labels : ['LEPL1402','LSINF1101-PYTHON','LSINF1252',]
+            datasets: [
+                    {
+
+                          data : [77,59.3,76.64]
+                    }
+            ]
+          }
+  var options 
+
+  var config = {
+    type : = 'Horizontal',
+    data : data,
+    options : options
+
+
+
+  }
+	// création du graphique
+	var mongraphe = new Chart(ctx, config)
+
+      </script>
+
+    </body>
+   </html>
