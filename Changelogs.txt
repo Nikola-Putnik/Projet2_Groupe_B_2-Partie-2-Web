@@ -1,3 +1,36 @@
+>>> 17/04/2020
+
+- Ajout de la possibilité de régler les dates sur le graphique ("from ... to ...").
+- Le problème du graphique affichant les soumissions par mois qui coupait au début et à la fin a été contourné en affichant un mois de plus au début et à la fin du graphique.
+- Diverses corrections et modifications mineures.
+
+
+
+>>> 15/04/2020
+
+- Ajout d'une option pour agrandir le graphique.
+- Ajout d'une fonction "submissions_by_dates(course, scale)" pour alléger le code qui était plutot répétitif
+- Des variables globales sont assignées au début, elles ne sont calculées qu'une seule fois au premier chargement d'une page.
+  => Cela permet de gagner en vitesse (car on ne reli pas la DB) lors de la visite d'une page déjà chargée au cours de la même session.
+- Diverses corrections et modifications mineures.
+- Problèmes constatés :
+  * Le graphique affichant les soumissions par mois coupe au début et à la fin.
+
+
+
+>>> 14/04/2020
+
+- On utilise à présent la bundled version de Chart.js qui inclut Moment.js afin de gérer les dates.
+- L'option time est à présent utilisée, permettant à Chart.js de gérer les lignes du temps.
+- Ajout des graphiques représentant les soumissions (toutes & valides) pour les 3 cours.
+- Diverses corrections et modifications mineures.
+- Problèmes constatés :
+  * Temps de chargement assez longs pour chacun des graphs
+    => solution étudiée : consever certaines variables une fois qu'elles sont calculées, pour ne pas les recalculer lorsqu'on charge la page une seconde fois
+  * Le graphique affichant les soumissions par mois coupe au début et à la fin.
+
+
+
 >>> 09/04/2020
 
 - 2 premiers graphiques ajoutés sur base de la base de donnée sqlite:

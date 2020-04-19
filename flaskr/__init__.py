@@ -1,12 +1,68 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 import sqlite3
 import datetime
 
-
+    
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
+    
+    
+    
+    # N'est pas utilisé pour l'instant.
+    # Permet de charger les db au lancement de l'application.
+    """
+    # Accès à la base de données
+    conn = sqlite3.connect('data-inginious/inginious.sqlite')
+    
+    # Le curseur permettra l'envoi des commandes SQL
+    cursor = conn.cursor()
+    
+    date_format = "%Y-%m-%dT%H:%M:%S"
+    
+    subs_months = {}
+    subs_months_valid = {}
+
+    for row in cursor.execute("SELECT submitted_on from submissions WHERE course = 'LSINF1101-PYTHON' ORDER BY submitted_on"):
+        current_date = row[0][:-9] # '2020-02-16T22:57:05'
+        current_date_formated = datetime.datetime.strptime(current_date, date_format) # datetime.datetime(2020, 2, 16, 22, 57, 5)
+        
+        current_dayDate = current_date_formated.strftime("%d-%m-%Y") # '02-16-2020'
+        if current_dayDate not in subs_days:
+            subs_days[current_dayDate] = 1 # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
+        else:
+            subs_days[current_dayDate] += 1 # si elle y est déjà, on augmente sa valeur de 1
+            
+        current_monthDate = current_date_formated.strftime("%B %Y") # February 2020
+        if current_monthDate not in subs_months:
+            subs_months[current_monthDate] = 1 # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
+        else:
+            subs_months[current_monthDate] += 1 # si elle y est déjà, on augmente sa valeur de 1
+    
+    # Toujours fermer la connexion quand elle n'est plus utile
+    conn.close()
+    """
+    
+    # variables globales, qui ne seront calculées qu'une seule fois, au premier chargement de la page.
+    global lsinf1101_data_day
+    lsinf1101_data_day = ()
+    
+    global lsinf1101_data_month
+    lsinf1101_data_month = ()
+    
+    global lepl1402_data_day
+    lepl1402_data_day = ()
+    
+    global lepl1402_data_month
+    lepl1402_data_month = ()
+    
+    global lsinf1252_data_day
+    lsinf1252_data_day = ()
+    
+    global lsinf1252_data_month
+    lsinf1252_data_month = ()
+    
 
     # a simple page that says hello
     @app.route('/hello')
@@ -16,6 +72,7 @@ def create_app(test_config=None):
     # page principale
     @app.route('/')
     def index():
+        
         return render_template('index.html')
 
     #premier graphique sur le covid19
@@ -38,11 +95,36 @@ def create_app(test_config=None):
         
         return render_template('graphs/graph.html', type = graphique, labels = str(liste_pays), data = str(liste_cas_last_day))
 
-    #premier graphique sur les donnees inginious
-    #soumissions au cours du temps pour LSINF1101-PYTHON
-    
+    """
     @app.route('/graph1')
     def graph_test_inginious():
+    
+        graph_type = request.args.get('gtype')
+        
+        if graph_type == None:
+            submissions_dates = list(subs_days.keys())
+            submissions_nbr = list(subs_days.values())
+            graphique = 'line'
+            titre_page = 'Soumissions Python'
+        elif graph_type == 'month':
+            submissions_dates = list(subs_months.keys())
+            submissions_nbr = list(subs_months.values())
+            graphique = 'bar'
+            titre_page = 'Soumissions Python (mois)'
+        
+        return render_template('graphs/graph_1.html', titre = titre_page, type = graphique, labels = str(submissions_dates), data = str(submissions_nbr))
+    """
+    
+    def submissions_by_dates(course, scale):
+        """
+        pre  : course = le nom d'un cours (string)
+               scale = un ordre de grandeur de durée, ex: 'day', 'month' (string)
+        post : un tuple contenant contenant 2 éléments
+               0: 1e tuple: 0- une liste avec les dates de toutes les soumissions
+                            1- une liste avec les nombres de soumissions correspondant aux dates de la première liste
+               1: 2e tuple: 0- une liste avec les dates de toutes les soumissions réussies (valides)
+                            1- une liste avec les nombres de soumissions réussies correspondant aux dates de la première liste
+        """
         
         # Accès à la base de données
         conn = sqlite3.connect('data-inginious/inginious.sqlite')
@@ -52,63 +134,351 @@ def create_app(test_config=None):
         
         date_format = "%Y-%m-%dT%H:%M:%S"
         
-        xy = {}
+        subs = {}
+        subs_valid = {}
 
-        for row in cursor.execute("SELECT submitted_on from submissions WHERE course = 'LSINF1101-PYTHON' ORDER BY submitted_on"):
+        for row in cursor.execute("SELECT submitted_on, result from submissions WHERE course = '{}' ORDER BY submitted_on".format(course)):
             current_date = row[0][:-9] # '2020-02-16T22:57:05'
             current_date_formated = datetime.datetime.strptime(current_date, date_format) # datetime.datetime(2020, 2, 16, 22, 57, 5)
-            current_dayDate = current_date_formated.strftime("%d-%m-%Y") # '02-16-2020'
-            if current_dayDate not in xy:
-                xy[current_dayDate] = 1 # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
-            else:
-                xy[current_dayDate] += 1 # si elle y est déjà, on augmente sa valeur de 1
-        
-        submissions_dates = list(xy.keys())
-        submissions_nbr = list(xy.values())
             
+            if scale == 'day':
+                current_dateFinal = current_date_formated.strftime("%Y-%m-%d") #("%d-%m-%Y") # '02-16-2020'
+                if current_dateFinal not in subs:
+                    subs[current_dateFinal] = 1 # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
+                else:
+                    subs[current_dateFinal] += 1 # si elle y est déjà, on augmente sa valeur de 1
+                
+                if row[1] == "success":
+                    if current_dateFinal not in subs_valid:
+                        subs_valid[current_dateFinal] = 1
+                    else:
+                        subs_valid[current_dateFinal] += 1
+            
+            elif scale == 'month':
+                current_dateFinal = current_date_formated.strftime("%Y-%m") #("%B %Y") # February 2020
+                if current_dateFinal not in subs:
+                    subs[current_dateFinal] = 1 # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
+                else:
+                    subs[current_dateFinal] += 1 # si elle y est déjà, on augmente sa valeur de 1
+                
+                if row[1] == "success":
+                    if current_dateFinal not in subs_valid:
+                        subs_valid[current_dateFinal] = 1
+                    else:
+                        subs_valid[current_dateFinal] += 1
         
         # Toujours fermer la connexion quand elle n'est plus utile
         conn.close()
         
-        graphique = 'line'
-        titre_page = 'Soumissions Python'
+        subm_dates = list(subs.keys())
+        subm_nbr = list(subs.values())
         
-        return render_template('graphs/graph-ingi-test.html', titre = titre_page, type = graphique, labels = str(submissions_dates), data = str(submissions_nbr))
+        subm_dates_valid = list(subs_valid.keys())
+        subm_nbr_valid = list(subs_valid.values())
+        
+        return ((subm_dates, subm_nbr), (subm_dates_valid, subm_nbr_valid))
+    
+    
+    #premier graphique sur les donnees inginious
+    #soumissions au cours du temps pour LSINF1101-PYTHON
+    @app.route('/lsinf1101')
+    def lsinf1101():
+        
+        global lsinf1101_data_day
+        
+        if len(lsinf1101_data_day) == 0:
+            lsinf1101_data_day = submissions_by_dates('LSINF1101-PYTHON', 'day')
+        
+        subm_dates = lsinf1101_data_day[0][0]
+        subm_nbr = lsinf1101_data_day[0][1]
+        
+        subm_dates_valid = lsinf1101_data_day[1][0]
+        subm_nbr_valid = lsinf1101_data_day[1][1]
+        
+        graph = 'line'
+        titre_page = 'LSINF1101-PYTHON'
+        cours = 'lsinf1101'
+        
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
+        
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # réglage de l'unité du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m-%d")
+        minD = datetime.datetime.strptime(min, "%Y-%m-%d")
+        difference = maxD - minD
+        if difference < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit = 'day'
+        elif difference < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit = 'week'
+        elif difference < datetime.timedelta(days=720):
+            unit = 'month'
+        else:
+            unit = 'year'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
 
-    #version simplifiée
-    @app.route('/graph1s')
-    def graph_test_inginiousS():
+    
+    @app.route('/lsinf1101/months')
+    def lsinf1101_months():
         
-        # Accès à la base de données
-        conn = sqlite3.connect('data-inginious/inginious.sqlite')
+        global lsinf1101_data_month
         
-        # Le curseur permettra l'envoi des commandes SQL
-        cursor = conn.cursor()
+        if len(lsinf1101_data_month) == 0:
+            lsinf1101_data_month = submissions_by_dates('LSINF1101-PYTHON', 'month')
         
-        date_format = "%Y-%m-%dT%H:%M:%S"
+        subm_dates = lsinf1101_data_month[0][0]
+        subm_nbr = lsinf1101_data_month[0][1]
         
-        xy = {}
+        subm_dates_valid = lsinf1101_data_month[1][0]
+        subm_nbr_valid = lsinf1101_data_month[1][1]
+        
+        graph = 'bar'
+        titre_page = 'LSINF1101-PYTHON (mois)'
+        cours = 'lsinf1101'
+        
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
+        
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # pour une raison inconnue, sur le graphique le 1er et le dernier mois sont coupés, on va donc ajouter un mois au début et à la fin du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m")
+        max = maxD + datetime.timedelta(days=31) # ajouter 31 jours permet d'avancer d'un mois
+        max = max.strftime("%Y-%m")
+        minD = datetime.datetime.strptime(min, "%Y-%m")
+        min = minD - datetime.timedelta(days=15) # enlever entre 1 et 28 jours permet de reculer d'un mois 
+        min = min.strftime("%Y-%m")
+        
+        # l'unité du graphique
+        unit = 'month'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
+    
+    
+    @app.route('/lepl1402')
+    def lepl1402():
+        
+        global lepl1402_data_day
+        
+        if len(lepl1402_data_day) == 0:
+            lepl1402_data_day = submissions_by_dates('LEPL1402', 'day')
+        
+        subm_dates = lepl1402_data_day[0][0]
+        subm_nbr = lepl1402_data_day[0][1]
+        
+        subm_dates_valid = lepl1402_data_day[1][0]
+        subm_nbr_valid = lepl1402_data_day[1][1]
+        
+        graph = 'line'
+        titre_page = 'LEPL1402'
+        cours = 'lepl1402'
+        
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
+        
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # réglage de l'unité du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m-%d")
+        minD = datetime.datetime.strptime(min, "%Y-%m-%d")
+        difference = maxD - minD
+        if difference < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit = 'day'
+        elif difference < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit = 'week'
+        elif difference < datetime.timedelta(days=720):
+            unit = 'month'
+        else:
+            unit = 'year'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
 
-        for row in cursor.execute("SELECT submitted_on from submissions WHERE course = 'LSINF1101-PYTHON' ORDER BY submitted_on"):
-            current_date = row[0][:-9] # '2020-02-16T22:57:05'
-            current_date_formated = datetime.datetime.strptime(current_date, date_format) # datetime.datetime(2020, 2, 16, 22, 57, 5)
-            current_dayDate = current_date_formated.strftime("%B %Y") # February 2020
-            if current_dayDate not in xy:
-                xy[current_dayDate] = 1 # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
-            else:
-                xy[current_dayDate] += 1 # si elle y est déjà, on augmente sa valeur de 1
+    
+    @app.route('/lepl1402/months')
+    def lepl1402_months():
         
-        submissions_dates = list(xy.keys())
-        submissions_nbr = list(xy.values())
-            
+        global lepl1402_data_month
         
-        # Toujours fermer la connexion quand elle n'est plus utile
-        conn.close()
+        if len(lepl1402_data_month) == 0:
+            lepl1402_data_month = submissions_by_dates('LEPL1402', 'month')
         
-        graphique = 'bar'
-        titre_page = 'Soumissions Python (mois)'
+        subm_dates = lepl1402_data_month[0][0]
+        subm_nbr = lepl1402_data_month[0][1]
         
-        return render_template('graphs/graph-ingi-test.html', titre = titre_page, type = graphique, labels = str(submissions_dates), data = str(submissions_nbr))
+        subm_dates_valid = lepl1402_data_month[1][0]
+        subm_nbr_valid = lepl1402_data_month[1][1]
+        
+        graph = 'bar'
+        titre_page = 'LEPL1402 (mois)'
+        cours = 'lepl1402'
+        
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
+        
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # pour une raison inconnue, sur le graphique le 1er et le dernier mois sont coupés, on va donc ajouter un mois au début et à la fin du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m")
+        max = maxD + datetime.timedelta(days=31) # ajouter 31 jours permet d'avancer d'un mois
+        max = max.strftime("%Y-%m")
+        minD = datetime.datetime.strptime(min, "%Y-%m")
+        min = minD - datetime.timedelta(days=15) # enlever entre 1 et 28 jours permet de reculer d'un mois 
+        min = min.strftime("%Y-%m")
+        
+        # l'unité du graphique
+        unit = 'month'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
+    
+    
+    @app.route('/lsinf1252')
+    def lsinf1252():
+        
+        global lsinf1252_data_day
+        
+        if len(lsinf1252_data_day) == 0:
+            lsinf1252_data_day = submissions_by_dates('LSINF1252', 'day')
+        
+        subm_dates = lsinf1252_data_day[0][0]
+        subm_nbr = lsinf1252_data_day[0][1]
+        
+        subm_dates_valid = lsinf1252_data_day[1][0]
+        subm_nbr_valid = lsinf1252_data_day[1][1]
+        
+        graph = 'line'
+        titre_page = 'LSINF1252'
+        cours = 'lsinf1252'
+        
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
+        
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # réglage de l'unité du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m-%d")
+        minD = datetime.datetime.strptime(min, "%Y-%m-%d")
+        difference = maxD - minD
+        if difference < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit = 'day'
+        elif difference < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit = 'week'
+        elif difference < datetime.timedelta(days=720):
+            unit = 'month'
+        else:
+            unit = 'year'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
+
+    
+    @app.route('/lsinf1252/months')
+    def lsinf1252_months():
+        
+        global lsinf1252_data_month
+        
+        if len(lsinf1252_data_month) == 0:
+            lsinf1252_data_month = submissions_by_dates('LSINF1252', 'month')
+        
+        subm_dates = lsinf1252_data_month[0][0]
+        subm_nbr = lsinf1252_data_month[0][1]
+        
+        subm_dates_valid = lsinf1252_data_month[1][0]
+        subm_nbr_valid = lsinf1252_data_month[1][1]
+        
+        graph = 'bar'
+        titre_page = 'LSINF1252 (mois)'
+        cours = 'lsinf1252'
+        
+        size = 'default'
+        min = subm_dates[0]
+        max = subm_dates[-1]
+        
+        if request.args.get('size') is not None:
+            size = request.args.get('size')
+        if request.args.get('min') is not None:
+            min = request.args.get('min')
+        if request.args.get('max') is not None:
+            max = request.args.get('max')
+        
+        # les dates affichées dans les formulaires
+        form_min = min
+        form_max = max
+        
+        # pour une raison inconnue, sur le graphique le 1er et le dernier mois sont coupés, on va donc ajouter un mois au début et à la fin du graphique
+        maxD = datetime.datetime.strptime(max, "%Y-%m")
+        max = maxD + datetime.timedelta(days=31) # ajouter 31 jours permet d'avancer d'un mois
+        max = max.strftime("%Y-%m")
+        minD = datetime.datetime.strptime(min, "%Y-%m")
+        min = minD - datetime.timedelta(days=15) # enlever entre 1 et 28 jours permet de reculer d'un mois 
+        min = min.strftime("%Y-%m")
+        
+        # l'unité du graphique
+        unit = 'month'
+        
+        return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, type = graph,
+                               dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid, size = size,
+                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit)
         
     return app
     
