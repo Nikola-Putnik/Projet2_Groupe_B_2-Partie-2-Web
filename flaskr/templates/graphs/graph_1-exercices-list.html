@@ -3,10 +3,16 @@
 
 {% block head %}
 
+    <!--
+	Pas besoin de toucher a ca pour l'instant, pour l'instant c'est inutile
+    -->
     <meta name="description" content="Une première page web">
     <meta name="keywords" content="HTML,exemple">
     <meta name="author" content="Jean Tartempion">
     
+	<!--
+	Le script de Chart.js qu'on importe, c'est une version Bundle capable de gérer les dates
+    -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 
 {% endblock %}
@@ -16,29 +22,81 @@
 
 {% block body_content %}
 
+    <!-- DE MANIÈRE GÉNÉRALE
+	
+	Victor préviens moi si par hasard tu tombe sur ce message
+	
+	- tout le code du corps de la page se trouve dans la section "main"
+	  <section class="main">
+	
+	- <div class="grid-container"> est la "racine" de nos futurs "grid-x".
+	  Il délimite une certaine zone sur la page.
+	  On voit qu'a partir d'une certaine taille, la contenu ne grandi pas peu importe la taille de notre page web.
+	  
+	  Si besoin de visualisation, écriver qqch dans <div class="grid-container"> et en dehors et vous verrez la différence.
+	  
+	- <div class="grid-x"> permet de contenir des "cellules"
+	
+	- <div class="large-12 cell"> est une cellule.
+	  les cellules définissent une zone de la page dans laquelle on place du code.
+	  Leur taille peut aller de 1 à 12.
+	  Voir une video de débutant pour visualiser le truc plus en détail.
+	  
+	  "large-12" signifie que sur un écran large, la cellule occupera toute la largeur du "grid-x" dans laquelle elle se trouve.
+	  Avec "large-6" elle n'occuperait que la moité par ex
+	
+	- on peut mettre un <div class="grid-x"> dans une cellule afin d'y placer d'autres cellules et on peut répéter cela indéfiniment.
+	
+	- <div class="callout post"> sont les "posts" dans lesquels sont actuellement placés nos graphiques.
+	  Ce sont les zones blanches
+	
+	Pour FLASK, vous devriez savoir ce que représente les accolades pour les vairables, conditions, boucles etc
+	
+    -->
+	
     <section class="main">
-        <div class="grid-container">
 		
+        <div class="grid-container">
+            
+            <!-- Titre de la page
+			
+            {{ titre }} : ici on a pris le nom du cours (ex: LSINF1101-PYTHON), voir __init__.py
+            -->
             <h1 class="page-title">{{ titre }}</h1>
             
     		<div class="grid-x">
     			<div class="large-12 cell">
 				    
-                    <a class="button large button-grey" {% if main == 'subm' %}style="background-color: black;"{% endif %} href="/{{ cours }}">Soumissions</a>
-                    <a class="button large button-grey" {% if main == 'month' %}style="background-color: black;"{% endif %} href="?main=month">Soumissions par Mois</a>
-		            <a class="button large button-grey" {% if main == 'results' %}style="background-color: black;"{% endif %} href="?main=results">Résultats</a>
+					<!-- Les gros boutons gris
+					
+					{{ cours }} : nom du cours (ex: lsinf1101)
+					-->
+                    <a class="button large button-grey" href="/{{ cours }}">Soumissions</a>
+                    <a class="button large button-grey" href="/{{ cours }}?main=month">Soumissions par Mois</a>
+		            <a class="button large button-grey" href="/{{ cours }}?main=results">Résultats</a>
                     <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
-                    <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list">Liste des Exercices</a>
+                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices_list">Liste des Exercices</a>
+					
+					{% if task != "no_task" %}
 				    
-					<!-- Titre du graphique -->
+					<!-- Titre du graphique
+					
+					{{ titre_graph }} est le titre du graphique principal (celui en grand)
+					-->
 					<h2 class="titre-1"><b>{{ titre_graph }}</b></h2>
 					
+					<!-- 
+					main est une variable modifiable par des méthodes GET (voir les liens des boutons juste au dessus)
+					
+					Comme vous pouvez le voir avec les conditions, on affiche un graphique différent selon la valeur de main.
+					-->
 					{% if main == 'subm' %}
 					
 					    <!-- Graphique des soumissions par jour (courbe) -->
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle" style="height:70px">
+							    <input type="hidden" name="task" value="{{ task }}" />
 					            {% if size == 'default' %}
 					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
 					        	{% elif size == 'large' %}
@@ -52,6 +110,12 @@
 				            </div>
                         </form>
 					
+					    <!-- size
+						Une varibale size est assignée à chaque graphique et modifiable par des méthodes GET (les liens se trouvent dans les formulaires d'options
+						Le graphique ci-dessous ne s'affiche que si size == 'default'
+						
+						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché => chercher la condition f size == 'default'
+						-->
 					    {% if size == 'default' %}
 					    <!-- Graphique en taille normale -->
                         <div class="callout post" style="padding-top: 0px;">
@@ -59,12 +123,16 @@
     			        </div>
 					    {% endif %}
 					
+					<!-- 
+					Si main == 'month', c'est le graphique par mois qui est affiché
+					-->
 					{% elif main == 'month' %}
 					
 					    <!-- Graphique des soumissions par mois (bar) -->
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle" style="height:70px">
+							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="month" />
 					            {% if size == 'default' %}
 					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
@@ -86,12 +154,16 @@
     			        </div>
 					    {% endif %}
 					
+					<!-- 
+					Si main == 'results', c'est le graphique des résultats qui est affiché
+					-->
 					{% elif main == 'results' %}
 					
 					    <!-- Graphique des résultats (pie chart) -->
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle" style="height:70px">
+							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="results" />
 					            {% if size == 'default' %}
 					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
@@ -115,14 +187,29 @@
 					
 					{% endif %}
 					
+					{% endif %}
+					
     			</div>
     		</div>
     		
     	</div>
 		
+		{% if task != "no_task" %}
+		
+		<!--
+		la variable size décrite plus haut.
+		si size == 'large' on affiche le graphique en dehors du <div class="grid-container"> afin qu'il occupe toute la page
+		-->
 		{% if size == 'large' %}
 		    <!-- Graphique en taille large -->
 		    <div class="callout post" style="padding-top: 0px;">
+			    <!-- IMPORTANT
+			    Remarquez que l'id = main
+				main est une variable modifée par méthode GET qui indique quel est le graphique principal
+				main peut donc valoir 3 valeurs différentes (puisqu'on a 3 graphs en tout)
+				les autres canvas portent l'id d'une des valeurs de main (subm, month ou results)
+				Ainsi le {{ main }} de ce canvas vaudra lui aussi subm, month ou results.
+				-->
 			    <canvas id="{{ main }}"></canvas>
 			</div>
 	    {% endif %}
@@ -130,30 +217,40 @@
 		<!-- Les autres graphiques -->
 		<div class="grid-container">
 		    <div class="grid-x grid-margin-x">
+			    <!--
+				On affiche le graphique subm (Soumissions) si main != 'subm'
+				Autrement dit, on affiche le graphique parmis les petits graphiques s'il n'est pas déjà le graphique principal (le main)
+				-->
 				{% if main != 'subm' %}
 				<div class="large-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm }}</b></h3>
-				    <a href="/{{ cours }}">
+				    <a href="?task={{ task }}">
 				        <div class="callout post">
 				            <canvas id="subm"></canvas>
 				        </div>
 					</a>
 				</div>
 				{% endif %}
+				<!--
+				idem pour le graph month (Soumissions par mois)
+				-->
 			    {% if main != 'month' %}
 			    <div class="large-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm_M }}</b></h3>
-				    <a href="?main=month">
+				    <a href="?task={{ task }}&main=month">
 				        <div class="callout post">
 				            <canvas id="month"></canvas>
 				        </div>
 					</a>
 				</div>
 				{% endif %}
+				<!--
+				idem pour le graph results (Résultats)
+				-->
 				{% if main != 'results' %}
 				<div class="large-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_results }}</b></h3>
-				    <a href="?main=results">
+				    <a href="?task={{ task }}&main=results">
 				        <div class="callout post">
 				            <canvas id="results"></canvas>
 				        </div>
@@ -163,10 +260,41 @@
 			</div>
 		</div>
 		
+	    {% endif %}
+		
+		<div class="grid-container">
+		    <div class="grid-x grid-margin-x">
+			    <div class="large-12 cell">
+				    <h2 class="titre-1"><b>Exercices</b></h2>
+					<table>
+					    <tr>
+                            <td><p class="mod-table-cat-title">Tâche</p></td>
+						    <td><p class="mod-table-cat-title"># Étudiants Validé</p></td>
+						    <td><p class="mod-table-cat-title"># Étudiants Essayé</p></td>
+						    <td><p class="mod-table-cat-title">Pourcentage réussites</p></td>
+						</tr>
+						{% for i in range(tasks_name| length) %}
+						<tr>
+						    <td>
+					            <a href="?task={{ tasks_name[i] }}" class="link-a">
+							        {{ tasks_name[i] }}
+					            </a>
+					        </td>
+                            <td>{{ tasks_succeeded[i] }}</td>
+						    <td>{{ tasks_tried[i] }}</td>
+						    <td>{{ percentage[i] }} %</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+		
 		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 		
     </section>
 
+    <!-- SCRIPT DU 1er GRAPHIQUE -->
 	<script>
 		// Graphique des soumissions par jour (line/courbe)
 		
@@ -213,11 +341,17 @@
 							max: '{{ max }}'
                         }
                     }]
-                }
+                },
+				elements: {
+				    line: {
+                        tension: 0
+                    }
+				}
             }
         });
     </script>
 	
+	<!-- SCRIPT DU 2eme GRAPHIQUE -->
 	<script>
 		// Graphique des soumissions par mois (bar)
 		
@@ -269,6 +403,7 @@
         });
     </script>
 	
+	<!-- SCRIPT DU 3eme GRAPHIQUE -->
 	<script>
 	    // Graphique des résultats (pie chart)
 	

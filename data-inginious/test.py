@@ -90,14 +90,8 @@ def nbr_to_month_fr(n):
 
 xy = {}
 
-for row in cursor.execute("SELECT submitted_on, result from submissions WHERE course = 'LSINF1101-PYTHON' AND submitted_on > '2020-02-16T22:57:05' ORDER BY submitted_on"):
-    current_date = row[0][:-9] # '2020-02-16T22:57:05'
-    current_date_formated = datetime.datetime.strptime(current_date, date_format) # datetime.datetime(2020, 2, 16, 22, 57, 5)
-    current_dayDate = current_date_formated.strftime("%d-%m-%Y") # '02-16-2020'
-    if current_dayDate not in xy:
-        xy[current_dayDate] = 1 # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
-    else:
-        xy[current_dayDate] += 1 # si elle y est déjà, on augmente sa valeur de 1
+for row in cursor.execute("SELECT DISTINCT(task) from submissions WHERE course = 'LSINF1101-PYTHON' AND submitted_on > '2020-01-01T22:57:05' ORDER BY submitted_on"):
+    print(row[0])
 
 submissions_dates = list(xy.keys())
 submissions_nbr = list(xy.values())
