@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+    <head>
+		<link rel="stylesheet" href="{{ url_for('static', filename='foundation.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<meta charset="utf-8">
+		<title>
+	        {% if title %}
+                [B2] {{ title }}
+            {% else %}
+                [B2] Statistiques Inginious
+		    {% endif %}
+        </title>
+		{% block head %}
+		    
+		{% endblock %}
+    </head>
+	
+    <body>
+	    
+	    <!-- DESKTOP NAVIGATION -->
+		
+		<div class="nav-desktop-font show-for-large">
+            <div class="grid-container nav-desktop-container">
+                <nav class="top-bar nav-desktop">
+                    <div class="top-bar-right">
+                        <h3 class="site-logo"><a href="/" class="site-logo-link"><img src="{{ url_for('static', filename='img/menu-logo.png') }}"></a></h3>
+                    </div>
+                    <div class="top-bar-left">
+                        <ul class="dropdown menu menu-desktop" data-dropdown-menu>
+                            <li>
+                                <a href="/">HOME</a>
+                            </li>
+                            <li>
+                                <a href="#">All Courses</a>
+                                <ul class="menu menu-deroulant">
+                                    <li><a href="graphmoy">Moyenne</a></li>
+                                    <li><a href="moypyt">exercices python</a></li>
+                                    <li><a href="moylepl1402">exercices LEPL1402</a></li>
+                                    <li><a href="moyennelsinf">Exercices LSINF 1252</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="/lsinf1101">LSINF1101</a>
+                            </li>
+                            <li>
+                                <a href="/lepl1402">LEPL1402</a>
+                            </li>
+                            <li>
+                                <a href="/lsinf1252">LSINF1252</a>
+                            </li>
+                            <li>
+                                <a href="/graph0"><font color ="red">COVID-19</font></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="top-bar-right">
+                        <ul class="dropdown menu menu-desktop" data-dropdown-menu>
+                            <li>
+                                <a>OPTIONS</a><!--
+                                <ul class="menu menu-deroulant">
+                                    <li><a href="#">Connexion</a></li>
+                                    <li><a href="#">S'inscrire</a></li>
+                                </ul>-->
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+		
+		
+		<!-- PAGE CONTENT -->
+		
+		{% block body_content %}
+		
+		{% endblock %}
+		
+		
+		<!-- FRAMEWORK SCRIPTS -->
+		
+		<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendor/what-input.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendor/foundation.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+		
+	</body>
+
+</html>
