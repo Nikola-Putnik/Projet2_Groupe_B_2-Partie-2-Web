@@ -50,7 +50,7 @@
 	- <div class="callout post"> sont les "posts" dans lesquels sont actuellement placés nos graphiques.
 	  Ce sont les zones blanches
 	
-	Pour FLASK, vous devriez savoir ce que représente les {{ ... }} ou {% if ... %}...{% endif %}
+	Pour FLASK, vous devriez savoir ce que représente les accolades pour les vairables, conditions, boucles etc
 	
     -->
     <section class="main">
@@ -108,7 +108,7 @@
 						Une varibale size est assignée à chaque graphique et modifiable par des méthodes GET (les liens se trouvent dans les formulaires d'options
 						Le graphique ci-dessous ne s'affiche que si size == 'default'
 						
-						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché => chercher la condition {% if size == 'default' %}
+						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché => chercher la condition f size == 'default'
 						-->
 					    {% if size == 'default' %}
 					    <!-- Graphique en taille normale -->
@@ -192,7 +192,7 @@
 		    <!-- Graphique en taille large -->
 		    <div class="callout post" style="padding-top: 0px;">
 			    <!-- IMPORTANT
-			    Remarquez que l'id = {{ main }}
+			    Remarquez que l'id = main
 				main est une variable modifée par méthode GET qui indique quel est le graphique principal
 				main peut donc valoir 3 valeurs différentes (puisqu'on a 3 graphs en tout)
 				les autres canvas portent l'id d'une des valeurs de main (subm, month ou results)
