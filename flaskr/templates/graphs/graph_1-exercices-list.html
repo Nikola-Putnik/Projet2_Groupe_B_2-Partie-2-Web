@@ -273,7 +273,11 @@
                             <td><p class="mod-table-cat-title">Tâche</p></td>
 						    <td><p class="mod-table-cat-title"># Étudiants Validé</p></td>
 						    <td><p class="mod-table-cat-title"># Étudiants Essayé</p></td>
-						    <td><p class="mod-table-cat-title">Pourcentage réussites</p></td>
+							{% if sort != 'percentage' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=percentage" class="link-a">Pourcentage réussites</a></p></td>
+							{% elif sort == 'percentage' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=percentage_reverse" class="link-a">Pourcentage réussites</a></p></td>
+							{% endif %}
 						</tr>
 						{% for i in range(tasks_name | length) %}
 						<tr>

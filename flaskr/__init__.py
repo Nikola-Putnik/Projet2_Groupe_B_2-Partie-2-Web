@@ -272,12 +272,20 @@ def create_app(test_config=None):
         user_nbr_valid = list(tasks_users_valid.values())
         
         pourcentage = []
+        pourcentage_copy = pourcentage
         
         for i in range(len(user_nbr)):
             pourcentage.append(round((user_nbr_valid[i]/user_nbr[i])*100, 2))
         
         if sort == 'percentage':
-            pourcentage, tasks, user_nbr_valid = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid))))
+            pourcentage, tasks, user_nbr_valid, user_nbr = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid, user_nbr))))
+        
+        elif sort == 'percentage_reverse':
+            pourcentage, tasks, user_nbr_valid, user_nbr = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid, user_nbr))))
+            pourcentage.reverse()
+            tasks.reverse()
+            user_nbr_valid.reverse()
+            user_nbr.reverse()
         
         return ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         
@@ -662,7 +670,10 @@ def create_app(test_config=None):
         # Liste d'exercices
         #######
         
-        lsinf1101_data_exercices = exercices('LSINF1101-PYTHON', 'percentage')
+        sort = "def"
+        if request.args.get('sort') is not None:
+            sort = request.args.get('sort')
+        lsinf1101_data_exercices = exercices('LSINF1101-PYTHON', sort)
         # ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         tasks_name = lsinf1101_data_exercices[0][0]
         tasks_tried = lsinf1101_data_exercices[0][1]
@@ -679,7 +690,7 @@ def create_app(test_config=None):
                                
                                titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
                                
-                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage)
+                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort)
     
     
     @app.route('/lepl1402')
@@ -967,7 +978,10 @@ def create_app(test_config=None):
         # Liste d'exercices
         #######
         
-        lepl1402_data_exercices = exercices('LEPL1402', 'percentage')
+        sort = "def"
+        if request.args.get('sort') is not None:
+            sort = request.args.get('sort')
+        lepl1402_data_exercices = exercices('LEPL1402', sort)
         # ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         tasks_name = lepl1402_data_exercices[0][0]
         tasks_tried = lepl1402_data_exercices[0][1]
@@ -984,7 +998,7 @@ def create_app(test_config=None):
                                
                                titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
                                
-                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage)
+                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort)
     
     
     @app.route('/lsinf1252')
@@ -1272,7 +1286,10 @@ def create_app(test_config=None):
         # Liste d'exercices
         #######
         
-        lsinf1252_data_exercices = exercices('LSINF1252', 'percentage')
+        sort = "def"
+        if request.args.get('sort') is not None:
+            sort = request.args.get('sort')
+        lsinf1252_data_exercices = exercices('LSINF1252', sort)
         # ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         tasks_name = lsinf1252_data_exercices[0][0]
         tasks_tried = lsinf1252_data_exercices[0][1]
@@ -1289,7 +1306,7 @@ def create_app(test_config=None):
                                
                                titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
                                
-                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage)
+                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort)
     
     
     return app
