@@ -77,7 +77,7 @@
 					<!--
                     <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
 					-->
-                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices_liste">Exercices</a>
+                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices_list">Exercices</a>
 					
 					{% if task != "no_task" %}
 				    
@@ -275,7 +275,7 @@
 						    <td><p class="mod-table-cat-title"># Étudiants Essayé</p></td>
 						    <td><p class="mod-table-cat-title">Pourcentage réussites</p></td>
 						</tr>
-						{% for i in range(tasks_name| length) %}
+						{% for i in range(tasks_name | length) %}
 						<tr>
 						    <td>
 					            <a href="?task={{ tasks_name[i] }}" class="link-a">

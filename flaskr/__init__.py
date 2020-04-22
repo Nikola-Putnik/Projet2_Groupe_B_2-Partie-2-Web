@@ -229,7 +229,7 @@ def create_app(test_config=None):
         return (((subm_dates, subm_nbr), (subm_dates_valid, subm_nbr_valid)), ((subm_dates_M, subm_nbr_M), (subm_dates_M_valid, subm_nbr_M_valid)))
     
     
-    def exercices(course):
+    def exercices(course, sort):
         """
         pre  : le nom d'un cours (string)
         post : un tuple contenant:
@@ -275,6 +275,9 @@ def create_app(test_config=None):
         
         for i in range(len(user_nbr)):
             pourcentage.append(round((user_nbr_valid[i]/user_nbr[i])*100, 2))
+        
+        if sort == 'percentage':
+            pourcentage, tasks, user_nbr_valid = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid))))
         
         return ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         
@@ -659,7 +662,7 @@ def create_app(test_config=None):
         # Liste d'exercices
         #######
         
-        lsinf1101_data_exercices = exercices('LSINF1101-PYTHON')
+        lsinf1101_data_exercices = exercices('LSINF1101-PYTHON', 'percentage')
         # ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         tasks_name = lsinf1101_data_exercices[0][0]
         tasks_tried = lsinf1101_data_exercices[0][1]
@@ -964,7 +967,7 @@ def create_app(test_config=None):
         # Liste d'exercices
         #######
         
-        lepl1402_data_exercices = exercices('LEPL1402')
+        lepl1402_data_exercices = exercices('LEPL1402', 'percentage')
         # ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         tasks_name = lepl1402_data_exercices[0][0]
         tasks_tried = lepl1402_data_exercices[0][1]
@@ -1269,7 +1272,7 @@ def create_app(test_config=None):
         # Liste d'exercices
         #######
         
-        lsinf1252_data_exercices = exercices('LSINF1252')
+        lsinf1252_data_exercices = exercices('LSINF1252', 'percentage')
         # ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
         tasks_name = lsinf1252_data_exercices[0][0]
         tasks_tried = lsinf1252_data_exercices[0][1]
