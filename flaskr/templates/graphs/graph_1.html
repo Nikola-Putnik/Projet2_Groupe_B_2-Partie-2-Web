@@ -27,8 +27,10 @@
                     <a class="button large button-grey" {% if main == 'subm' %}style="background-color: black;"{% endif %} href="/{{ cours }}">Soumissions</a>
                     <a class="button large button-grey" {% if main == 'month' %}style="background-color: black;"{% endif %} href="?main=month">Soumissions par Mois</a>
 		            <a class="button large button-grey" {% if main == 'results' %}style="background-color: black;"{% endif %} href="?main=results">Résultats</a>
+					<!--
                     <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
-                    <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list">Liste des Exercices</a>
+					-->
+                    <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list">Exercices</a>
 				    
 					<!-- Titre du graphique -->
 					<h2 class="titre-1"><b>{{ titre_graph }}</b></h2>

@@ -74,8 +74,10 @@
                     <a class="button large button-grey" href="/{{ cours }}">Soumissions</a>
                     <a class="button large button-grey" href="/{{ cours }}?main=month">Soumissions par Mois</a>
 		            <a class="button large button-grey" href="/{{ cours }}?main=results">Résultats</a>
+					<!--
                     <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
-                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices_list">Liste des Exercices</a>
+					-->
+                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices_liste">Exercices</a>
 					
 					{% if task != "no_task" %}
 				    

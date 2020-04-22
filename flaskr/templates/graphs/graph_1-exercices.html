@@ -53,7 +53,9 @@
 	Pour FLASK, vous devriez savoir ce que représente les accolades pour les vairables, conditions, boucles etc
 	
     -->
+	
     <section class="main">
+		
         <div class="grid-container">
             
             <!-- Titre de la page
@@ -72,7 +74,12 @@
                     <a class="button large button-grey" href="/{{ cours }}">Soumissions</a>
                     <a class="button large button-grey" href="/{{ cours }}?main=month">Soumissions par Mois</a>
 		            <a class="button large button-grey" href="/{{ cours }}?main=results">Résultats</a>
-                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices">Exercices</a>
+					<!--
+                    <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
+					-->
+                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices_liste">Exercices</a>
+					
+					{% if task != "no_task" %}
 				    
 					<!-- Titre du graphique
 					
@@ -91,6 +98,7 @@
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle" style="height:70px">
+							    <input type="hidden" name="task" value="{{ task }}" />
 					            {% if size == 'default' %}
 					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
 					        	{% elif size == 'large' %}
@@ -126,6 +134,7 @@
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle" style="height:70px">
+							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="month" />
 					            {% if size == 'default' %}
 					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
@@ -156,6 +165,7 @@
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle" style="height:70px">
+							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="results" />
 					            {% if size == 'default' %}
 					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
@@ -179,10 +189,14 @@
 					
 					{% endif %}
 					
+					{% endif %}
+					
     			</div>
     		</div>
     		
     	</div>
+		
+		{% if task != "no_task" %}
 		
 		<!--
 		la variable size décrite plus haut.
@@ -212,7 +226,7 @@
 				{% if main != 'subm' %}
 				<div class="large-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm }}</b></h3>
-				    <a href="/{{ cours }}">
+				    <a href="?task={{ task }}">
 				        <div class="callout post">
 				            <canvas id="subm"></canvas>
 				        </div>
@@ -225,7 +239,7 @@
 			    {% if main != 'month' %}
 			    <div class="large-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm_M }}</b></h3>
-				    <a href="?main=month">
+				    <a href="?task={{ task }}&main=month">
 				        <div class="callout post">
 				            <canvas id="month"></canvas>
 				        </div>
@@ -238,7 +252,7 @@
 				{% if main != 'results' %}
 				<div class="large-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_results }}</b></h3>
-				    <a href="?main=results">
+				    <a href="?task={{ task }}&main=results">
 				        <div class="callout post">
 				            <canvas id="results"></canvas>
 				        </div>
@@ -248,8 +262,34 @@
 			</div>
 		</div>
 		
+	    {% endif %}
+		
 		<div class="grid-container">
-		    
+		    <div class="grid-x grid-margin-x">
+			    <div class="large-12 cell">
+				    <h2 class="titre-1"><b>Exercices</b></h2>
+					<table>
+					    <tr>
+                            <td><p class="mod-table-cat-title">Tâche</p></td>
+						    <td><p class="mod-table-cat-title"># Étudiants Validé</p></td>
+						    <td><p class="mod-table-cat-title"># Étudiants Essayé</p></td>
+						    <td><p class="mod-table-cat-title">Pourcentage réussites</p></td>
+						</tr>
+						{% for i in range(tasks_name| length) %}
+						<tr>
+						    <td>
+					            <a href="?task={{ tasks_name[i] }}" class="link-a">
+							        {{ tasks_name[i] }}
+					            </a>
+					        </td>
+                            <td>{{ tasks_succeeded[i] }}</td>
+						    <td>{{ tasks_tried[i] }}</td>
+						    <td>{{ percentage[i] }} %</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
 		</div>
 		
 		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -284,7 +324,7 @@
                     ]
                 }, {
                     label: 'Soumissions valides',
-                    backgroundColor: "#3cba9f",
+                    backgroundColor: "rgba(60, 186, 159, 0.5)",
                     borderColor: "#3cba9f",
                     data: [
                         {% for i in range(dataV| length) %}
@@ -303,7 +343,12 @@
 							max: '{{ max }}'
                         }
                     }]
-                }
+                },
+				elements: {
+				    line: {
+                        tension: 0
+                    }
+				}
             }
         });
     </script>
