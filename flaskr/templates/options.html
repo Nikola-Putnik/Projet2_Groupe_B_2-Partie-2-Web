@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block body_content %}
+
+    <section class="main">
+	
+        <div class="grid-container">
+		
+            <h1 class="page-title">Options</h1>
+			
+            <div class="grid-x grid-margin-x">
+                <div class="large-12 cell">
+                    <div class="callout post" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Covid-19</b></h3>
+                        <p class="p-post">
+						    Vous pouvez choisir d'activer ou de désactiver l'onglet Covid-19 du menu.
+						    <br/>
+							{% if covid == "True" %}
+                            <a href="?covid=False" class="link-a">désactiver</a>
+							{% else %}
+							<a href="?covid=True" class="link-a">activer</a>
+							{% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+    </section>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+{% endblock %}

@@ -77,7 +77,7 @@
 					<!--
                     <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
 					-->
-                    <a class="button large button-grey" style="background-color: black;" href="/{{ cours }}/exercices_list">Exercices</a>
+                    <a class="button large button-grey" style="background-color: #044c9c;" href="/{{ cours }}/exercices_list">Exercices</a>
 					
 					{% if task != "no_task" %}
 				    
@@ -95,22 +95,34 @@
 					{% if main == 'subm' %}
 					
 					    <!-- Graphique des soumissions par jour (courbe) -->
+						<p class="p-post">Nombre de soumissions effectuées par temps.</p>
 					    <!-- Formulaire d'options -->
-                        <form method="GET">
-					        <div class="grid-x align-middle" style="height:70px">
+						<form method="GET">
+					        <div class="grid-x align-middle">
 							    <input type="hidden" name="task" value="{{ task }}" />
-					            {% if size == 'default' %}
-					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
-					        	{% elif size == 'large' %}
-					        	<div class="cell small-7 medium-4 large-1"><button type="submit" value="default" class="button button-darkred" name="size" id="default">Diminuer</button></div>
-					        	{% endif %}
-                                <div><p class="form-label">From :</p></div>
-                                <div class="cell small-7 medium-4 large-3"><input class="form-input" type="text" value="{{ form_min }}" name="min" /></div>
-                                <div><p class="form-label">To :</p></div>
-                                <div class="cell small-7 medium-4 large-3"><input class="form-input" type="text" value="{{ form_max }}" name="max" /></div>
-					        	<div class="cell small-1 medium-1 large-1" align="center"><input type="submit" value="Valider" class="button button-darkred" /></div>
+								<div class="cell small-12 medium-11 large-11">
+								    <div class="grid-x align-middle">
+									    {% if size == 'default' %}
+					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
+					        	        {% elif size == 'large' %}
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        {% endif %}
+                                        <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
+                                        <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
+                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_min }}" name="min" /></div>
+                                        <div class="cell large-1 show-for-large"><p class="form-label">Fin :</p></div>
+                                        <div class="cell medium-1 show-for-medium-only"><p class="form-label">À</p></div>
+                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_max }}" name="max" /></div>
+					        	        <div class="cell medium-1 large-2 show-for-medium" align="left" style="margin-left: 10px;"><input type="submit" value="Valider" class="button button-a" /></div>
+									</div>
+								</div>
+								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
 				            </div>
                         </form>
+						
+						<!-- le callout d'aide -->
+						{% include 'help.html' %}
 					
 					    <!-- size
 						Une varibale size est assignée à chaque graphique et modifiable par des méthodes GET (les liens se trouvent dans les formulaires d'options
@@ -131,23 +143,35 @@
 					{% elif main == 'month' %}
 					
 					    <!-- Graphique des soumissions par mois (bar) -->
+						<p class="p-post">Nombre de soumissions effectuées par mois.</p>
 					    <!-- Formulaire d'options -->
-                        <form method="GET">
-					        <div class="grid-x align-middle" style="height:70px">
+						<form method="GET">
+					        <div class="grid-x align-middle">
 							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="month" />
-					            {% if size == 'default' %}
-					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
-					        	{% elif size == 'large' %}
-					        	<div class="cell small-7 medium-4 large-1"><button type="submit" value="default" class="button button-darkred" name="size" id="default">Diminuer</button></div>
-					        	{% endif %}
-                                <div><p class="form-label">From :</p></div>
-                                <div class="cell small-7 medium-4 large-3"><input class="form-input" type="text" value="{{ form_min_M }}" name="min_M" /></div>
-                                <div><p class="form-label">To :</p></div>
-                                <div class="cell small-7 medium-4 large-3"><input class="form-input" type="text" value="{{ form_max_M }}" name="max_M" /></div>
-					        	<div class="cell small-1 medium-1 large-1" align="center"><input type="submit" value="Valider" class="button button-darkred" /></div>
+								<div class="cell small-12 medium-11 large-11">
+								    <div class="grid-x align-middle">
+									    {% if size == 'default' %}
+					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
+					        	        {% elif size == 'large' %}
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        {% endif %}
+                                        <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
+                                        <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
+                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_min_M }}" name="min_M" /></div>
+                                        <div class="cell large-1 show-for-large"><p class="form-label">Fin :</p></div>
+                                        <div class="cell medium-1 show-for-medium-only"><p class="form-label">À</p></div>
+                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_max_M }}" name="max_M" /></div>
+					        	        <div class="cell medium-1 large-2 show-for-medium" align="left" style="margin-left: 10px;"><input type="submit" value="Valider" class="button button-a" /></div>
+									</div>
+								</div>
+								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
 				            </div>
                         </form>
+						
+						<!-- le callout d'aide -->
+						{% include 'help.html' %}
 					
 					    {% if size == 'default' %}
 					    <!-- Graphique en taille normale -->
@@ -161,29 +185,121 @@
 					-->
 					{% elif main == 'results' %}
 					
-					    <!-- Graphique des résultats (pie chart) -->
+					    <!-- Graphique des résultats -->
+						<p class="p-post">Résultats de l'ensemble des soumissions de l'exercice.</p>
 					    <!-- Formulaire d'options -->
                         <form method="GET">
-					        <div class="grid-x align-middle" style="height:70px">
+					        <div class="grid-x align-middle">
 							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="results" />
-					            {% if size == 'default' %}
-					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="large" class="button button-darkred" name="size" id="large">Agrandir</button></div>
-					        	{% elif size == 'large' %}
-					        	<div class="cell small-7 medium-4 large-1"><button type="submit" value="default" class="button button-darkred" name="size" id="default">Diminuer</button></div>
-					        	{% endif %}
-								{% if datatype == 'nombre' %}
-					            <div class="cell small-1 medium-1 large-1"><button type="submit" value="pourcentage" class="button button-darkred" name="datatype" id="pourcentage" />Pourcentage</button></div>
-					        	{% elif datatype == 'pourcentage' %}
-					        	<div class="cell small-7 medium-4 large-1"><button type="submit" value="nombre" class="button button-darkred" name="datatype" id="nombre" />Nombre</button></div>
-					        	{% endif %}
+							    <div class="cell small-10 medium-11 large-11">
+								    <div class="grid-x align-middle">
+					                    {% if size == 'default' %}
+					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
+					        	        {% elif size == 'large' %}
+					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        {% endif %}
+								        {% if datatype == 'nombre' %}
+					                    <div style="margin-left:10px"><button type="submit" value="pourcentage" class="button button-a" name="datatype" id="pourcentage" />Pourcentage</button></div>
+					        	        {% elif datatype == 'pourcentage' %}
+					        	        <div style="margin-left:10px"><button type="submit" value="nombre" class="button button-a" name="datatype" id="nombre" />Nombre</button></div>
+					        	        {% endif %}
+								    </div>
+								</div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
 				            </div>
                         </form>
+						
+						<!-- le callout d'aide -->
+						{% include 'help.html' %}
 					    
 					    {% if size == 'default' %}
 						<!-- Graphique en taille normale -->
 					    <div class="callout post" style="padding-top: 0px;">
                             <canvas id="results"></canvas>
+    			        </div>
+					    {% endif %}
+					
+					<!-- 
+					Si main == 'successes', c'est le graphique des réussites qui est affiché
+					-->
+					{% elif main == 'successes' %}
+					
+					    <!-- Graphique des réussites -->
+						<p class="p-post">{% if datatypeS == 'pourcentage' %}Pourcentage{% else %}Nombre{% endif %} d'étudiants ayant réussi l'exercice.</p>
+					    <!-- Formulaire d'options -->
+                        <form method="GET">
+					        <div class="grid-x align-middle">
+							    <input type="hidden" name="task" value="{{ task }}" />
+						    	<input type="hidden" name="main" value="successes" />
+							    <div class="cell small-10 medium-11 large-11">
+								    <div class="grid-x align-middle">
+					                    {% if size == 'default' %}
+					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
+					        	        {% elif size == 'large' %}
+					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        {% endif %}
+								        {% if datatype == 'nombre' %}
+					                    <div style="margin-left:10px"><button type="submit" value="pourcentage" class="button button-a" name="datatype" id="pourcentage" />Pourcentage</button></div>
+					        	        {% elif datatype == 'pourcentage' %}
+					        	        <div style="margin-left:10px"><button type="submit" value="nombre" class="button button-a" name="datatype" id="nombre" />Nombre</button></div>
+					        	        {% endif %}
+								    </div>
+								</div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+				            </div>
+                        </form>
+						
+						<!-- le callout d'aide -->
+						{% include 'help.html' %}
+					    
+					    {% if size == 'default' %}
+						<!-- Graphique en taille normale -->
+					    <div class="callout post" style="padding-top: 0px;">
+                            <canvas id="successes"></canvas>
+    			        </div>
+					    {% endif %}
+					
+					<!-- 
+					Si main == 'successesByTime', c'est le graphique des réussites par temps qui est affiché
+					-->
+					{% elif main == 'successesByTime' %}
+					
+					    <!-- Graphique des réussites -->
+						<p class="p-post">Nombre d'étudiants cumulé ayant réussi l'exercice au cours du temps.</p>
+					    <!-- Formulaire d'options -->
+						<form method="GET">
+					        <div class="grid-x align-middle">
+							    <input type="hidden" name="task" value="{{ task }}" />
+						    	<input type="hidden" name="main" value="successesByTime" />
+								<div class="cell small-12 medium-11 large-11">
+								    <div class="grid-x align-middle">
+									    {% if size == 'default' %}
+					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
+					        	        {% elif size == 'large' %}
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        {% endif %}
+                                        <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
+                                        <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
+                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_min_S }}" name="min_S" /></div>
+                                        <div class="cell large-1 show-for-large"><p class="form-label">Fin :</p></div>
+                                        <div class="cell medium-1 show-for-medium-only"><p class="form-label">À</p></div>
+                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_max_S }}" name="max_S" /></div>
+					        	        <div class="cell medium-1 large-2 show-for-medium" align="left" style="margin-left: 10px;"><input type="submit" value="Valider" class="button button-a" /></div>
+									</div>
+								</div>
+								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+				            </div>
+                        </form>
+						
+						<!-- le callout d'aide -->
+						{% include 'help.html' %}
+					    
+					    {% if size == 'default' %}
+						<!-- Graphique en taille normale -->
+					    <div class="callout post" style="padding-top: 0px;">
+                            <canvas id="successesByTime"></canvas>
     			        </div>
 					    {% endif %}
 					
@@ -224,7 +340,7 @@
 				Autrement dit, on affiche le graphique parmis les petits graphiques s'il n'est pas déjà le graphique principal (le main)
 				-->
 				{% if main != 'subm' %}
-				<div class="large-6 cell">
+				<div class="medium-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm }}</b></h3>
 				    <a href="?task={{ task }}">
 				        <div class="callout post">
@@ -237,7 +353,7 @@
 				idem pour le graph month (Soumissions par mois)
 				-->
 			    {% if main != 'month' %}
-			    <div class="large-6 cell">
+			    <div class="medium-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm_M }}</b></h3>
 				    <a href="?task={{ task }}&main=month">
 				        <div class="callout post">
@@ -250,11 +366,37 @@
 				idem pour le graph results (Résultats)
 				-->
 				{% if main != 'results' %}
-				<div class="large-6 cell">
+				<div class="medium-6 cell">
 				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_results }}</b></h3>
 				    <a href="?task={{ task }}&main=results">
 				        <div class="callout post">
 				            <canvas id="results"></canvas>
+				        </div>
+					</a>
+				</div>
+				{% endif %}
+				<!--
+				idem pour le graph successes (Réussites)
+				-->
+				{% if main != 'successes' %}
+				<div class="medium-6 cell">
+				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_successes }}</b></h3>
+				    <a href="?task={{ task }}&main=successes">
+				        <div class="callout post">
+				            <canvas id="successes"></canvas>
+				        </div>
+					</a>
+				</div>
+				{% endif %}
+				<!--
+				idem pour le graph successesByTime (Réussites par temps)
+				-->
+				{% if main != 'successesByTime' %}
+				<div class="medium-6 cell">
+				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_successesByTime }}</b></h3>
+				    <a href="?task={{ task }}&main=successesByTime">
+				        <div class="callout post">
+				            <canvas id="successesByTime"></canvas>
 				        </div>
 					</a>
 				</div>
@@ -268,16 +410,50 @@
 		    <div class="grid-x grid-margin-x">
 			    <div class="large-12 cell">
 				    <h2 class="titre-1"><b>Exercices</b></h2>
+					
+					<form method="GET">
+					    <div class="grid-x align-middle">
+							<input type="hidden" name="sort" value="{{ sort }}" />
+					        <div class="cell small-10 medium-11 large-11">
+					            <div class="grid-x align-middle">
+                                    <div class="cell small-6 medium-4 large-4"><input class="form-input" type="text" value="{{ search }}" name="search" /></div>
+					    	        <div class="cell small-3 medium-2 large-2" align="left" style="margin-left: 10px;"><input type="submit" value="Rechercher" class="button button-a" /></div>
+					            </div>
+					        </div>
+					    	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help-list">Help!</button></div>
+				        </div>
+                    </form>
+                    
+				    <!-- le callout d'aide -->
+				    {% include 'help-exercises-list.html' %}
+					
 					<table>
 					    <tr>
-                            <td><p class="mod-table-cat-title">Tâche</p></td>
-						    <td><p class="mod-table-cat-title"># Étudiants Validé</p></td>
-						    <td><p class="mod-table-cat-title"># Étudiants Essayé</p></td>
-							{% if sort != 'percentage' %}
-						    <td><p class="mod-table-cat-title"><a href="?sort=percentage" class="link-a">Pourcentage réussites</a></p></td>
-							{% elif sort == 'percentage' %}
-						    <td><p class="mod-table-cat-title"><a href="?sort=percentage_reverse" class="link-a">Pourcentage réussites</a></p></td>
+						    
+							{% if sort != 'name' and sort != 'def' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=name&search={{ search }}" class="link-a">Tâche</a></p></td>
+							{% elif sort == 'name' or sort == 'def' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=name_reverse&search={{ search }}" class="link-a">Tâche</a></p></td>
 							{% endif %}
+							
+							{% if sort != 'successes' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=successes&search={{ search }}" class="link-a"># Étudiants Validé</a></p></td>
+							{% elif sort == 'successes' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=successes_reverse&search={{ search }}" class="link-a"># Étudiants Validé</a></p></td>
+							{% endif %}
+							
+							{% if sort != 'tried' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=tried&search={{ search }}" class="link-a"># Étudiants Essayé</a></p></td>
+							{% elif sort == 'tried' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=tried_reverse&search={{ search }}" class="link-a"># Étudiants Essayé</a></p></td>
+							{% endif %}
+							
+							{% if sort != 'percentage' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=percentage&search={{ search }}" class="link-a">Pourcentage réussites</a></p></td>
+							{% elif sort == 'percentage' %}
+						    <td><p class="mod-table-cat-title"><a href="?sort=percentage_reverse&search={{ search }}" class="link-a">Pourcentage réussites</a></p></td>
+							{% endif %}
+							
 						</tr>
 						{% for i in range(tasks_name | length) %}
 						<tr>
@@ -368,8 +544,8 @@
             type: '{{type_subm_M}}',  // le type du graphique
             data: {  // les données
                 
-			    {% if labels %}
-                    labels: {{ labels | safe }},
+			    {% if labels_M %}
+                    labels: {{ labels_M | safe }},
 		        {% endif %}
 			    		        
                 datasets: [{
@@ -426,6 +602,75 @@
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     data: {{ data_results[1:] | safe }}
                 }]
+            }
+        });
+    </script>
+	
+	<!-- SCRIPT DU 4eme GRAPHIQUE -->
+	<script>
+	    // Graphique des réussites (doughnut chart)
+	
+	    // l'identifiant est celui du canevas
+        var ctx = document.getElementById('successes').getContext('2d');
+        // création du graphique
+        var myChart = new Chart(ctx, {
+            type: '{{type_successes}}',  // le type du graphique
+            data: {  // les données
+                labels: {{ labels_successes[1:] | safe }},
+                datasets: [{
+                    label: 'Résulats',
+                    backgroundColor: ["#3cba9f","#3e95cd", "#8e5ea2","#e8c3b9","#c45850", "grey"],
+                    fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
+                    data: {{ data_successes[1:] | safe }}
+                }]
+            }
+        });
+    </script>
+
+    <!-- SCRIPT DU 5e GRAPHIQUE -->
+	<script>
+		// Graphique des réussites par jour (line/courbe)
+		
+        // l'identifiant est celui du canevas
+        var ctx = document.getElementById('successesByTime').getContext('2d');
+        // création du graphique
+        var myChart = new Chart(ctx, {
+            type: '{{type_successesByTime}}',  // le type du graphique
+            data: {  // les données
+                
+			    {% if labels_S %}
+                    labels: {{ labels_S | safe }},
+		        {% endif %}
+			    		        
+                datasets: [{
+                    label: 'Réussites',
+                    backgroundColor: "#3cba9f",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
+                    borderColor: "#3cba9f",
+                    fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
+                    //data: {{ data | safe }} ---> TO BE DELETED
+                    data: [
+                        {% for i in range(data_S| length) %}  // correspond à: for i in range(len(data))
+                            { x: "{{ dates_S[i] | safe }}", y: {{ data_S[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
+                        {% endfor %}
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: '{{ unit_S }}',
+							min: '{{ min_S }}',
+							max: '{{ max_S }}'
+                        }
+                    }]
+                },
+				elements: {
+				    line: {
+                        tension: 0
+                    }
+				}
             }
         });
     </script>

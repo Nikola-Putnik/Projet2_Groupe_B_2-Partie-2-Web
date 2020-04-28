@@ -38,11 +38,19 @@ body{
 
 
 
+/* menu-options */
+
+.menu-option{
+	color: red;
+}
+
+
+
 /* forms */
 
 .form-label{
     text-align: right;
-    padding:  0px 10px 0px 10px;  /* top right bottom left */
+    padding:  0px 10px 0px 0px;  /* top right bottom left */
 }
 
 .form-input{
@@ -75,6 +83,7 @@ body{
     color: black;
 }
 
+
 .button-grey{
     background-color: #424242;
     color: white;
@@ -95,25 +104,50 @@ body{
     color: white;
 }
 
-.button-darkred{
+
+
+.button-help{
+    background-color: #8c8c8c;
+    color: white;
+}
+
+.button-help:visited {
+    background-color: #8c8c8c;
+    color: white;
+}
+
+.button-help:focus {
+    background-color: #8c8c8c;
+    color: white;
+}
+
+.button-help:hover{
+    background-color: #6f6f6f;
+    color: white;
+}
+
+
+
+.button-a{
     background-color: darkred;
     color: white;
 }
 
-.button-darkred:visited {
+.button-a:visited {
     background-color: darkred;
     color: white;
 }
 
-.button-darkred:focus {
+.button-a:focus {
     background-color: darkred;
     color: white;
 }
 
-.button-darkred:hover{
+.button-a:hover{
     background-color: #610B0B;
     color: white;
 }
+
 
 #multiple-buttons{
     padding: 0px 0px 0px 0px;  /* top right bottom left */
@@ -152,22 +186,6 @@ body{
 
 
 /* modération */
-
-span.reddot{
-	height: 18px;
-    width: 18px;
-    background-color: #DF0101;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-span.greendot{
-	height: 18px;
-    width: 18px;
-    background-color: #00FF00;
-    border-radius: 50%;
-    display: inline-block;
-}
 
 .mod-table-title{
     padding: 15px 0px 5px 10px;  /* top right bottom left */
@@ -506,89 +524,4 @@ HERO
 .hero{
     background-color: #A4A4A4;
     padding: 50px 0px 50px 0px;  /* top right bottom left */
-}
-
-
-
-
-
-
-
-
-
-/**************************************
-INTÉGRATIONS
-**************************************/
-
-/* LIKE BUTTON - url: https://foundation.zurb.com/building-blocks/blocks/button-like.html */
-
-.button-like {
-  border: 2px solid #8a8a8a;
-  background-color: transparent;
-  text-decoration: none;
-  padding: 1rem;
-  position: relative;
-  vertical-align: middle;
-  text-align: center;
-  display: inline-block;
-  border-radius: 3rem;
-  color: #8a8a8a;
-  transition: all ease 0.4s;
-}
-
-.button-like span {
-  margin-left: 0.5rem;
-}
-
-.button-like .fa,
-.button-like span {
-  transition: all ease 0.4s;
-}
-
-.button-like:focus {
-  background-color: transparent;
-}
-
-.button-like:focus .fa,
-.button-like:focus span {
-  color: #8a8a8a;
-}
-
-.button-like:hover {
-  border-color: #cc4b37;
-  background-color: transparent;
-}
-
-.button-like:hover .fa,
-.button-like:hover span {
-  color: #cc4b37;
-}
-
-.liked {
-  background-color: #cc4b37;
-  border-color: #cc4b37;
-}
-
-.liked .fa,
-.liked span {
-  color: #fefefe;
-}
-
-.liked:focus {
-  background-color: #cc4b37;
-}
-
-.liked:focus .fa,
-.liked:focus span {
-  color: #fefefe;
-}
-
-.liked:hover {
-  background-color: #cc4b37;
-  border-color: #cc4b37;
-}
-
-.liked:hover .fa,
-.liked:hover span {
-  color: #fefefe;
 }

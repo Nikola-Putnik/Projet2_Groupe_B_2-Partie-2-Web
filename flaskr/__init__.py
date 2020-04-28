@@ -28,6 +28,25 @@ def create_app(test_config=None):
     global lsinf1252_data_results
     lsinf1252_data_results = ()
     
+    
+    
+    global lsinf1101_exo_subm
+    lsinf1101_exo_subm = ()
+    
+    global lepl1402_exo_subm
+    lepl1402_exo_subm = ()
+    
+    global lsinf1252_exo_subm
+    lsinf1252_exo_subm = ()
+    
+    
+    
+    # variables globales utilisées pour les options de l'utilisateur.
+    
+    # covid = True -> onglet covid affiché dans le menu
+    global covid
+    covid = True
+    
 
     # a simple page that says hello
     @app.route('/hello')
@@ -38,7 +57,18 @@ def create_app(test_config=None):
     @app.route('/')
     def index():
         
-        return render_template('index.html')
+        return render_template('index.html', covid = covid)
+    
+    # page d'options
+    @app.route('/options')
+    def options():
+        
+        global covid
+        
+        if request.args.get('covid') is not None:
+            covid = request.args.get('covid')
+        
+        return render_template('options.html', covid = covid)
 
     #premier graphique sur le covid19
     @app.route('/graph0')
@@ -58,7 +88,9 @@ def create_app(test_config=None):
         
         graphique = 'bar'
         
-        return render_template('graphs/graph.html', type = graphique, labels = str(liste_pays), data = str(liste_cas_last_day))
+        return render_template('graphs/graph.html', type = graphique, labels = str(liste_pays), data = str(liste_cas_last_day),
+        
+                               covid = covid)
     
     
     @app.route('/moypyt')
@@ -272,16 +304,20 @@ def create_app(test_config=None):
         user_nbr_valid = list(tasks_users_valid.values())
         
         pourcentage = []
-        pourcentage_copy = pourcentage
         
         for i in range(len(user_nbr)):
             pourcentage.append(round((user_nbr_valid[i]/user_nbr[i])*100, 2))
         
-        if sort == 'percentage':
+        if 'percentage' in sort:
             pourcentage, tasks, user_nbr_valid, user_nbr = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid, user_nbr))))
         
-        elif sort == 'percentage_reverse':
-            pourcentage, tasks, user_nbr_valid, user_nbr = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid, user_nbr))))
+        elif 'tried' in sort:
+            user_nbr, pourcentage, tasks, user_nbr_valid = (list(t) for t in zip(*sorted(zip(user_nbr, pourcentage, tasks, user_nbr_valid))))
+        
+        elif 'successes' in sort:
+            user_nbr_valid, user_nbr, pourcentage, tasks = (list(t) for t in zip(*sorted(zip(user_nbr_valid, user_nbr, pourcentage, tasks))))
+        
+        if 'reverse' in sort:
             pourcentage.reverse()
             tasks.reverse()
             user_nbr_valid.reverse()
@@ -301,7 +337,7 @@ def create_app(test_config=None):
         # Accès à la base de données
         conn = sqlite3.connect('data-inginious/inginious.sqlite')
         
-         # Le curseur permettra l'envoi des commandes SQL
+        # Le curseur permettra l'envoi des commandes SQL
         cursor = conn.cursor()
         
         if exercise == None:
@@ -332,7 +368,7 @@ def create_app(test_config=None):
                 error = row[0]
         
         else:
-            for row in cursor.execute("SELECT count(*) from submissions WHERE course = '{}' ".format(course)):
+            for row in cursor.execute("SELECT count(*) from submissions WHERE course = '{}' AND task = '{}' ".format(course, exercise)):
                 subm = row[0]
             
             for row in cursor.execute("SELECT count(*) from submissions WHERE course = '{}' AND task = '{}' AND result = 'success' ".format(course, exercise)):
@@ -380,9 +416,143 @@ def create_app(test_config=None):
             if data_results[0] == 0:
                 pourcentage.append(0)
             else:
-                pourcentage.append((i/data_results[0])*100)
+                pourcentage.append(round((i/data_results[0])*100, 2))
         
         return (labels_results, data_results, pourcentage)
+        
+    
+    def successes(course, exercise):
+        """
+        pre  : le nom d'un cours (string)
+        post : un tuple dont le 1er élément est la liste des resultats possible des soumissions (liste de strings)
+                             le 2em élément est la liste des nombres de soumissions correspondant à ces résultats (liste d'entiers)
+                             le 3em élément est la liste des pourcentages par rapport au total des soumissions correspondant à ces résultats (liste de reels)
+        """
+        
+        # Accès à la base de données
+        conn = sqlite3.connect('data-inginious/inginious.sqlite')
+        
+        # Le curseur permettra l'envoi des commandes SQL
+        cursor = conn.cursor()
+        
+        if exercise == None: # seul le ELSE est testé pour le moment.
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' ".format(course)):
+                total = row[0]
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' AND result = 'success' ".format(course)):
+                succeeded = row[0]
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' AND result = 'failed' ".format(course)):
+                failed = row[0]
+        
+        else:
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' AND task = '{}' ".format(course, exercise)):
+                total = row[0]
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' AND task = '{}' AND succeeded = 'true' ".format(course, exercise)):
+                succeeded = row[0]
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' AND task = '{}' AND succeeded = 'false' ".format(course, exercise)):
+                failed = row[0]
+        
+        # Toujours fermer la connexion quand elle n'est plus utile
+        conn.close()
+        
+        # on garde cette partie dans cet ordre
+        labels_results = ['total', 'succeeded', 'failed']
+        data_results = [total, succeeded, failed]
+        
+        pourcentage = []
+        for i in data_results:
+            if data_results[0] == 0:
+                pourcentage.append(0)
+            else:
+                pourcentage.append(round((i/data_results[0])*100, 2))
+        
+        return (labels_results, data_results, pourcentage)
+    
+    
+    def successesByTime(course, exercise):
+        """
+        pre  : le nom d'un cours (string)
+        post : un tuple dont le 1er élément est la liste des resultats possible des soumissions (liste de strings)
+                             le 2em élément est la liste des nombres de soumissions correspondant à ces résultats (liste d'entiers)
+                             le 3em élément est la liste des pourcentages par rapport au total des soumissions correspondant à ces résultats (liste de reels)
+        """
+        
+        # Accès à la base de données
+        conn = sqlite3.connect('data-inginious/inginious.sqlite')
+        
+        # Le curseur permettra l'envoi des commandes SQL
+        cursor = conn.cursor()
+        
+        if exercise == None: # seul le ELSE est testé pour le moment.
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' ".format(course)):
+                total = row[0]
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' AND result = 'success' ".format(course)):
+                succeeded = row[0]
+            
+            for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' AND result = 'failed' ".format(course)):
+                failed = row[0]
+        
+        else:
+            xy = {}
+            users = []
+            total = 0
+            
+            for row in cursor.execute("SELECT submitted_on, username from submissions WHERE course = '{}' AND task = '{}' AND result = 'success' ORDER BY submitted_on".format(course, exercise)):
+                current_user = row[1]
+                if current_user not in users:
+                    total += 1
+                    users.append(current_user)
+                    current_date = row[0][:-18] # '2020-02-16'
+                    xy[current_date] = total  # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
+            
+            successes_dates = list(xy.keys())
+            successes_nbr_cumulative = list(xy.values())
+        
+        # Toujours fermer la connexion quand elle n'est plus utile
+        conn.close()
+        
+        return (successes_dates, successes_nbr_cumulative)
+    
+    
+    def exercise_submissions(course):
+        ### la fonctiion qui calcule les top et les pires exos
+        liste_exo=[]
+        listemoyenne=[]
+        listetopexo=[]
+        listetopmoy=[]
+        listeworstexo=[]
+        listeworstmoy=[]
+        
+        conn = sqlite3.connect('data-inginious/inginious.sqlite')
+        cursor = conn.cursor()
+        
+        for row in cursor.execute("SELECT DISTINCT(task) FROM submissions WHERE course ='{}'".format(course)):
+            liste_exo.append(row[0])
+        for i in liste_exo:
+            for row in cursor.execute("SELECT avg(grade) FROM submissions WHERE task='{}'".format(i)):
+                listemoyenne.append((round(row[0],2),i))
+        
+        conn.close()
+        
+        listemoyenne = sorted(listemoyenne)
+        listetop=(listemoyenne[-11:-1])
+        listeworst=(listemoyenne[0:10])
+        for x,y in listetop:
+            listetopexo.append(x)
+            listetopmoy.append(y)
+        for x,y in listeworst:
+            listeworstexo.append(x)
+            listeworstmoy.append(y)
+        listedatas = listeworstexo+listetopexo
+        listelabel = listeworstmoy+listetopmoy
+        
+        return (listelabel, listedatas)
     
     
     @app.route('/lsinf1101')
@@ -500,6 +670,24 @@ def create_app(test_config=None):
                 data_results = pourcentage
         
         #######
+        # graph des pourcentage de soumissions valides par exercices
+        #######
+        
+        titre_exo_subm = 'Soumissions Exercices'
+        type_exo_subm = 'bar'
+        exo_subm_data = []
+        exo_subm_labels = []
+        
+        if request.args.get('main') is not None:
+            main = request.args.get('main')
+            if main == 'exercices_subm':
+                global lsinf1101_exo_subm
+                if len(lsinf1101_exo_subm) == 0:
+                    lsinf1101_exo_subm = exercise_submissions('LSINF1101-PYTHON')
+                exo_subm_data = lsinf1101_exo_subm[1]
+                exo_subm_labels = lsinf1101_exo_subm[0]
+        
+        #######
         # GET main
         #######
         
@@ -515,6 +703,8 @@ def create_app(test_config=None):
             titre_graph = titre_subm_M
         elif main == 'results':  # graph des résultats (pie chart)
             titre_graph = titre_results
+        elif main == 'exercices_subm':  # graph des pourcentage de soumissions valides par exercices
+            titre_graph = titre_exo_subm
         
         return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
@@ -524,7 +714,11 @@ def create_app(test_config=None):
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
                                
-                               titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype)
+                               titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
+                               
+                               titre_exo_subm = titre_exo_subm, type_exo_subm = type_exo_subm, exo_subm_data = exo_subm_data, exo_subm_labels = exo_subm_labels,
+                               
+                               covid = covid)
     
     
     @app.route('/lsinf1101/exercices_list')
@@ -631,7 +825,7 @@ def create_app(test_config=None):
         unit_M = 'month'
         
         #######
-        # graph des résultats (pie chart)
+        # graph des résultats
         #######
         
         lsinf1101_data_results = results('LSINF1101-PYTHON', task)
@@ -650,6 +844,68 @@ def create_app(test_config=None):
                 data_results = pourcentage
         
         #######
+        # graph des réussites
+        #######
+        
+        lsinf1101_data_successes = successes('LSINF1101-PYTHON', task)
+            
+        labels_successes = lsinf1101_data_successes[0]
+        data_successes = lsinf1101_data_successes[1]
+        pourcentage_successes = lsinf1101_data_successes[2]
+        
+        titre_successes = 'Réussites'
+        type_successes = 'doughnut'
+        datatypeS = 'nombre'
+        
+        if request.args.get('datatype') is not None:
+            datatypeS = request.args.get('datatype')
+            if datatypeS == 'pourcentage':
+                data_successes = pourcentage_successes
+        
+        #######
+        # graph des réussites cumulées
+        #######
+        
+        lsinf1101_data_successesByTime = successesByTime('LSINF1101-PYTHON', task)
+        
+        # dates et nombres de réussites (cumulées)
+        successes_dates = lsinf1101_data_successesByTime[0]
+        successes_nbr_cumulative = lsinf1101_data_successesByTime[1]
+        
+        # graphique par defaut (courbe soumissions par jour)
+        titre_successesByTime = 'Réussites Cumulées'
+        type_successesByTime = 'line'  # le type de graphique
+        
+        if len(successes_dates) > 0:
+            min_S = successes_dates[0]
+            max_S = successes_dates[-1]
+        else:  # des valeurs bidon
+            min_S = '2018-01-01'
+            max_S = '2020-06-01'
+            
+        if request.args.get('min_S') is not None:
+            min_S = request.args.get('min_S')
+        if request.args.get('max_S') is not None:
+            max_S = request.args.get('max_S')
+        
+        # les dates affichées dans les formulaires
+        form_min_S = min_S
+        form_max_S = max_S
+        
+        # réglage de l'unité du graphique
+        minD_S = datetime.datetime.strptime(min_S, "%Y-%m-%d")
+        maxD_S = datetime.datetime.strptime(max_S, "%Y-%m-%d")
+        difference_S = maxD_S - minD_S
+        if difference_S < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit_S = 'day'
+        elif difference_S < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit_S = 'week'
+        elif difference_S < datetime.timedelta(days=720):
+            unit_S = 'month'
+        else:
+            unit_S = 'year'
+        
+        #######
         # GET main
         #######
         
@@ -665,6 +921,10 @@ def create_app(test_config=None):
             titre_graph = titre_subm_M
         elif main == 'results':  # graph des résultats (pie chart)
             titre_graph = titre_results
+        elif main == 'successes':  # graph des résultats (pie chart)
+            titre_graph = titre_successes
+        elif main == 'successesByTime':  # graph des résultats (pie chart)
+            titre_graph = titre_successesByTime
         
         #######
         # Liste d'exercices
@@ -680,6 +940,24 @@ def create_app(test_config=None):
         tasks_succeeded = lsinf1101_data_exercices[1][1]
         percentage = lsinf1101_data_exercices[2]
         
+        search = ""
+        if request.args.get('search') is not None:
+            search = request.args.get('search')
+            tasks_name_search = []
+            tasks_tried_search = []
+            tasks_succeeded_search = []
+            percentage_search = []
+            for i in range(len(tasks_name)):
+                if search.lower() in tasks_name[i].lower():
+                    tasks_name_search.append(tasks_name[i])
+                    tasks_tried_search.append(tasks_tried[i])
+                    tasks_succeeded_search.append(tasks_succeeded[i])
+                    percentage_search.append(percentage[i])
+            tasks_name = tasks_name_search
+            tasks_tried = tasks_tried_search
+            tasks_succeeded = tasks_succeeded_search
+            percentage = percentage_search
+        
         return render_template('graphs/graph_1-exercices-list.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
@@ -690,7 +968,14 @@ def create_app(test_config=None):
                                
                                titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
                                
-                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort)
+                               titre_successes = titre_successes, data_successes = data_successes, labels_successes = labels_successes, type_successes = type_successes, datatypeS = datatypeS,
+                               
+                               titre_successesByTime = titre_successesByTime, type_successesByTime = type_successesByTime, dates_S = successes_dates, data_S = successes_nbr_cumulative,
+                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, unit_S = unit_S,
+                               
+                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort, search = search,
+                               
+                               covid = covid)
     
     
     @app.route('/lepl1402')
@@ -808,6 +1093,24 @@ def create_app(test_config=None):
                 data_results = pourcentage
         
         #######
+        # graph des pourcentage de soumissions valides par exercices
+        #######
+        
+        titre_exo_subm = 'Soumissions Exercices'
+        type_exo_subm = 'bar'
+        exo_subm_data = []
+        exo_subm_labels = []
+        
+        if request.args.get('main') is not None:
+            main = request.args.get('main')
+            if main == 'exercices_subm':
+                global lepl1402_exo_subm
+                if len(lepl1402_exo_subm) == 0:
+                    lepl1402_exo_subm = exercise_submissions('LEPL1402')
+                exo_subm_data = lepl1402_exo_subm[1]
+                exo_subm_labels = lepl1402_exo_subm[0]
+        
+        #######
         # GET main
         #######
         
@@ -823,6 +1126,8 @@ def create_app(test_config=None):
             titre_graph = titre_subm_M
         elif main == 'results':  # graph des résultats (pie chart)
             titre_graph = titre_results
+        elif main == 'exercices_subm':  # graph des pourcentage de soumissions valides par exercices
+            titre_graph = titre_exo_subm
         
         return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
@@ -832,7 +1137,11 @@ def create_app(test_config=None):
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
                                
-                               titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype)
+                               titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
+                               
+                               titre_exo_subm = titre_exo_subm, type_exo_subm = type_exo_subm, exo_subm_data = exo_subm_data, exo_subm_labels = exo_subm_labels,
+                               
+                               covid = covid)
     
     
     @app.route('/lepl1402/exercices_list')
@@ -958,6 +1267,68 @@ def create_app(test_config=None):
                 data_results = pourcentage
         
         #######
+        # graph des réussites
+        #######
+        
+        lepl1402_data_successes = successes('LEPL1402', task)
+            
+        labels_successes = lepl1402_data_successes[0]
+        data_successes = lepl1402_data_successes[1]
+        pourcentage_successes = lepl1402_data_successes[2]
+        
+        titre_successes = 'Réussites'
+        type_successes = 'doughnut'
+        datatypeS = 'nombre'
+        
+        if request.args.get('datatype') is not None:
+            datatypeS = request.args.get('datatype')
+            if datatypeS == 'pourcentage':
+                data_successes = pourcentage_successes
+        
+        #######
+        # graph des réussites cumulées
+        #######
+        
+        lepl1402_data_successesByTime = successesByTime('LEPL1402', task)
+        
+        # dates et nombres de réussites (cumulées)
+        successes_dates = lepl1402_data_successesByTime[0]
+        successes_nbr_cumulative = lepl1402_data_successesByTime[1]
+        
+        # graphique par defaut (courbe soumissions par jour)
+        titre_successesByTime = 'Réussites Cumulées'
+        type_successesByTime = 'line'  # le type de graphique
+        
+        if len(successes_dates) > 0:
+            min_S = successes_dates[0]
+            max_S = successes_dates[-1]
+        else:  # des valeurs bidon
+            min_S = '2018-01-01'
+            max_S = '2020-06-01'
+            
+        if request.args.get('min_S') is not None:
+            min_S = request.args.get('min_S')
+        if request.args.get('max_S') is not None:
+            max_S = request.args.get('max_S')
+        
+        # les dates affichées dans les formulaires
+        form_min_S = min_S
+        form_max_S = max_S
+        
+        # réglage de l'unité du graphique
+        minD_S = datetime.datetime.strptime(min_S, "%Y-%m-%d")
+        maxD_S = datetime.datetime.strptime(max_S, "%Y-%m-%d")
+        difference_S = maxD_S - minD_S
+        if difference_S < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit_S = 'day'
+        elif difference_S < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit_S = 'week'
+        elif difference_S < datetime.timedelta(days=720):
+            unit_S = 'month'
+        else:
+            unit_S = 'year'
+        
+        #######
         # GET main
         #######
         
@@ -973,6 +1344,10 @@ def create_app(test_config=None):
             titre_graph = titre_subm_M
         elif main == 'results':  # graph des résultats (pie chart)
             titre_graph = titre_results
+        elif main == 'successes':  # graph des résultats (pie chart)
+            titre_graph = titre_successes
+        elif main == 'successesByTime':  # graph des résultats (pie chart)
+            titre_graph = titre_successesByTime
         
         #######
         # Liste d'exercices
@@ -988,6 +1363,24 @@ def create_app(test_config=None):
         tasks_succeeded = lepl1402_data_exercices[1][1]
         percentage = lepl1402_data_exercices[2]
         
+        search = ""
+        if request.args.get('search') is not None:
+            search = request.args.get('search')
+            tasks_name_search = []
+            tasks_tried_search = []
+            tasks_succeeded_search = []
+            percentage_search = []
+            for i in range(len(tasks_name)):
+                if search.lower() in tasks_name[i].lower():
+                    tasks_name_search.append(tasks_name[i])
+                    tasks_tried_search.append(tasks_tried[i])
+                    tasks_succeeded_search.append(tasks_succeeded[i])
+                    percentage_search.append(percentage[i])
+            tasks_name = tasks_name_search
+            tasks_tried = tasks_tried_search
+            tasks_succeeded = tasks_succeeded_search
+            percentage = percentage_search
+        
         return render_template('graphs/graph_1-exercices-list.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
@@ -998,7 +1391,14 @@ def create_app(test_config=None):
                                
                                titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
                                
-                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort)
+                               titre_successes = titre_successes, data_successes = data_successes, labels_successes = labels_successes, type_successes = type_successes, datatypeS = datatypeS,
+                               
+                               titre_successesByTime = titre_successesByTime, type_successesByTime = type_successesByTime, dates_S = successes_dates, data_S = successes_nbr_cumulative,
+                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, unit_S = unit_S,
+                               
+                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort, search = search,
+                               
+                               covid = covid)
     
     
     @app.route('/lsinf1252')
@@ -1116,6 +1516,24 @@ def create_app(test_config=None):
                 data_results = pourcentage
         
         #######
+        # graph des pourcentage de soumissions valides par exercices
+        #######
+        
+        titre_exo_subm = 'Soumissions Exercices'
+        type_exo_subm = 'bar'
+        exo_subm_data = []
+        exo_subm_labels = []
+        
+        if request.args.get('main') is not None:
+            main = request.args.get('main')
+            if main == 'exercices_subm':
+                global lsinf1252_exo_subm
+                if len(lsinf1252_exo_subm) == 0:
+                    lsinf1252_exo_subm = exercise_submissions('LSINF1252')
+                exo_subm_data = lsinf1252_exo_subm[1]
+                exo_subm_labels = lsinf1252_exo_subm[0]
+        
+        #######
         # GET main
         #######
         
@@ -1131,6 +1549,8 @@ def create_app(test_config=None):
             titre_graph = titre_subm_M
         elif main == 'results':  # graph des résultats (pie chart)
             titre_graph = titre_results
+        elif main == 'exercices_subm':  # graph des pourcentage de soumissions valides par exercices
+            titre_graph = titre_exo_subm
         
         return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
@@ -1140,7 +1560,11 @@ def create_app(test_config=None):
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
                                
-                               titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype)
+                               titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
+                               
+                               titre_exo_subm = titre_exo_subm, type_exo_subm = type_exo_subm, exo_subm_data = exo_subm_data, exo_subm_labels = exo_subm_labels,
+                               
+                               covid = covid)
     
     
     @app.route('/lsinf1252/exercices_list')
@@ -1266,6 +1690,68 @@ def create_app(test_config=None):
                 data_results = pourcentage
         
         #######
+        # graph des réussites
+        #######
+        
+        lsinf1252_data_successes = successes('LSINF1252', task)
+            
+        labels_successes = lsinf1252_data_successes[0]
+        data_successes = lsinf1252_data_successes[1]
+        pourcentage_successes = lsinf1252_data_successes[2]
+        
+        titre_successes = 'Réussites'
+        type_successes = 'doughnut'
+        datatypeS = 'nombre'
+        
+        if request.args.get('datatype') is not None:
+            datatypeS = request.args.get('datatype')
+            if datatypeS == 'pourcentage':
+                data_successes = pourcentage_successes
+        
+        #######
+        # graph des réussites cumulées
+        #######
+        
+        lsinf1252_data_successesByTime = successesByTime('LSINF1252', task)
+        
+        # dates et nombres de réussites (cumulées)
+        successes_dates = lsinf1252_data_successesByTime[0]
+        successes_nbr_cumulative = lsinf1252_data_successesByTime[1]
+        
+        # graphique par defaut (courbe soumissions par jour)
+        titre_successesByTime = 'Réussites Cumulées'
+        type_successesByTime = 'line'  # le type de graphique
+        
+        if len(successes_dates) > 0:
+            min_S = successes_dates[0]
+            max_S = successes_dates[-1]
+        else:  # des valeurs bidon
+            min_S = '2018-01-01'
+            max_S = '2020-06-01'
+            
+        if request.args.get('min_S') is not None:
+            min_S = request.args.get('min_S')
+        if request.args.get('max_S') is not None:
+            max_S = request.args.get('max_S')
+        
+        # les dates affichées dans les formulaires
+        form_min_S = min_S
+        form_max_S = max_S
+        
+        # réglage de l'unité du graphique
+        minD_S = datetime.datetime.strptime(min_S, "%Y-%m-%d")
+        maxD_S = datetime.datetime.strptime(max_S, "%Y-%m-%d")
+        difference_S = maxD_S - minD_S
+        if difference_S < datetime.timedelta(days=20): # si il y a moins de 20 jours représentés, on affiche les unités en jours
+            unit_S = 'day'
+        elif difference_S < datetime.timedelta(days=90): # si il y a moins de de 90 jours représentés, on affiche les unités en semaines
+            unit_S = 'week'
+        elif difference_S < datetime.timedelta(days=720):
+            unit_S = 'month'
+        else:
+            unit_S = 'year'
+        
+        #######
         # GET main
         #######
         
@@ -1281,6 +1767,10 @@ def create_app(test_config=None):
             titre_graph = titre_subm_M
         elif main == 'results':  # graph des résultats (pie chart)
             titre_graph = titre_results
+        elif main == 'successes':  # graph des résultats (pie chart)
+            titre_graph = titre_successes
+        elif main == 'successesByTime':  # graph des résultats (pie chart)
+            titre_graph = titre_successesByTime
         
         #######
         # Liste d'exercices
@@ -1296,6 +1786,24 @@ def create_app(test_config=None):
         tasks_succeeded = lsinf1252_data_exercices[1][1]
         percentage = lsinf1252_data_exercices[2]
         
+        search = ""
+        if request.args.get('search') is not None:
+            search = request.args.get('search')
+            tasks_name_search = []
+            tasks_tried_search = []
+            tasks_succeeded_search = []
+            percentage_search = []
+            for i in range(len(tasks_name)):
+                if search.lower() in tasks_name[i].lower():
+                    tasks_name_search.append(tasks_name[i])
+                    tasks_tried_search.append(tasks_tried[i])
+                    tasks_succeeded_search.append(tasks_succeeded[i])
+                    percentage_search.append(percentage[i])
+            tasks_name = tasks_name_search
+            tasks_tried = tasks_tried_search
+            tasks_succeeded = tasks_succeeded_search
+            percentage = percentage_search
+        
         return render_template('graphs/graph_1-exercices-list.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
@@ -1306,7 +1814,14 @@ def create_app(test_config=None):
                                
                                titre_results = titre_results, data_results = data_results, labels_results = labels_results, type_results = type_results, datatype = datatype,
                                
-                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort)
+                               titre_successes = titre_successes, data_successes = data_successes, labels_successes = labels_successes, type_successes = type_successes, datatypeS = datatypeS,
+                               
+                               titre_successesByTime = titre_successesByTime, type_successesByTime = type_successesByTime, dates_S = successes_dates, data_S = successes_nbr_cumulative,
+                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, unit_S = unit_S,
+                               
+                               task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort, search = search,
+                               
+                               covid = covid)
     
     
     return app

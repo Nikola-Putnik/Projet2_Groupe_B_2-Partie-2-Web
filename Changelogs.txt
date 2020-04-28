@@ -1,3 +1,29 @@
+>>> 28/04/2020
+
+- Ajout de 2 graphiques pour les exercices: Réussites et Réussites cumulées.
+- Ajout d'un graphe sur les soumissions des exercices
+- Ajout d'un bouton d'aide affichant des indications à plusieurs endroits.
+- Ajout d'options de tris pour la liste des exercices.
+- Ajout d'un formulaire de recherche d'exercices.
+- Ajout d'une description pour chaque graphique.
+- Ajout d'une page d'options, permettant pour l'instant de choisir entre afficher le covid ou non.
+- Correction de l'affichage, à présent le site devrait s'afficher correctement peu importe la taille de l'écran
+- Pourcentage du graphique des résultats (pie chart) arrondi à 2 chiffres après la virgule.
+- Le problème de pourcentage avec les graphiques des résultats (pie chart) des exercices a été corrigé.
+- Corrections et modifications mineures.
+
+
+
+>>> 22/04/2020
+
+- Ajout d'une page pour les exercices comprenant les memes graphs que pour les cours.
+- Après qques modifs dans les fonctions, ceux-ci sont à présent fonctionnels avec tous les exercices.
+- Une liste de tous les exercices (table), triable par pourcentage de réussite (ordre croissant et décroissant possibles).
+- Problèmes constatés :
+  * Le pourcentage semble mal affiché pour les graphiques des résultats (pie chart) des exercices.
+
+
+
 >>> 21/04/2020
 
 (Grosse MAJ)

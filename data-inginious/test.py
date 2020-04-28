@@ -2,6 +2,7 @@ import sqlite3
 import datetime
 
 
+
 date_format = "%Y-%m-%dT%H:%M:%S"
 b = "2020-02-16T22:57:05.482+0100"
 b = b[:-9] # on remove les micro secondes et le +0100
@@ -38,7 +39,6 @@ print("len :",len(submissions_dates))
 print(submissions_dates)
 print(submissions_nbr)
 """
-
 
 
 """
@@ -89,13 +89,21 @@ def nbr_to_month_fr(n):
 
 
 xy = {}
+users = []
+total = 0
 
-for row in cursor.execute("SELECT DISTINCT(task) from submissions WHERE course = 'LSINF1101-PYTHON' AND submitted_on > '2020-01-01T22:57:05' ORDER BY submitted_on"):
-    print(row[0])
+for row in cursor.execute("SELECT submitted_on, username from submissions WHERE course = '{}' AND task = '{}' AND result = 'success' ORDER BY submitted_on".format('LSINF1101-PYTHON', 'REAL11')):
+    current_user = row[1]
+    if current_user not in users:
+        total += 1
+        users.append(current_user)
+        current_date = row[0][:-18] # '2020-02-16'
+        xy[current_date] = total  # si la date est pas dans le dico, on l'ajoute avec une valeur de 1
 
-submissions_dates = list(xy.keys())
-submissions_nbr = list(xy.values())
+successes_dates = list(xy.keys())
+successes_nbr_cumulative = list(xy.values())
 
+print(xy)
 
 
 # Toujours fermer la connexion quand elle n'est plus utile

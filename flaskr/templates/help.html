@@ -1,0 +1,528 @@
+{% if main == 'subm' %}
+
+    {% if task %}
+    <!-- HELP pour le graphiques des soumissions - EXERCICE -->
+    
+    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique affiche le nombre total de soumissions par jour. En vert, le nombre de soumissions valides parmi celles-ci.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>modifier la durée</b> à afficher, modifiez les dates dans le formulaire et cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">Valider</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
+    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+	
+	{% else %}
+    <!-- HELP pour le graphiques des soumissions - COURS -->
+    
+    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique affiche le nombre total de soumissions par jour. En vert, le nombre de soumissions valides parmi celles-ci.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>modifier la durée</b> à afficher, modifiez les dates dans le formulaire et cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">Valider</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour accéder à la <b>liste des exercices</b> ainsi qu'à leurs graphiques,
+    				cliquez sur le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+	{% endif %}
+
+
+{% elif main == 'month' %}
+
+    {% if task %}
+    <!-- HELP pour le graphiques des soumissions par mois - EXERCICE -->
+
+    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique affiche le nombre total de soumissions par mois. En vert, le nombre de soumissions valides parmi celles-ci.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>modifier la durée</b> à afficher, modifiez les dates dans le formulaire et cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">Valider</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
+    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+	
+	{% else %}
+	<!-- HELP pour le graphiques des soumissions par mois - COURS -->
+	
+	<div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique affiche le nombre total de soumissions par mois. En vert, le nombre de soumissions valides parmi celles-ci.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>modifier la durée</b> à afficher, modifiez les dates dans le formulaire et cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">Valider</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour accéder à la <b>liste des exercices</b> ainsi qu'à leurs graphiques,
+    				cliquez sur le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+	
+	{% endif %}
+
+
+{% elif main == 'results' %}
+
+    {% if task %}
+    <!-- HELP pour le graphiques des résultats - EXERCICE -->
+
+    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique permet de visualiser le nombre de soumissions de chaque type.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour afficher les données en <b>{% if datatype == 'pourcentage' %}nombres{% else %}pourcentages{% endif %}</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if datatype == 'pourcentage' %}Nombre{% else %}Pourcentage{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
+    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+
+    {% else %}
+    <!-- HELP pour le graphiques des résultats - COURS -->
+	
+	<div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique permet de visualiser le nombre de soumissions de chaque type.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour afficher les données en <b>{% if datatype == 'pourcentage' %}nombres{% else %}pourcentages{% endif %}</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if datatype == 'pourcentage' %}Nombre{% else %}Pourcentage{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour accéder à la <b>liste des exercices</b> ainsi qu'à leurs graphiques,
+    				cliquez sur le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+	
+	{% endif %}
+
+
+{% elif main == 'successes' %}
+
+    {% if task %}
+    <!-- HELP pour le graphiques des réussites - EXERCICE -->
+
+    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique permet de voir le nombre d'étudiants ayant réussi l'exercice par rapport au nombre l'ayant échoué.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour afficher les données en <b>{% if datatype == 'pourcentage' %}nombres{% else %}pourcentages{% endif %}</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if datatype == 'pourcentage' %}Nombre{% else %}Pourcentage{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
+    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+	
+	{% endif %}
+
+
+{% elif main == 'successesByTime' %}
+
+    {% if task %}
+    <!-- HELP pour le graphiques des réussites cumulées au cours du temps - EXERCICE -->
+
+    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>modifier la durée</b> à afficher, modifiez les dates dans le formulaire et cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">Valider</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
+    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+	
+	{% endif %}
+
+
+{% elif main == 'exercices_subm' %}
+
+    <!-- HELP pour le graphiques des réussites cumulées au cours du temps - COURS -->
+
+	<div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique permet de comparer les exercices ayant les plus grands taux de réussites face aux plus grands taux d'échecs.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour accéder à la <b>liste des exercices</b> ainsi qu'à leurs graphiques,
+    				cliquez sur le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+
+{% endif %}
+

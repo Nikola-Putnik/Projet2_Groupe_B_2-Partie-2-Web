@@ -1,0 +1,79 @@
+<div class="callout primary is-hidden" data-toggler="is-hidden" id="help-list" style="padding-bottom: 2px;">
+    <div class="grid-x align-middle">
+	    
+		{% if (tasks_name| length) == 0 %}
+		<div class="cell small-12">
+            <p>
+                &#149; <b>Désolé, votre recherche n'a renvoyé aucun résultat.</b>
+            </p>
+		</div>
+		{% endif %}
+		
+		{% if search == "" %}
+		<div class="cell small-12">
+            <p>
+                &#149; Vous pouvez <b>effectuer une recherche</b> en utilisant la barre de recherche.
+            </p>
+		</div>
+		{% endif %}
+		
+		{% if search != "" %}
+		<div class="cell small-12">
+            <p>
+                &#149; Pour ré-afficher <b>la liste complète</b>, effectuer une recherche vide ou cliquez sur le grand bouton <i>Exercices</i> en haut de la page.
+            </p>
+		</div>
+		{% endif %}
+		
+		{% if sort == "def" %}
+		<div class="cell small-12">
+            <p>
+        	    &#149; Vous pouvez <b>trier la liste</b> des exercices en cliquant sur l'un des titres des différentes colonnes.
+            </p>
+        </div>
+		{% else %}
+		<div class="cell small-12">
+            <p>
+        	    &#149; La liste est actuellement triée par:
+				{% if sort == "successes" %}
+				<b># Étudiants Validé</b>.
+				{% elif sort == "successes_reverse" %}
+				<b># Étudiants Validé (ordre inverse)</b>.
+				{% elif sort == "tried" %}
+				<b># Étudiants Essayé</b>.
+				{% elif sort == "tried_reverse" %}
+				<b># Étudiants Essayé (ordre inverse)</b>.
+				{% elif sort == "percentage" %}
+				<b>Pourcentage réussites</b>.
+				{% elif sort == "percentage_reverse" %}
+				<b>Pourcentage réussites (ordre inverse)</b>.
+				{% elif sort == "name" %}
+				<b>Tâche</b>.
+				{% elif sort == "name_reverse" %}
+				<b>Tâche (ordre inverse)</b>.
+				{% endif %}
+				Vous pouvez <b>modifier le tri</b> des exercices en cliquant sur le titre d'une autre colonne.
+            </p>
+        </div>
+		{% endif %}
+		
+		<div class="cell small-12">
+            <p>
+        	    &#149; <b># Étudiants Validé</b>: nombre d'étudiants ayant réussi l'exercice.
+            </p>
+        </div>
+		
+		<div class="cell small-12">
+            <p>
+        	    &#149; <b># Étudiants Essayé</b>: nombre d'étudiants ayant essayé l'exercice.
+            </p>
+        </div>
+		
+		<div class="cell small-12">
+            <p>
+        	    &#149; <b>Pourcentage réussites</b>: Pourcentage d'étudiants ayant réussi l'exercice par rapport à tous ceux qui l'ont essayé.
+            </p>
+        </div>
+		
+    </div>
+</div>
