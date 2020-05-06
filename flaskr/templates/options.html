@@ -11,25 +11,142 @@
 			
             <div class="grid-x grid-margin-x">
                 <div class="large-12 cell">
+				
                     <div class="callout post" style="padding-top: 0px;">
-                        <h3 class="titre-1" style="align: 'center'"><b>Covid-19</b></h3>
+                        <h3 class="titre-1" style="align: 'center'"><b>Cadres d'infos</b></h3>
                         <p class="p-post">
-						    Vous pouvez choisir d'activer ou de désactiver l'onglet Covid-19 du menu.
+						    Des cadres d'informations sont affichés par défaut à divers endroits.
 						    <br/>
-							{% if covid == "True" %}
-                            <a href="?covid=False" class="link-a">désactiver</a>
+							Ces cadres sont là pour vous donner des indications par rapport aux graphiques et à l'utilisation du site.
+						</p>
+						<div class="cell small-12">
+    		                <div class="grid-x align-middle">
+    		                    <div>
+                                    <p class="p-post">
+                                   	    Pour <b>afficher/masquer les cadres d'informations</b>, appuyez sur le bouton
+                                    </p>
+                                </div>
+                                <div class="cell small-2">
+    		                       	<button type="button" class="button small button-help" style="margin-left: 10px">Infos</button>
+    	                        </div>
+    		                </div>
+    		            </div>
+						<p class="p-post">
+							{% if helpMessage == "True" %}
+							Vous pouvez choisir de désactiver leur affichage par défaut (Recommandé une fois l'application prise en main).
+							<br/>
+							Vous aurez toujours la possibilité d'afficher les cadres d'informations en appuyant sur le bouton <i>Infos</i>.
+							<br/>
+                            <a class="button large expanded button-a" href="?helpMessage=False&modif=True&subject=infos" style="margin: 15px 0px 0px 0px;">désactiver</a>
 							{% else %}
-							<a href="?covid=True" class="link-a">activer</a>
+							Vous avez choisi de désactiver l'affichage par défaut.
+							<br/>
+							<a class="button large expanded button-a" href="?helpMessage=True&modif=True&subject=infos" style="margin: 15px 0px 5px 0px;">activer</a>
+							{% endif %}
+							
+							{% if modif == "True" and subject == "infos" %}
+							<p class="p-post link-a" style="margin: 0px 0px 5px 0px;">[{{ modif_time }}] Les modifications ont été appliquées.</p>
 							{% endif %}
                         </p>
                     </div>
+				
+                    <div class="callout post" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Thèmes</b></h3>
+                        <p class="p-post">
+						    Vous pouvez choisir un thème parmi les 4 thèmes existants.
+                        </p>
+						<div class="grid-x grid-margin-x">
+						    <div class="cell small-6 large-3">
+							    <a href="?theme=blue">
+							        <div class="themecard">
+                                        <img src="{{ url_for('static', filename='img/theme-blue.png') }}" style="width:100%">
+                                        <div class="themecard_container" {% if theme == "blue" %}style="background-color: #1c62ae;"{% endif %}>
+											<p class="p-post" style="text-align: center; padding: 5px; color: {% if theme == 'blue' %}white{% else %}#1c62ae;{% endif %};">Bleu</p>
+                                        </div>
+                                    </div>
+							    </a>
+							</div>
+						    <div class="cell small-6 large-3">
+							    <a href="?theme=red">
+							        <div class="themecard">
+                                        <img src="{{ url_for('static', filename='img/theme-red.png') }}" style="width:100%">
+                                        <div class="themecard_container" {% if theme == "red" %}style="background-color: darkred;"{% endif %}>
+                                            <p class="p-post" style="text-align: center; padding: 5px; color: {% if theme == 'red' %}white{% else %}darkred;{% endif %};">Rouge</p>
+                                        </div>
+                                    </div>
+							    </a>
+							</div>
+						    <div class="cell small-6 large-3">
+							    <a href="?theme=green">
+							        <div class="themecard">
+                                        <img src="{{ url_for('static', filename='img/theme-green.png') }}" style="width:100%">
+                                        <div class="themecard_container" {% if theme == "green" %}style="background-color: darkgreen;"{% endif %}>
+                                            <p class="p-post" style="text-align: center; padding: 5px; color: {% if theme == 'green' %}white{% else %}darkgreen;{% endif %};">Greenwashing</p>
+                                        </div>
+                                    </div>
+							    </a>
+							</div>
+						    <div class="cell small-6 large-3">
+							    <a href="?theme=mono">
+							        <div class="themecard">
+                                        <img src="{{ url_for('static', filename='img/theme-mono.png') }}" style="width:100%">
+                                        <div class="themecard_container" {% if theme == "mono" %}style="background-color: #424242;"{% endif %}>
+                                            <p class="p-post" style="text-align: center; padding: 5px; color: {% if theme == 'mono' %}white{% else %}#424242;{% endif %};">Monochrome</p>
+                                        </div>
+                                    </div>
+							    </a>
+							</div>
+						</div>
+                    </div>
+				
+                    <div class="callout post" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Calendriers</b></h3>
+                        <p class="p-post">
+						    Nous utilisons des calendriers pour choisir les dates de certains graphiques.
+						    <br/>
+							Cette fonctionnalité a été implémenté rapidement le jour même de la remise du projet pour peer-review, ils n'ont donc pas été réellement testés.
+							<br/>
+							Si vous rencontrez un problème avec leur utilisation vous pouvez choisir de les désactiver.
+							<br/><br/>
+							{% if calendar == "True" %}
+							Actuellement, les calendriers sont activés.
+							<br/>
+                            <a class="button large expanded button-a" href="?calendar=False&modif=True&subject=calendar" style="margin: 15px 0px 0px 0px;">désactiver</a>
+							{% else %}
+							Actuellement, les calendriers sont désactivés. Des formulaires classiques sont présents pour les remplacer.
+							<br/>
+							<a class="button large expanded button-a" href="?calendar=True&modif=True&subject=calendar" style="margin: 15px 0px 5px 0px;">activer</a>
+							{% endif %}
+							
+							{% if modif == "True" and subject == "calendar" %}
+							<p class="p-post link-a" style="margin: 0px 0px 5px 0px;">[{{ modif_time }}] Les modifications ont été appliquées.</p>
+							{% endif %}
+                        </p>
+                    </div>
+					
+                    <div class="callout post" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Covid-19</b></h3>
+                        <p class="p-post">
+						    <i>Cette partie n'est pas censée être évaluée, elle sera probablement retirée dans la version finale.</i>
+						    <br/>
+						    Vous pouvez choisir d'activer ou de désactiver l'onglet Covid-19 du menu.
+						    <br/>
+							{% if covid == "True" %}
+							<a class="button large expanded button-a" href="?covid=False&modif=True&subject=covid" style="margin: 15px 0px 0px 0px;">désactiver</a>
+							{% else %}
+							<a class="button large expanded button-a" href="?covid=True&modif=True&subject=covid" style="margin: 15px 0px 0px 0px;">activer</a>
+							{% endif %}
+							
+							{% if modif == "True" and subject == "covid" %}
+							<p class="p-post link-a" style="margin: 0px 0px 5px 0px;">[{{ modif_time }}] Les modifications ont été appliquées.</p>
+							{% endif %}
+                        </p>
+                    </div>
+					
                 </div>
             </div>
         </div>
 		
     </section>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	
 {% endblock %}

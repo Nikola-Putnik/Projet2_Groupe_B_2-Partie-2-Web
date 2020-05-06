@@ -87,12 +87,12 @@ def nbr_to_month_fr(n):
         mois = "coronavirus"
     return mois
 
-
+"""
 xy = {}
 users = []
 total = 0
 
-for row in cursor.execute("SELECT submitted_on, username from submissions WHERE course = '{}' AND task = '{}' AND result = 'success' ORDER BY submitted_on".format('LSINF1101-PYTHON', 'REAL11')):
+for row in cursor.execute("SELECT submitted_on from submissions WHERE course = '{}' AND task = '{}' AND result = 'success' ORDER BY submitted_on".format('LSINF1101-PYTHON', 'REAL11')):
     current_user = row[1]
     if current_user not in users:
         total += 1
@@ -108,6 +108,23 @@ print(xy)
 
 # Toujours fermer la connexion quand elle n'est plus utile
 conn.close()
+"""
+
+
+subm_nbr = []
+
+for i in range(24):
+    if i < 10:
+        x = "0"+str(i)
+    else:
+        x = str(i)
+    for row in cursor.execute("SELECT count(*) from submissions WHERE course = 'LSINF1101-PYTHON' AND substr(submitted_on,12,2) = '{}' ".format(x)):
+        subm_nbr.append(row[0])
+
+# Toujours fermer la connexion quand elle n'est plus utile
+conn.close()
+
+print(subm_nbr)
 
 a = []
 

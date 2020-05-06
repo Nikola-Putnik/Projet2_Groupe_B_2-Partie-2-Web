@@ -41,7 +41,7 @@
 	  les cellules définissent une zone de la page dans laquelle on place du code.
 	  Leur taille peut aller de 1 à 12.
 	  Voir une video de débutant pour visualiser le truc plus en détail.
-	  
+	
 	  "large-12" signifie que sur un écran large, la cellule occupera toute la largeur du "grid-x" dans laquelle elle se trouve.
 	  Avec "large-6" elle n'occuperait que la moité par ex
 	
@@ -66,20 +66,27 @@
             
     		<div class="grid-x">
     			<div class="large-12 cell">
+				
+					
+					
+					<div class="tooltipw3buttonC">
+				        <a class="button large button-a" {% if theme == 'mono' %}style="background-color: black;"{% endif %} href="/{{ cours }}">Cours</a>
+						<span class="tooltiptextbuttonC show-for-large">
+						    Revenir aux graphiques du cours
+				        </span>
+					</div>
+				
+				    {% if task != "no_task" %}
 				    
 					<!-- Les gros boutons gris
 					
 					{{ cours }} : nom du cours (ex: lsinf1101)
 					-->
-                    <a class="button large button-grey" href="/{{ cours }}">Soumissions</a>
-                    <a class="button large button-grey" href="/{{ cours }}?main=month">Soumissions par Mois</a>
-		            <a class="button large button-grey" href="/{{ cours }}?main=results">Résultats</a>
-					<!--
-                    <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
-					-->
-                    <a class="button large button-grey" style="background-color: #044c9c;" href="/{{ cours }}/exercices_list">Exercices</a>
-					
-					{% if task != "no_task" %}
+                    <a class="button large button-grey" {% if main == 'subm' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list?task={{ task }}">Soumissions par Jour</a>
+                    <a class="button large button-grey" {% if main == 'month' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list?task={{ task }}&main=month">Soumissions par Mois</a>
+		            <a class="button large button-grey" {% if main == 'results' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list?task={{ task }}&main=results">Résultats</a>
+                    <a class="button large button-grey" {% if main == 'successes' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list?task={{task}}&main=successes">Réussites</a>
+		            <a class="button large button-grey" {% if main == 'successesByTime' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list?task={{ task }}&main=successesByTime">Réussites Cumulées</a>
 				    
 					<!-- Titre du graphique
 					
@@ -95,29 +102,54 @@
 					{% if main == 'subm' %}
 					
 					    <!-- Graphique des soumissions par jour (courbe) -->
-						<p class="p-post">Nombre de soumissions effectuées par temps.</p>
+						<p class="p-post">Nombre de soumissions effectuées par jour.</p>
 					    <!-- Formulaire d'options -->
 						<form method="GET">
 					        <div class="grid-x align-middle">
 							    <input type="hidden" name="task" value="{{ task }}" />
+								<input type="submit" style="position: absolute; top: -10000px" />
 								<div class="cell small-12 medium-11 large-11">
 								    <div class="grid-x align-middle">
+									
 									    {% if size == 'default' %}
 					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
+										
+                                        
                                         <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
-                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_min }}" name="min" /></div>
+                                        <div class="cell small-6 medium-3 large-3">
+										    {% if calendar == 'True' %}
+										    <div id="position" class="reset-this">
+		                                        <input class="form-input date-input-native" id="date1" type="text" name="min" min="{{ real_min }}" max="{{ real_max }}" value="{{ form_min }}">
+		                                        <input class="form-input date-input-fallback" id="alt1" type="text" value="{{ form_min }}">
+		                                        <div id="picker1" hidden></div>
+	                                        </div>
+											{% else %}
+											<input class="form-input" type="text" value="{{ form_min }}" name="min" />
+											{% endif %}
+										</div>
                                         <div class="cell large-1 show-for-large"><p class="form-label">Fin :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">À</p></div>
-                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_max }}" name="max" /></div>
+                                        <div class="cell small-6 medium-3 large-3">
+										    {% if calendar == 'True' %}
+										    <div id="position" class="reset-this">
+		                                        <input class="form-input date-input-native" id="date2" type="text" name="max" min="{{ real_min }}" max="{{ real_max }}" value="{{ form_max }}">
+		                                        <input class="form-input date-input-fallback" id="alt2" type="text" value="{{ form_max }}">
+		                                        <div id="picker2" hidden></div>
+	                                        </div>
+											{% else %}
+											<input class="form-input" type="text" value="{{ form_max }}" name="max" />
+											{% endif %}
+										</div>
+										
 					        	        <div class="cell medium-1 large-2 show-for-medium" align="left" style="margin-left: 10px;"><input type="submit" value="Valider" class="button button-a" /></div>
 									</div>
 								</div>
 								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -149,12 +181,13 @@
 					        <div class="grid-x align-middle">
 							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="month" />
+								<input type="submit" style="position: absolute; top: -10000px" />
 								<div class="cell small-12 medium-11 large-11">
 								    <div class="grid-x align-middle">
 									    {% if size == 'default' %}
 					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
                                         <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
@@ -166,7 +199,7 @@
 									</div>
 								</div>
 								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -186,7 +219,7 @@
 					{% elif main == 'results' %}
 					
 					    <!-- Graphique des résultats -->
-						<p class="p-post">Résultats de l'ensemble des soumissions de l'exercice.</p>
+						<p class="p-post">Comparatif des résultats de l'ensemble des soumissions de l'exercice.</p>
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle">
@@ -197,7 +230,7 @@
 					                    {% if size == 'default' %}
 					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
 								        {% if datatype == 'nombre' %}
 					                    <div style="margin-left:10px"><button type="submit" value="pourcentage" class="button button-a" name="datatype" id="pourcentage" />Pourcentage</button></div>
@@ -206,7 +239,7 @@
 					        	        {% endif %}
 								    </div>
 								</div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -237,7 +270,7 @@
 					                    {% if size == 'default' %}
 					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
 								        {% if datatype == 'nombre' %}
 					                    <div style="margin-left:10px"><button type="submit" value="pourcentage" class="button button-a" name="datatype" id="pourcentage" />Pourcentage</button></div>
@@ -246,7 +279,7 @@
 					        	        {% endif %}
 								    </div>
 								</div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -272,24 +305,47 @@
 					        <div class="grid-x align-middle">
 							    <input type="hidden" name="task" value="{{ task }}" />
 						    	<input type="hidden" name="main" value="successesByTime" />
+								<input type="submit" style="position: absolute; top: -10000px" />
 								<div class="cell small-12 medium-11 large-11">
 								    <div class="grid-x align-middle">
 									    {% if size == 'default' %}
 					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
+										
                                         <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
-                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_min_S }}" name="min_S" /></div>
+                                        <div class="cell small-6 medium-3 large-3">
+										    {% if calendar == 'True' %}
+										    <div id="position" class="reset-this">
+		                                        <input class="form-input date-input-native" id="date1" type="text" name="min_S" min="{{ real_min_S }}" max="{{ real_max_S }}" value="{{ form_min_S }}">
+		                                        <input class="form-input date-input-fallback" id="alt1" type="text" value="{{ form_min_S }}">
+		                                        <div id="picker1" hidden></div>
+	                                        </div>
+											{% else %}
+											<input class="form-input" type="text" value="{{ form_min_S }}" name="min_S" />
+											{% endif %}
+										</div>
                                         <div class="cell large-1 show-for-large"><p class="form-label">Fin :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">À</p></div>
-                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_max_S }}" name="max_S" /></div>
+                                        <div class="cell small-6 medium-3 large-3">
+										    {% if calendar == 'True' %}
+										    <div id="position" class="reset-this">
+		                                        <input class="form-input date-input-native" id="date2" type="text" name="max_S" min="{{ real_min_S }}" max="{{ real_max_S }}" value="{{ form_max_S }}">
+		                                        <input class="form-input date-input-fallback" id="alt2" type="text" value="{{ form_max_S }}">
+		                                        <div id="picker2" hidden></div>
+	                                        </div>
+											{% else %}
+											<input class="form-input" type="text" value="{{ form_max_S }}" name="max_S" />
+											{% endif %}
+										</div>
+										
 					        	        <div class="cell medium-1 large-2 show-for-medium" align="left" style="margin-left: 10px;"><input type="submit" value="Valider" class="button button-a" /></div>
 									</div>
 								</div>
 								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -341,11 +397,23 @@
 				-->
 				{% if main != 'subm' %}
 				<div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3">
+						    <b>{{ titre_subm }}</b>
+							<span class="tooltiptext show-for-large">
+							    Nombre de soumissions effectuées par jour.
+							</span>
+						</div>
+					</h3>
 				    <a href="?task={{ task }}">
-				        <div class="callout post">
-				            <canvas id="subm"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="subm"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
@@ -354,11 +422,23 @@
 				-->
 			    {% if main != 'month' %}
 			    <div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm_M }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3">
+						    <b>{{ titre_subm_M }}</b>
+							<span class="tooltiptext show-for-large">
+							    Nombre de soumissions effectuées par mois.
+							</span>
+						</div>
+					</h3>
 				    <a href="?task={{ task }}&main=month">
-				        <div class="callout post">
-				            <canvas id="month"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="month"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
@@ -367,11 +447,23 @@
 				-->
 				{% if main != 'results' %}
 				<div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_results }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3short">
+						    <b>{{ titre_results }}</b>
+							<span class="tooltiptextshort show-for-large">
+							    Comparatif des résultats de l'ensemble des soumissions de l'exercice.
+							</span>
+						</div>
+					</h3>
 				    <a href="?task={{ task }}&main=results">
-				        <div class="callout post">
-				            <canvas id="results"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="results"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
@@ -380,11 +472,23 @@
 				-->
 				{% if main != 'successes' %}
 				<div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_successes }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3short">
+						    <b>{{ titre_successes }}</b>
+							<span class="tooltiptextshort show-for-large">
+							    Comparatif du nombre d'étudiants ayant réussi/raté l'exercice.
+							</span>
+						</div>
+					</h3>
 				    <a href="?task={{ task }}&main=successes">
-				        <div class="callout post">
-				            <canvas id="successes"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="successes"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
@@ -393,11 +497,23 @@
 				-->
 				{% if main != 'successesByTime' %}
 				<div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_successesByTime }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3">
+						    <b>{{ titre_successesByTime }}</b>
+							<span class="tooltiptext show-for-large">
+							    Nombre d'étudiants cumulé ayant réussi l'exercice au cours du temps.
+							</span>
+						</div>
+					</h3>
 				    <a href="?task={{ task }}&main=successesByTime">
-				        <div class="callout post">
-				            <canvas id="successesByTime"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="successesByTime"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
@@ -420,7 +536,7 @@
 					    	        <div class="cell small-3 medium-2 large-2" align="left" style="margin-left: 10px;"><input type="submit" value="Rechercher" class="button button-a" /></div>
 					            </div>
 					        </div>
-					    	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help-list">Help!</button></div>
+					    	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help-list">Infos</button></div>
 				        </div>
                     </form>
                     
@@ -472,8 +588,6 @@
 			</div>
 		</div>
 		
-		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-		
     </section>
 
     <!-- SCRIPT DU 1er GRAPHIQUE -->
@@ -493,8 +607,8 @@
 			    		        
                 datasets: [{
                     label: 'Soumissions',
-                    backgroundColor: "#3e95cd",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
-                    borderColor: "#3e95cd",
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
+                    borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
@@ -504,8 +618,8 @@
                     ]
                 }, {
                     label: 'Soumissions valides',
-                    backgroundColor: "rgba(60, 186, 159, 0.5)",
-                    borderColor: "#3cba9f",
+                    backgroundColor: {% if theme == 'mono' %}'#424242',{% else %}"rgba(60, 186, 159, 0.5)",{% endif %}
+                    borderColor: {% if theme == 'mono' %}'#424242',{% else %}"#3cba9f",{% endif %}
                     data: [
                         {% for i in range(dataV| length) %}
                             { x: "{{ datesV[i] | safe }}", y: {{ dataV[i] | safe }} },
@@ -550,8 +664,8 @@
 			    		        
                 datasets: [{
                     label: 'Soumissions',
-                    backgroundColor: "#3e95cd",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
-                    borderColor: "#3e95cd",
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
+                    borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
@@ -561,8 +675,8 @@
                     ]
                 }, {
                     label: 'Soumissions valides',
-                    backgroundColor: "#3cba9f",
-                    borderColor: "#3cba9f",
+                    backgroundColor: {% if theme == 'mono' %}'#424242',{% else %}"#3cba9f",{% endif %}
+                    borderColor: {% if theme == 'mono' %}'#424242',{% else %}"#3cba9f",{% endif %}
                     data: [
                         {% for i in range(dataV_M| length) %}
                             { x: "{{ datesV_M[i] | safe }}", y: {{ dataV_M[i] | safe }} },
@@ -598,7 +712,14 @@
                 labels: {{ labels_results[1:] | safe }},
                 datasets: [{
                     label: 'Soumissions',
-                    backgroundColor: ["#3cba9f","#3e95cd", "#8e5ea2","#e8c3b9","#c45850", "grey"],
+                    backgroundColor:
+					    {% if theme == 'red' %}
+					    ["#3cba9f","#c45850", "#8e5ea2","#e8c3b9","#3e95cd", "grey"],
+						{% elif theme == 'mono' %}
+						["#424242","grey", "dimgrey","darkgrey","silver", "lightgrey"],
+						{% else %}
+						["#3cba9f","#3e95cd", "#8e5ea2","#e8c3b9","#c45850", "grey"],
+						{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     data: {{ data_results[1:] | safe }}
                 }]
@@ -619,7 +740,14 @@
                 labels: {{ labels_successes[1:] | safe }},
                 datasets: [{
                     label: 'Résulats',
-                    backgroundColor: ["#3cba9f","#3e95cd", "#8e5ea2","#e8c3b9","#c45850", "grey"],
+                    backgroundColor:
+					    {% if theme == 'red' %}
+						["#3cba9f","#c45850"],
+					    {% elif theme == 'mono' %}
+					    ["#424242","grey"],
+						{% else %}
+						["#3cba9f","#3e95cd"],
+						{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     data: {{ data_successes[1:] | safe }}
                 }]
@@ -644,8 +772,8 @@
 			    		        
                 datasets: [{
                     label: 'Réussites',
-                    backgroundColor: "#3cba9f",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
-                    borderColor: "#3cba9f",
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
+                    borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     //data: {{ data | safe }} ---> TO BE DELETED
                     data: [

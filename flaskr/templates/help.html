@@ -3,7 +3,11 @@
     {% if task %}
     <!-- HELP pour le graphiques des soumissions - EXERCICE -->
     
-    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
@@ -16,11 +20,11 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -41,19 +45,13 @@
     		<div class="cell small-12">
                 <p>
             	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
-                </p>
-            </div>
-    		
-    		<div class="cell small-12">
-                <p>
-            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
                 </p>
             </div>
     		
     		<div class="cell small-12">
                 <p>
             	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
-    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
                 </p>
             </div>
     		
@@ -63,7 +61,11 @@
 	{% else %}
     <!-- HELP pour le graphiques des soumissions - COURS -->
     
-    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
@@ -76,11 +78,11 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -122,7 +124,11 @@
     {% if task %}
     <!-- HELP pour le graphiques des soumissions par mois - EXERCICE -->
 
-    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
@@ -135,11 +141,11 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -182,7 +188,11 @@
 	{% else %}
 	<!-- HELP pour le graphiques des soumissions par mois - COURS -->
 	
-	<div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
@@ -195,11 +205,11 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -242,7 +252,11 @@
     {% if task %}
     <!-- HELP pour le graphiques des résultats - EXERCICE -->
 
-    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
@@ -255,11 +269,11 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -280,19 +294,13 @@
     		<div class="cell small-12">
                 <p>
             	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
-                </p>
-            </div>
-    		
-    		<div class="cell small-12">
-                <p>
-            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
                 </p>
             </div>
     		
     		<div class="cell small-12">
                 <p>
             	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
-    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
                 </p>
             </div>
     		
@@ -302,7 +310,11 @@
     {% else %}
     <!-- HELP pour le graphiques des résultats - COURS -->
 	
-	<div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
@@ -315,11 +327,11 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -362,12 +374,20 @@
     {% if task %}
     <!-- HELP pour le graphiques des réussites - EXERCICE -->
 
-    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
                 <p>
-            	    &#149; Ce graphique permet de voir le nombre d'étudiants ayant réussi l'exercice par rapport au nombre l'ayant échoué.
+            	    &#149; Ce graphique permet de voir le
+					{% if datatype == 'pourcentage' %}pourcentage{% else %}nombre{% endif %}
+					d'étudiants ayant réussi l'exercice par rapport au
+					{% if datatype == 'pourcentage' %}pourcentage{% else %}nombre{% endif %}
+					l'ayant échoué.
                 </p>
             </div>
     	    
@@ -375,11 +395,11 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -400,19 +420,13 @@
     		<div class="cell small-12">
                 <p>
             	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
-                </p>
-            </div>
-    		
-    		<div class="cell small-12">
-                <p>
-            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
                 </p>
             </div>
     		
     		<div class="cell small-12">
                 <p>
             	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
-    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
                 </p>
             </div>
     		
@@ -427,18 +441,22 @@
     {% if task %}
     <!-- HELP pour le graphiques des réussites cumulées au cours du temps - EXERCICE -->
 
-    <div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     	    
     		<div class="cell small-12">
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>
@@ -459,19 +477,13 @@
     		<div class="cell small-12">
                 <p>
             	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
-                </p>
-            </div>
-    		
-    		<div class="cell small-12">
-                <p>
-            	    &#149; Attention, les grands boutons en haut de la page (Soumissions, Soumissions par Mois, Résultats) redirigent vers les graphiques du cours.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
                 </p>
             </div>
     		
     		<div class="cell small-12">
                 <p>
             	    &#149; La <b>liste des exercices</b> est présente en bas des graphiques.
-    				Vous pouvez également l'afficher en ré-utilisant le grand bouton <i>Exercices</i> en haut de la page.
                 </p>
             </div>
     		
@@ -485,12 +497,16 @@
 
     <!-- HELP pour le graphiques des réussites cumulées au cours du temps - COURS -->
 
-	<div class="callout primary is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
         <div class="grid-x align-middle">
     		
     		<div class="cell small-12">
                 <p>
-            	    &#149; Ce graphique permet de comparer les exercices ayant les plus grands taux de réussites face aux plus grands taux d'échecs.
+            	    &#149; Ce graphique permet de comparer les exercices ayant les plus grands taux d'échecs face aux plus grands taux de réussites.
                 </p>
             </div>
     	    
@@ -498,11 +514,65 @@
     		    <div class="grid-x align-middle">
     		        <div>
                         <p>
-                    	    &#149; Pour <b>{% if size == 'large' %}diminuer{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
                         </p>
                     </div>
                     <div class="cell small-2">
-    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Diminuer{% else %}Agrandir{% endif %}</button>
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
+    	            </div>
+    		    </div>
+    		</div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour <b>afficher un autre graphique</b>, cliquez sur l'un des graphiques présents plus bas.
+    				Vous pouvez également utiliser les grands boutons en haut de la page.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour accéder à la <b>liste des exercices</b> ainsi qu'à leurs graphiques,
+    				cliquez sur le grand bouton <i>Exercices</i> en haut de la page.
+                </p>
+            </div>
+    		
+        </div>
+    </div>
+
+
+{% elif main == 'active_hours' %}
+
+    <!-- HELP pour le graphiques des heures d'activité - COURS -->
+
+	{% if helpMessage == 'True' %}
+	<div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" data-toggler data-animate="fade-in fade-out" id="help" style="padding-bottom: 2px;">
+	{% else %}
+    <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="help" style="padding-bottom: 2px;">
+	{% endif %}
+        <div class="grid-x align-middle">
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Ce graphique permet de voir, en moyenne, les heures durant lesquelles les étudiants sont les plus actifs.
+                </p>
+            </div>
+    		
+    		<div class="cell small-12">
+                <p>
+            	    &#149; Pour chaque heure de la journée est donné le pourcentage de soumissions effectuées durant cette heure.
+                </p>
+            </div>
+    	    
+    		<div class="cell small-12">
+    		    <div class="grid-x align-middle">
+    		        <div>
+                        <p>
+                    	    &#149; Pour <b>{% if size == 'large' %}réduire{% else %}agrandir{% endif %} le graphique</b>, cliquez sur
+                        </p>
+                    </div>
+                    <div class="cell small-2">
+    		        	<button type="button" class="button small button-a" style="margin-left: 10px">{% if size == 'large' %}Réduire{% else %}Agrandir{% endif %}</button>
     	            </div>
     		    </div>
     		</div>

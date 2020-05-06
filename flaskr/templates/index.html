@@ -7,16 +7,44 @@
 	
         <div class="grid-container">
 		
-            <h1 class="page-title">Bienvenue !</h1>
+            <h1 class="page-title">Inginious Stats</h1>
 			
             <div class="grid-x grid-margin-x">
                 <div class="large-12 cell">
                     <div class="callout post" style="padding-top: 0px;">
-                        <h3 class="titre-1" style="align: 'center'"><b>Inginious Stats</b></h3>
+                        <h3 class="titre-1" style="align: 'center'"><b>Bienvenue !</b></h3>
                         <p class="p-post">
 						    Bienvenue sur l'<b>application Flask du groupe B2</b>.
 						    <br/>
-                            Le site est actuellement encore en <b>version ALPHA</b>. Néanmoins, son développement s'est fortement accéléré durant ces derniers jours.
+                            Le site est actuellement en <b>version BETA</b>.
+                        </p>
+                    </div>
+                    <div class="callout post {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Cadres d'informations</b></h3>
+                        <p class="p-post">
+						    Des cadres d'informations sont affichés par défaut à divers endroits.
+						    <br/>
+                            Ces cadres sont là pour vous donner des indications par rapport aux graphiques et à l'utilisation du site.
+                        </p>
+						<div class="cell small-12">
+    		                <div class="grid-x align-middle">
+    		                    <div>
+                                    <p class="p-post">
+                                   	    Pour <b>afficher/masquer les cadres d'informations</b>, appuyez sur le bouton
+                                    </p>
+                                </div>
+                                <div class="cell small-2">
+    		                       	<button type="button" class="button small button-help" style="margin-left: 10px">Infos</button>
+    	                        </div>
+    		                </div>
+    		            </div>
+						<div style="padding: 0 0 12px 0;">
+						    <img src="{{ url_for('static', filename='img/infos.gif') }}" style="border: 2px solid grey; border-radius: 5px 5px 5px 5px;">
+						</div>
+                        <p class="p-post">
+							Si vous les trouvez trop encombrant, il vous est <b>possible de désactiver leur affichage par défaut dans les <a href="/options" class="link-a">OPTIONS</a></b>.
+							<br/>
+							Ainsi, ils ne seront affichés que si vous appuyez sur le bouton <i>Infos</i>.
                         </p>
                     </div>
                     <div class="callout post" style="padding-top: 0px;">
@@ -26,7 +54,10 @@
 							<br/>
 							Sa grande popularité, son efficacité et sa légèreté en matière de design nous ont convaincu.
 							<br/>
-							En effet, point de vue esthétique, contrairement à de nombreux frameworks, Foundation se veut minimaliste avec de faibles retouches css.
+							Grâce à lui, notre application bénéficie d'une structure dynamique s'adaptant à la largeur des écrans.
+							<br/>
+							Ensuite, d'un point de vue esthétique, Foundation se veut minimaliste se contentant de très faibles retouches esthétiques.
+							<br/>
 							Le design de notre site se base donc sur Foundation mais a été fortement personnalisé à presque tous les niveaux (menus, formes, angles, polices, ...).
 							<br/>
 							Pour plus d'infos, notament par rapport aux avantages techniques, nous vous invitons à visiter leur
@@ -46,8 +77,5 @@
         </div>
 		
     </section>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	
 {% endblock %}

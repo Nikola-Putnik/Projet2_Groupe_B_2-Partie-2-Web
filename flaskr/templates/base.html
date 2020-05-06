@@ -5,7 +5,18 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='foundation.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='style-option1.css') }}">
+		{% if theme == 'blue' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style-theme-blue.css') }}">
+		{% elif theme == 'red' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style-theme-red.css') }}">
+		{% elif theme == 'green' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style-theme-green.css') }}">
+		{% elif theme == 'mono' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style-theme-mono.css') }}">
+		{% elif theme == 'contrast' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style-theme-contrast.css') }}">
+		{% endif %}
+		<link rel="stylesheet" href="{{ url_for('static', filename='calendar/picker.css') }}">
 		<meta charset="utf-8">
 		<title>
 	        {% if title %}
@@ -19,11 +30,115 @@
 		{% endblock %}
     </head>
 	
+	<!-- Style du calendrier -->
+	<style>
+
+	#position {
+		position: relative;
+	}
+
+	.calendar {
+		background: #FFF;
+		box-shadow: 0 0 5px rgba(0,0,0,.4);
+
+		position: absolute;
+		z-index: 10;
+		top: 90%;
+		left: -2%;
+	}
+
+	.date-input-fallback {
+		display: none;
+	}
+
+	.js-no-type-date-support .date-input-native {
+		display: none !important;
+	}
+
+	.js-no-type-date-support .date-input-fallback {
+		display: inline-block !important;
+	}
+
+	@media ( min-width: 1025px ) {
+
+		.date-input-fallback {
+			display: inline-block;
+		}
+		.date-input-native {
+			display: none;
+		}
+	}
+
+    </style>
+	
     <body>
+	
+	
+	    <!-- MOBILE NAVIGATION -->
+		
+		<div class="off-canvas-wrapper">
+            <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+                <div class="off-canvas position-left" id="mobile-menu" data-off-canvas>
+                    <ul class="multilevel-accordion-menu vertical menu" data-accordion-menu>
+                        <li>
+                            <a href="/"><div class="grid-x align-middle" style="height:40px">HOME</div></a>
+                        </li>
+                        <li>
+                            <a><div class="grid-x align-middle" style="height:40px">LSINF1101</div></a>
+                            <ul class="menu vertical sublevel-1">
+                                <li><a class="subitem" href="/lsinf1101">Soumissions par Jour</a></li>
+                                <li><a class="subitem" href="/lsinf1101?main=month">Soumissions par Mois</a></li>
+                                <li><a class="subitem" href="/lsinf1101?main=results">Résultats</a></li>
+                                <li><a class="subitem" href="/lsinf1101?main=exercices_subm">Exercices - Top & Worst</a></li>
+                                <li><a class="subitem" href="/lsinf1101?main=active_hours">Heures d'activité</a></li>
+                                <li><a class="subitem" href="/lsinf1101/exercices_list">Exercices</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a><div class="grid-x align-middle" style="height:40px">LEPL1402</div></a>
+                            <ul class="menu vertical sublevel-1">
+                                <li><a class="subitem" href="/lepl1402">Soumissions par Jour</a></li>
+                                <li><a class="subitem" href="/lepl1402?main=month">Soumissions par Mois</a></li>
+                                <li><a class="subitem" href="/lepl1402?main=results">Résultats</a></li>
+                                <li><a class="subitem" href="/lepl1402?main=exercices_subm">Exercices - Top & Worst</a></li>
+                                <li><a class="subitem" href="/lepl1402?main=active_hours">Heures d'activité</a></li>
+                                <li><a class="subitem" href="/lepl1402/exercices_list">Exercices</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a><div class="grid-x align-middle" style="height:40px">LSINF1252</div></a>
+                            <ul class="menu vertical sublevel-1">
+                                <li><a class="subitem" href="/lsinf1252">Soumissions par Jour</a></li>
+                                <li><a class="subitem" href="/lsinf1252?main=month">Soumissions par Mois</a></li>
+                                <li><a class="subitem" href="/lsinf1252?main=results">Résultats</a></li>
+                                <li><a class="subitem" href="/lsinf1252?main=exercices_subm">Exercices - Top & Worst</a></li>
+                                <li><a class="subitem" href="/lsinf1252?main=active_hours">Heures d'activité</a></li>
+                                <li><a class="subitem" href="/lsinf1252/exercices_list">Exercices</a></li>
+                            </ul>
+                        </li>
+						{% if covid == "True" %}
+                        <li>
+                            <a href="/graph0"><div class="grid-x align-middle menu-option" style="height:40px">COVID-19</div></a>
+                        </li>
+						{% endif %}
+                        <li>
+                            <a href="/options"><div class="grid-x align-middle" style="height:40px">OPTIONS</div></a>
+                        </li>
+                    </ul>
+                </div>
+	        
+                <div class="off-canvas-content" data-off-canvas-content>
+                    <div class="title-bar hide-for-medium" style="height: 65px;">
+                        <div class="title-bar-left">
+                            <button class="menu-icon" type="button" data-open="mobile-menu"></button>
+                            <span class="title-bar-title"><a href="/" style="color: white; font-size: 20px; padding-left: 10px;">Inginious Stats</a></span>
+                        </div>
+                    </div>
+		
 	    
 	    <!-- DESKTOP NAVIGATION -->
 		
-		<div class="nav-desktop-font show-for-large">
+		<div class="nav-desktop-font show-for-medium">
             <div class="grid-container nav-desktop-container">
                 <nav class="top-bar nav-desktop">
                     <div class="top-bar-right">
@@ -31,7 +146,7 @@
                     </div>
                     <div class="top-bar-left">
                         <ul class="dropdown menu menu-desktop" data-dropdown-menu>
-                            <li>
+                            <li class="show-for-large">
                                 <a href="/">HOME</a>
                             </li>
                             <li>
@@ -71,12 +186,34 @@
 		{% endblock %}
 		
 		
+		
+		<!-- FOOTER SECTION -->
+        
+		<br/><br/><br/><br/><br/>
+        <footer>
+		    <p class="p-footer">© 2020 InginiousStats.porn, Aucun droit réservé.</p>
+        </footer>
+		
+		
+		
+		<!-- MOBILE NAVIGATION - END -->
+		
+		        </div>
+            </div>
+        </div>
+		
+		
+		
 		<!-- FRAMEWORK SCRIPTS -->
 		
 		<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/vendor/what-input.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/vendor/foundation.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+	    <script src="{{ url_for('static', filename='js/calendar/picker.js') }}"></script>
+	    <script src="{{ url_for('static', filename='js/calendar/part1.js') }}"></script>
+	    <script src="{{ url_for('static', filename='js/calendar/part2.js') }}"></script>
 		
 	</body>
 

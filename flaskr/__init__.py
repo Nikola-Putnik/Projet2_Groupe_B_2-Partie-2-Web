@@ -10,11 +10,19 @@ def create_app(test_config=None):
     
     
     # variables globales, qui ne seront calculées qu'une seule fois, au premier chargement de la page.
+    
+    # pour les graphiques des cours
     global lsinf1101_data
     lsinf1101_data = ()
     
     global lsinf1101_data_results
     lsinf1101_data_results = ()
+    
+    global lsinf1101_exo_subm
+    lsinf1101_exo_subm = ()
+    
+    global lsinf1101_active_hours
+    lsinf1101_active_hours = ()
     
     global lepl1402_data
     lepl1402_data = ()
@@ -22,55 +30,95 @@ def create_app(test_config=None):
     global lepl1402_data_results
     lepl1402_data_results = ()
     
+    global lepl1402_exo_subm
+    lepl1402_exo_subm = ()
+    
+    global lepl1402_active_hours
+    lepl1402_active_hours = ()
+    
     global lsinf1252_data
     lsinf1252_data = ()
     
     global lsinf1252_data_results
     lsinf1252_data_results = ()
     
-    
-    
-    global lsinf1101_exo_subm
-    lsinf1101_exo_subm = ()
-    
-    global lepl1402_exo_subm
-    lepl1402_exo_subm = ()
-    
     global lsinf1252_exo_subm
     lsinf1252_exo_subm = ()
     
+    global lsinf1252_active_hours
+    lsinf1252_active_hours = ()
+    
+    # variables globales utilisées pour les options de l'utilisateur
+    global covid  # covid = True -> onglet covid affiché dans le menu
+    covid = 'False'
+    
+    global helpMessage  # help = True -> les messages d'infos sont affichés par défaut
+    helpMessage = 'True'
+    
+    global theme  # le theme -> par défaut ce sera le theme1
+    theme = 'blue'
+    
+    global modif_time  # pour les options, l'heure de modification
+    modif_time = "00:00:00"
+    
+    global calendar  # calendar = True -> les formulaires utilisent le calendrier
+    calendar = 'False'
     
     
-    # variables globales utilisées pour les options de l'utilisateur.
-    
-    # covid = True -> onglet covid affiché dans le menu
-    global covid
-    covid = True
-    
-
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-    
-    # page principale
+    # page principale (HOME)
     @app.route('/')
     def index():
         
-        return render_template('index.html', covid = covid)
+        return render_template('index.html', covid = covid, helpMessage = helpMessage, theme = theme)
     
-    # page d'options
+    
+    # page d'options (OPTIONS)
     @app.route('/options')
     def options():
         
+        subject = ""
+        
+        if request.args.get('subject') is not None:
+            subject = request.args.get('subject')
+        
         global covid
+        old_covid = covid
         
         if request.args.get('covid') is not None:
             covid = request.args.get('covid')
+            
+        global helpMessage
+        old_helpMessage = helpMessage
         
-        return render_template('options.html', covid = covid)
+        if request.args.get('helpMessage') is not None:
+            helpMessage = request.args.get('helpMessage')
+            
+        global theme
+        old_theme = theme
+        
+        if request.args.get('theme') is not None:
+            theme = request.args.get('theme')
+            
+        global calendar
+        old_calendar = calendar
+        
+        if request.args.get('calendar') is not None:
+            calendar = request.args.get('calendar')
+            
+        modif = 'False'
+        
+        if request.args.get('modif') is not None:
+            modif = request.args.get('modif')
+        
+        global modif_time
+        if helpMessage != old_helpMessage or covid != old_covid or calendar != old_calendar:  # juste un test pour pas que l'heure s'actualise en raffraichissant la page
+            modif_time = datetime.datetime.now().strftime("%H:%M:%S")
+        
+        return render_template('options.html', covid = covid, helpMessage = helpMessage, theme = theme, calendar = calendar,
+                               modif = modif, modif_time = modif_time, subject = subject)
 
-    #premier graphique sur le covid19
+
+    # page du covid19 (À ignorer pour l'évaluation)
     @app.route('/graph0')
     def graph_covid():
         fileCSV = open('data-covid/total_cases.csv','r')
@@ -90,75 +138,13 @@ def create_app(test_config=None):
         
         return render_template('graphs/graph.html', type = graphique, labels = str(liste_pays), data = str(liste_cas_last_day),
         
-                               covid = covid)
+                               covid = covid, theme = theme)
     
     
-    @app.route('/moypyt')
-    def moyennepyt():
-         # Accès à la base de données
-        conn = sqlite3.connect('data-inginious/inginious.sqlite')
-        
-        # Le curseur permettra l'envoi des commandes SQL
-        cursor = conn.cursor()
-        listecours=[]
-        liste_exo=[]
-        listemoyenne=[]
-        for row in cursor.execute("SELECT DISTINCT(course) FROM submissions"):  
-            listecours.append(row[0])
-        for row in cursor.execute("SELECT DISTINCT(task) FROM submissions WHERE course ='LSINF1101-PYTHON'"):
-            liste_exo.append(row[0])
-        x=0
-        for i in liste_exo:
-            for row in cursor.execute("SELECT avg(grade) FROM submissions WHERE task='{}'".format(i)):
-                listemoyenne.append(round(row[0],2))
-        return render_template('graphs/graph_moypy.html', titre = "Moyenne des exercices pour le cours LSINF1101", type = 'bar', labels = liste_exo, data =listemoyenne)
-        conn.close()
-    
-    
-    @app.route('/moylepl1402')
-    def moyennelepl():
-         # Accès à la base de données
-        conn = sqlite3.connect('data-inginious/inginious.sqlite')
-        
-        # Le curseur permettra l'envoi des commandes SQL
-        cursor = conn.cursor()
-        listecours=[]
-        liste_exo=[]
-        listemoyenne=[]
-        for row in cursor.execute("SELECT DISTINCT(course) FROM submissions"):  
-            listecours.append(row[0])
-        for row in cursor.execute("SELECT DISTINCT(task) FROM submissions WHERE course ='LEPL1402'"):
-            liste_exo.append(row[0])
-        x=0
-        for i in liste_exo:
-            for row in cursor.execute("SELECT avg(grade) FROM submissions WHERE task='{}'".format(i)):
-                listemoyenne.append(round(row[0],2))
-        return render_template('graphs/graph_moylepl.html', titre = "Moyenne des exercices pour le cours LEPL1402", type = 'bar', labels = liste_exo, data =listemoyenne)
-        conn.close()
-    
-    
-    @app.route('/moyennelsinf')
-    def moyennelsinf():
-        conn=sqlite3.connect('data-inginious/inginious.sqlite')
-        cursor=conn.cursor()
-        listecours=[]
-        liste_exo=[]
-        listemoyenne=[]
-        for row in cursor.execute("SELECT DISTINCT(course) FROM submissions"):  
-            listecours.append(row[0])
-        for row in cursor.execute("SELECT DISTINCT(task) FROM submissions WHERE course ='LSINF1252'"):
-            liste_exo.append(row[0])
-        x=0
-        for i in liste_exo:
-            for row in cursor.execute("SELECT avg(grade) FROM submissions WHERE task='{}'".format(i)):
-                listemoyenne.append(round(row[0],2))
-        return render_template('graphs/graph_moylsinf.html', titre = "Moyenne des exercices pour le cours LSINF1252", type = 'bar', labels = liste_exo, data =listemoyenne)
-        conn.close()
-    
-    
-    def submissions_by_dates(course, exercise):
+    def submissions_by_dates(course, exercise=None):
         """
-        pre  : le nom d'un cours (string)
+        pre  : course -> le nom d'un cours (string)
+               exercise -> le nom d'un exercice, None par défaut (string)
         post : un tuple contenant:
                    0: 1e tuple: 0: 1e tuple: 0- une liste avec les dates de toutes les soumissions (PAR JOUR)
                                              1- une liste avec les nombres de soumissions correspondant aux dates de la première liste (PAR JOUR)
@@ -307,6 +293,36 @@ def create_app(test_config=None):
         
         for i in range(len(user_nbr)):
             pourcentage.append(round((user_nbr_valid[i]/user_nbr[i])*100, 2))
+        
+        if 'percentage' in sort:
+            pourcentage, tasks, user_nbr_valid, user_nbr = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid, user_nbr))))
+        
+        elif 'tried' in sort:
+            user_nbr, pourcentage, tasks, user_nbr_valid = (list(t) for t in zip(*sorted(zip(user_nbr, pourcentage, tasks, user_nbr_valid))))
+        
+        elif 'successes' in sort:
+            user_nbr_valid, user_nbr, pourcentage, tasks = (list(t) for t in zip(*sorted(zip(user_nbr_valid, user_nbr, pourcentage, tasks))))
+        
+        if 'reverse' in sort:
+            pourcentage.reverse()
+            tasks.reverse()
+            user_nbr_valid.reverse()
+            user_nbr.reverse()
+        
+        return ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
+    
+    
+    # TO DO - n'est pas encore utilisée
+    def sort_exercices(sort, tasks, user_nbr, tasks_valid, user_nbr_valid, pourcentage):
+        """
+        pre  : le nom d'un cours (string)
+        post : un tuple contenant:
+                   0: 1e tuple: 0- une liste avec le nom des tasks (strings)
+                                1- une liste avec les nombres de soumissions correspondant aux dates de la première liste (PAR JOUR)
+                   1: 2e tuple: 0- une liste avec le nom des tasks validées (strings)
+                                1- une liste avec les nombres de soumissions réussies correspondant aux dates de la première liste (PAR MOIS)
+                   2: pourcentage: une liste avec le pourcentage d'étudiants ayant réussis les tâches
+        """
         
         if 'percentage' in sort:
             pourcentage, tasks, user_nbr_valid, user_nbr = (list(t) for t in zip(*sorted(zip(pourcentage, tasks, user_nbr_valid, user_nbr))))
@@ -555,6 +571,43 @@ def create_app(test_config=None):
         return (listelabel, listedatas)
     
     
+    def active_hours(course):
+        """
+        pre  : le nom d'un cours (string)
+        post : un tuple dont le 1er élément est une liste des heures de la journée (de 00 à 23)
+                             le 2em élément est une liste de pourcentages correspondants aux heures de la 1ere liste
+        """
+        
+        # Accès à la base de données
+        conn = sqlite3.connect('data-inginious/inginious.sqlite')
+        
+        # Le curseur permettra l'envoi des commandes SQL
+        cursor = conn.cursor()
+        
+        # liste avec le nombre de soumissions pour chaque heure, subm_nbr[x] = nombre de soumissions à l'heure 'x'
+        subm_nbr = []
+        
+        for i in range(24):
+            if i < 10:
+                x = "0"+str(i)
+            else:
+                x = str(i)
+            for row in cursor.execute("SELECT count(*) from submissions WHERE course = '{}' AND substr(submitted_on,12,2) = '{}' ".format(course, x)):
+                subm_nbr.append(row[0])
+        
+        # Toujours fermer la connexion quand elle n'est plus utile
+        conn.close()
+        
+        subm_hours = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
+                      '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+        
+        total_subm = sum(subm_nbr)
+        subm_perc = []
+        for i in subm_nbr:
+            subm_perc.append(round((i/total_subm)*100, 2))
+        
+        return (subm_hours, subm_perc)
+    
     @app.route('/lsinf1101')
     def lsinf1101():
         
@@ -568,7 +621,7 @@ def create_app(test_config=None):
         global lsinf1101_data
         
         if len(lsinf1101_data) == 0:
-            lsinf1101_data = submissions_by_dates('LSINF1101-PYTHON', None)
+            lsinf1101_data = submissions_by_dates('LSINF1101-PYTHON')
         
         #######
         # courbe soumissions par jour
@@ -583,11 +636,13 @@ def create_app(test_config=None):
         subm_nbr_valid = lsinf1101_data[0][1][1]
         
         # graphique par defaut (courbe soumissions par jour)
-        titre_subm = 'Soumissions'
+        titre_subm = 'Soumissions par jour'
         type_subm = 'line'  # le type de graphique
         
         min = subm_dates[0]
         max = subm_dates[-1]
+        real_min = min
+        real_max = max
         
         if request.args.get('min') is not None:
             min = request.args.get('min')
@@ -673,7 +728,7 @@ def create_app(test_config=None):
         # graph des pourcentage de soumissions valides par exercices
         #######
         
-        titre_exo_subm = 'Soumissions Exercices'
+        titre_exo_subm = 'Exercices les plus et moins validés'
         type_exo_subm = 'bar'
         exo_subm_data = []
         exo_subm_labels = []
@@ -686,6 +741,24 @@ def create_app(test_config=None):
                     lsinf1101_exo_subm = exercise_submissions('LSINF1101-PYTHON')
                 exo_subm_data = lsinf1101_exo_subm[1]
                 exo_subm_labels = lsinf1101_exo_subm[0]
+        
+        #######
+        # graph des heures d'activité
+        #######
+        
+        titre_active_hours = "Heures d'activité"
+        type_active_hours = 'bar'
+        active_hours_data = []  # le % de soumissions
+        active_hours_labels = []  # les heures
+        
+        if request.args.get('main') is not None:
+            main = request.args.get('main')
+            if main == 'active_hours':
+                global lsinf1101_active_hours
+                if len(lsinf1101_active_hours) == 0:
+                    lsinf1101_active_hours = active_hours('LSINF1101-PYTHON')
+                active_hours_data = lsinf1101_active_hours[1]
+                active_hours_labels = lsinf1101_active_hours[0]
         
         #######
         # GET main
@@ -705,11 +778,13 @@ def create_app(test_config=None):
             titre_graph = titre_results
         elif main == 'exercices_subm':  # graph des pourcentage de soumissions valides par exercices
             titre_graph = titre_exo_subm
+        elif main == 'active_hours':  # graph des pourcentage de soumissions valides par exercices
+            titre_graph = titre_active_hours
         
         return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
-                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit,
+                               min = min, max = max, form_min = form_min, form_max = form_max, real_min = real_min, real_max = real_max, unit = unit,
                                
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
@@ -718,7 +793,9 @@ def create_app(test_config=None):
                                
                                titre_exo_subm = titre_exo_subm, type_exo_subm = type_exo_subm, exo_subm_data = exo_subm_data, exo_subm_labels = exo_subm_labels,
                                
-                               covid = covid)
+                               titre_active_hours = titre_active_hours, type_active_hours = type_active_hours, active_hours_data = active_hours_data, active_hours_labels = active_hours_labels,
+                               
+                               covid = covid, helpMessage = helpMessage, theme = theme, calendar = calendar)
     
     
     @app.route('/lsinf1101/exercices_list')
@@ -752,7 +829,7 @@ def create_app(test_config=None):
         subm_nbr_valid = lsinf1101_data[0][1][1]
         
         # graphique par defaut (courbe soumissions par jour)
-        titre_subm = 'Soumissions'
+        titre_subm = 'Soumissions par jour'
         type_subm = 'line'  # le type de graphique
         
         if len(subm_dates) > 0:
@@ -761,6 +838,9 @@ def create_app(test_config=None):
         else:  # des valeurs bidon
             min = '2018-01-01'
             max = '2020-06-01'
+        
+        real_min = min
+        real_max = max
             
         if request.args.get('min') is not None:
             min = request.args.get('min')
@@ -882,6 +962,8 @@ def create_app(test_config=None):
         else:  # des valeurs bidon
             min_S = '2018-01-01'
             max_S = '2020-06-01'
+        real_min_S = min_S
+        real_max_S = max_S
             
         if request.args.get('min_S') is not None:
             min_S = request.args.get('min_S')
@@ -961,7 +1043,7 @@ def create_app(test_config=None):
         return render_template('graphs/graph_1-exercices-list.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
-                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit,
+                               min = min, max = max, form_min = form_min, form_max = form_max, real_min = real_min, real_max = real_max, unit = unit,
                                
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
@@ -971,11 +1053,11 @@ def create_app(test_config=None):
                                titre_successes = titre_successes, data_successes = data_successes, labels_successes = labels_successes, type_successes = type_successes, datatypeS = datatypeS,
                                
                                titre_successesByTime = titre_successesByTime, type_successesByTime = type_successesByTime, dates_S = successes_dates, data_S = successes_nbr_cumulative,
-                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, unit_S = unit_S,
+                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, real_min_S = real_min_S, real_max_S = real_max_S, unit_S = unit_S,
                                
                                task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort, search = search,
                                
-                               covid = covid)
+                               covid = covid, helpMessage = helpMessage, theme = theme, calendar = calendar)
     
     
     @app.route('/lepl1402')
@@ -991,7 +1073,7 @@ def create_app(test_config=None):
         global lepl1402_data
         
         if len(lepl1402_data) == 0:
-            lepl1402_data = submissions_by_dates('LEPL1402', None)
+            lepl1402_data = submissions_by_dates('LEPL1402')
         
         #######
         # courbe soumissions par jour
@@ -1006,11 +1088,13 @@ def create_app(test_config=None):
         subm_nbr_valid = lepl1402_data[0][1][1]
         
         # graphique par defaut (courbe soumissions par jour)
-        titre_subm = 'Soumissions'
+        titre_subm = 'Soumissions par jour'
         type_subm = 'line'  # le type de graphique
         
         min = subm_dates[0]
         max = subm_dates[-1]
+        real_min = min
+        real_max = max
         
         if request.args.get('min') is not None:
             min = request.args.get('min')
@@ -1096,7 +1180,7 @@ def create_app(test_config=None):
         # graph des pourcentage de soumissions valides par exercices
         #######
         
-        titre_exo_subm = 'Soumissions Exercices'
+        titre_exo_subm = 'Exercices les plus et moins validés'
         type_exo_subm = 'bar'
         exo_subm_data = []
         exo_subm_labels = []
@@ -1109,6 +1193,24 @@ def create_app(test_config=None):
                     lepl1402_exo_subm = exercise_submissions('LEPL1402')
                 exo_subm_data = lepl1402_exo_subm[1]
                 exo_subm_labels = lepl1402_exo_subm[0]
+        
+        #######
+        # graph des heures d'activité
+        #######
+        
+        titre_active_hours = "Heures d'activité"
+        type_active_hours = 'bar'
+        active_hours_data = []  # le % de soumissions
+        active_hours_labels = []  # les heures
+        
+        if request.args.get('main') is not None:
+            main = request.args.get('main')
+            if main == 'active_hours':
+                global lepl1402_active_hours
+                if len(lepl1402_active_hours) == 0:
+                    lepl1402_active_hours = active_hours('LEPL1402')
+                active_hours_data = lepl1402_active_hours[1]
+                active_hours_labels = lepl1402_active_hours[0]
         
         #######
         # GET main
@@ -1128,11 +1230,13 @@ def create_app(test_config=None):
             titre_graph = titre_results
         elif main == 'exercices_subm':  # graph des pourcentage de soumissions valides par exercices
             titre_graph = titre_exo_subm
+        elif main == 'active_hours':  # graph des pourcentage de soumissions valides par exercices
+            titre_graph = titre_active_hours
         
         return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
-                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit,
+                               min = min, max = max, form_min = form_min, form_max = form_max, real_min = real_min, real_max = real_max, unit = unit,
                                
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
@@ -1141,7 +1245,9 @@ def create_app(test_config=None):
                                
                                titre_exo_subm = titre_exo_subm, type_exo_subm = type_exo_subm, exo_subm_data = exo_subm_data, exo_subm_labels = exo_subm_labels,
                                
-                               covid = covid)
+                               titre_active_hours = titre_active_hours, type_active_hours = type_active_hours, active_hours_data = active_hours_data, active_hours_labels = active_hours_labels,
+                               
+                               covid = covid, helpMessage = helpMessage, theme = theme, calendar = calendar)
     
     
     @app.route('/lepl1402/exercices_list')
@@ -1175,7 +1281,7 @@ def create_app(test_config=None):
         subm_nbr_valid = lepl1402_data[0][1][1]
         
         # graphique par defaut (courbe soumissions par jour)
-        titre_subm = 'Soumissions'
+        titre_subm = 'Soumissions par jour'
         type_subm = 'line'  # le type de graphique
         
         if len(subm_dates) > 0:
@@ -1184,6 +1290,8 @@ def create_app(test_config=None):
         else:  # des valeurs bidon
             min = '2018-01-01'
             max = '2020-06-01'
+        real_min = min
+        real_max = max
             
         if request.args.get('min') is not None:
             min = request.args.get('min')
@@ -1305,6 +1413,8 @@ def create_app(test_config=None):
         else:  # des valeurs bidon
             min_S = '2018-01-01'
             max_S = '2020-06-01'
+        real_min_S = min_S
+        real_max_S = max_S
             
         if request.args.get('min_S') is not None:
             min_S = request.args.get('min_S')
@@ -1384,7 +1494,7 @@ def create_app(test_config=None):
         return render_template('graphs/graph_1-exercices-list.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
-                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit,
+                               min = min, max = max, form_min = form_min, form_max = form_max, real_min = real_min, real_max = real_max, unit = unit,
                                
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
@@ -1394,11 +1504,11 @@ def create_app(test_config=None):
                                titre_successes = titre_successes, data_successes = data_successes, labels_successes = labels_successes, type_successes = type_successes, datatypeS = datatypeS,
                                
                                titre_successesByTime = titre_successesByTime, type_successesByTime = type_successesByTime, dates_S = successes_dates, data_S = successes_nbr_cumulative,
-                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, unit_S = unit_S,
+                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, real_min_S = real_min_S, real_max_S = real_max_S, unit_S = unit_S,
                                
                                task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort, search = search,
                                
-                               covid = covid)
+                               covid = covid, helpMessage = helpMessage, theme = theme, calendar = calendar)
     
     
     @app.route('/lsinf1252')
@@ -1414,7 +1524,7 @@ def create_app(test_config=None):
         global lsinf1252_data
         
         if len(lsinf1252_data) == 0:
-            lsinf1252_data = submissions_by_dates('LSINF1252', None)
+            lsinf1252_data = submissions_by_dates('LSINF1252')
         
         #######
         # courbe soumissions par jour
@@ -1429,11 +1539,13 @@ def create_app(test_config=None):
         subm_nbr_valid = lsinf1252_data[0][1][1]
         
         # graphique par defaut (courbe soumissions par jour)
-        titre_subm = 'Soumissions'
+        titre_subm = 'Soumissions par jour'
         type_subm = 'line'  # le type de graphique
         
         min = subm_dates[0]
         max = subm_dates[-1]
+        real_min = min
+        real_max = max
         
         if request.args.get('min') is not None:
             min = request.args.get('min')
@@ -1519,7 +1631,7 @@ def create_app(test_config=None):
         # graph des pourcentage de soumissions valides par exercices
         #######
         
-        titre_exo_subm = 'Soumissions Exercices'
+        titre_exo_subm = 'Exercices les plus et moins validés'
         type_exo_subm = 'bar'
         exo_subm_data = []
         exo_subm_labels = []
@@ -1532,6 +1644,24 @@ def create_app(test_config=None):
                     lsinf1252_exo_subm = exercise_submissions('LSINF1252')
                 exo_subm_data = lsinf1252_exo_subm[1]
                 exo_subm_labels = lsinf1252_exo_subm[0]
+        
+        #######
+        # graph des heures d'activité
+        #######
+        
+        titre_active_hours = "Heures d'activité"
+        type_active_hours = 'bar'
+        active_hours_data = []  # le % de soumissions
+        active_hours_labels = []  # les heures
+        
+        if request.args.get('main') is not None:
+            main = request.args.get('main')
+            if main == 'active_hours':
+                global lsinf1252_active_hours
+                if len(lsinf1252_active_hours) == 0:
+                    lsinf1252_active_hours = active_hours('LSINF1252')
+                active_hours_data = lsinf1252_active_hours[1]
+                active_hours_labels = lsinf1252_active_hours[0]
         
         #######
         # GET main
@@ -1551,11 +1681,13 @@ def create_app(test_config=None):
             titre_graph = titre_results
         elif main == 'exercices_subm':  # graph des pourcentage de soumissions valides par exercices
             titre_graph = titre_exo_subm
+        elif main == 'active_hours':  # graph des pourcentage de soumissions valides par exercices
+            titre_graph = titre_active_hours
         
         return render_template('graphs/graph_1.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
-                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit,
+                               min = min, max = max, form_min = form_min, form_max = form_max, real_min = real_min, real_max = real_max, unit = unit,
                                
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
@@ -1564,7 +1696,9 @@ def create_app(test_config=None):
                                
                                titre_exo_subm = titre_exo_subm, type_exo_subm = type_exo_subm, exo_subm_data = exo_subm_data, exo_subm_labels = exo_subm_labels,
                                
-                               covid = covid)
+                               titre_active_hours = titre_active_hours, type_active_hours = type_active_hours, active_hours_data = active_hours_data, active_hours_labels = active_hours_labels,
+                               
+                               covid = covid, helpMessage = helpMessage, theme = theme, calendar = calendar)
     
     
     @app.route('/lsinf1252/exercices_list')
@@ -1598,7 +1732,7 @@ def create_app(test_config=None):
         subm_nbr_valid = lsinf1252_data[0][1][1]
         
         # graphique par defaut (courbe soumissions par jour)
-        titre_subm = 'Soumissions'
+        titre_subm = 'Soumissions par jour'
         type_subm = 'line'  # le type de graphique
         
         if len(subm_dates) > 0:
@@ -1607,6 +1741,8 @@ def create_app(test_config=None):
         else:  # des valeurs bidon
             min = '2018-01-01'
             max = '2020-06-01'
+        real_min = min
+        real_max = max
             
         if request.args.get('min') is not None:
             min = request.args.get('min')
@@ -1728,6 +1864,8 @@ def create_app(test_config=None):
         else:  # des valeurs bidon
             min_S = '2018-01-01'
             max_S = '2020-06-01'
+        real_min_S = min_S
+        real_max_S = max_S
             
         if request.args.get('min_S') is not None:
             min_S = request.args.get('min_S')
@@ -1807,7 +1945,7 @@ def create_app(test_config=None):
         return render_template('graphs/graph_1-exercices-list.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
         
                                titre_subm = titre_subm, type_subm = type_subm, dates = subm_dates, data = subm_nbr, datesV = subm_dates_valid, dataV = subm_nbr_valid,
-                               min = min, max = max, form_min = form_min, form_max = form_max, unit = unit,
+                               min = min, max = max, form_min = form_min, form_max = form_max, real_min = real_min, real_max = real_max, unit = unit,
                                
                                titre_subm_M = titre_subm_M, type_subm_M = type_subm_M, dates_M = subm_dates_M, data_M = subm_nbr_M, datesV_M = subm_dates_M_valid, dataV_M = subm_nbr_M_valid,
                                min_M = min_M, max_M = max_M, form_min_M = form_min_M, form_max_M = form_max_M, unit_M = unit_M,
@@ -1817,11 +1955,11 @@ def create_app(test_config=None):
                                titre_successes = titre_successes, data_successes = data_successes, labels_successes = labels_successes, type_successes = type_successes, datatypeS = datatypeS,
                                
                                titre_successesByTime = titre_successesByTime, type_successesByTime = type_successesByTime, dates_S = successes_dates, data_S = successes_nbr_cumulative,
-                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, unit_S = unit_S,
+                               min_S = min_S, max_S = max_S, form_min_S = form_min_S, form_max_S = form_max_S, real_min_S = real_min_S, real_max_S = real_max_S, unit_S = unit_S,
                                
                                task = task, tasks_name = tasks_name, tasks_tried = tasks_tried, tasks_succeeded = tasks_succeeded, percentage = percentage, sort = sort, search = search,
                                
-                               covid = covid)
+                               covid = covid, helpMessage = helpMessage, theme = theme, calendar = calendar)
     
     
     return app

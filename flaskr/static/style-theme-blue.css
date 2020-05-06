@@ -1,0 +1,58 @@
+/* a */
+
+.link-a{  /* 1ère sorte de lien */
+    font-weight: bold;
+    color: #1c62ae;
+}
+
+.link-a:visited{
+    color: #1c62ae;
+}
+
+.link-a:focus{
+    color: #1c62ae;
+}
+
+.link-a:hover{
+    color: #044c9c;
+}
+
+
+
+/* buttons */
+
+.button-a{
+    background-color: #1c62ae;
+    color: white;
+}
+
+.button-a:visited {
+    background-color: #1c62ae;
+    color: white;
+}
+
+.button-a:focus {
+    background-color: #1c62ae;
+    color: white;
+}
+
+.button-a:hover{
+    background-color: #044c9c;
+    color: white;
+}
+
+
+
+/* menu-options */
+
+.menu-option{
+	color: lightblue;
+}
+
+
+
+/* Hover for canvas, inspiré de: https://www.w3schools.com/howto/howto_css_cards.asp */
+
+.overlay {
+  background-color: #1c62ae;
+}

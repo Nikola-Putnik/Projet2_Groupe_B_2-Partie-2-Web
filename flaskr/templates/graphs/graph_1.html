@@ -19,17 +19,17 @@
     <section class="main">
         <div class="grid-container">
 		
-            <h1 class="page-title">{{ titre }}</h1>
+            <h1 class="page-title">{{ titre }}</h1> 
             
     		<div class="grid-x">
     			<div class="large-12 cell">
-                    <a class="button large button-grey" {% if main == 'subm' %}style="background-color: black;"{% endif %} href="/{{ cours }}">Soumissions</a>
+                    <a class="button large button-grey" {% if main == 'subm' %}style="background-color: black;"{% endif %} href="/{{ cours }}">Soumissions par Jour</a>
                     <a class="button large button-grey" {% if main == 'month' %}style="background-color: black;"{% endif %} href="?main=month">Soumissions par Mois</a>
 		            <a class="button large button-grey" {% if main == 'results' %}style="background-color: black;"{% endif %} href="?main=results">Résultats</a>
 					<!--
                     <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
 					-->
-                    <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list">Exercices</a>
+                    <a class="button large button-a" {% if theme == 'mono' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list">Exercices</a>
 				    
 					<!-- Titre du graphique -->
 					<h2 class="titre-1"><b>{{ titre_graph }}</b></h2>
@@ -37,28 +37,53 @@
 					{% if main == 'subm' %}
 					    
 					    <!-- Graphique des soumissions par jour (courbe) -->
-						<p class="p-post">Nombre de soumissions effectuées par temps.</p>
+						<p class="p-post">Nombre de soumissions effectuées par jour.</p>
 					    <!-- Formulaire d'options -->
 						<form method="GET">
 					        <div class="grid-x align-middle">
+								<input type="submit" style="position: absolute; top: -10000px" />
 								<div class="cell small-12 medium-11 large-11">
 								    <div class="grid-x align-middle">
+									
 									    {% if size == 'default' %}
 					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
-                                        <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
+										
+										<div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
-                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_min }}" name="min" /></div>
+                                        <div class="cell small-6 medium-3 large-3">
+										    {% if calendar == 'True' %}
+										    <div id="position" class="reset-this">
+		                                        <input class="form-input date-input-native" id="date1" type="text" name="min" min="{{ real_min }}" max="{{ real_max }}" value="{{ form_min }}">
+		                                        <input class="form-input date-input-fallback" id="alt1" type="text" value="{{ form_min }}">
+		                                        <div id="picker1" hidden></div>
+	                                        </div>
+											{% else %}
+											<input class="form-input" type="text" value="{{ form_min }}" name="min" />
+											{% endif %}
+										</div>
                                         <div class="cell large-1 show-for-large"><p class="form-label">Fin :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">À</p></div>
-                                        <div class="cell small-6 medium-3 large-3"><input class="form-input" type="text" value="{{ form_max }}" name="max" /></div>
+                                        <div class="cell small-6 medium-3 large-3">
+										    {% if calendar == 'True' %}
+										    <div id="position" class="reset-this">
+		                                        <input class="form-input date-input-native" id="date2" type="text" name="max" min="{{ real_min }}" max="{{ real_max }}" value="{{ form_max }}">
+		                                        <input class="form-input date-input-fallback" id="alt2" type="text" value="{{ form_max }}">
+		                                        <div id="picker2" hidden></div>
+	                                        </div>
+											{% else %}
+											<input class="form-input" type="text" value="{{ form_max }}" name="max" />
+											{% endif %}
+										</div>
+										
 					        	        <div class="cell medium-1 large-2 show-for-medium" align="left" style="margin-left: 10px;"><input type="submit" value="Valider" class="button button-a" /></div>
+										
 									</div>
 								</div>
 								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+								<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -67,13 +92,9 @@
 						
 					    {% if size == 'default' %}
 					    <!-- Graphique en taille normale -->
-						<div class="grid-x">
-						<div class="cell small-12">
                         <div class="callout post" style="padding-top: 0px;">
                             <canvas id="subm"></canvas>
     			        </div>
-						</div>
-						</div>
 						
 					    {% endif %}
 					
@@ -85,12 +106,13 @@
 						<form method="GET">
 					        <div class="grid-x align-middle">
 						    	<input type="hidden" name="main" value="month" />
+								<input type="submit" style="position: absolute; top: -10000px" />
 								<div class="cell small-12 medium-11 large-11">
 								    <div class="grid-x align-middle">
 									    {% if size == 'default' %}
 					                    <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div class="cell medium-2 large-1 show-for-medium"><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
                                         <div class="cell large-1 show-for-large"><p class="form-label">Début :</p></div>
                                         <div class="cell medium-1 show-for-medium-only"><p class="form-label">De</p></div>
@@ -102,7 +124,7 @@
 									</div>
 								</div>
 								<div class="cell small-10 show-for-small-only" align="left"><input type="submit" value="Valider" class="button button-a" /></div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -119,7 +141,7 @@
 					{% elif main == 'results' %}
 					
 					    <!-- Graphique des résultats -->
-						<p class="p-post">Résultats de l'ensemble des soumissions du cours.</p>
+						<p class="p-post">Comparatif des résultats de l'ensemble des soumissions du cours.</p>
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle">
@@ -129,7 +151,7 @@
 					                    {% if size == 'default' %}
 					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
 								        {% if datatype == 'nombre' %}
 					                    <div style="margin-left:10px"><button type="submit" value="pourcentage" class="button button-a" name="datatype" id="pourcentage" />Pourcentage</button></div>
@@ -138,7 +160,7 @@
 					        	        {% endif %}
 								    </div>
 								</div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -165,11 +187,11 @@
 					                    {% if size == 'default' %}
 					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
-					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Diminuer</button></div>
+					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
 					        	        {% endif %}
 								    </div>
 								</div>
-					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Help!</button></div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
 				            </div>
                         </form>
 						
@@ -180,6 +202,37 @@
 						<!-- Graphique en taille normale -->
 					    <div class="callout post" style="padding-top: 0px;">
                             <canvas id="exercices_subm"></canvas>
+    			        </div>
+					    {% endif %}
+					
+					{% elif main == 'active_hours' %}
+					
+					    <!-- Graphique des résultats -->
+						<p class="p-post">Les heures pendant lesquelles les soumissions sont effectuées, pourcentages par rapport au total de soumissions du cours.</p>
+					    <!-- Formulaire d'options -->
+                        <form method="GET">
+					        <div class="grid-x align-middle">
+							    <div class="cell small-10 medium-11 large-11">
+								    <div class="grid-x align-middle">
+						    	        <input type="hidden" name="main" value="active_hours" />
+					                    {% if size == 'default' %}
+					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
+					        	        {% elif size == 'large' %}
+					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
+					        	        {% endif %}
+								    </div>
+								</div>
+					        	<div class="cell small-2 medium-1 large-1" align="right"><button type="button" class="button button-help" data-toggle="help">Infos</button></div>
+				            </div>
+                        </form>
+						
+						<!-- le callout d'aide -->
+						{% include 'help.html' %}
+					    
+					    {% if size == 'default' %}
+						<!-- Graphique en taille normale -->
+					    <div class="callout post" style="padding-top: 0px;">
+                            <canvas id="active_hours"></canvas>
     			        </div>
 					    {% endif %}
 					
@@ -202,48 +255,112 @@
 		    <div class="grid-x grid-margin-x">
 				{% if main != 'subm' %}
 				<div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3">
+						    <b>{{ titre_subm }}</b>
+							<span class="tooltiptext show-for-large">
+							    Nombre de soumissions effectuées par jour.
+							</span>
+						</div>
+					</h3>
 				    <a href="/{{ cours }}">
-				        <div class="callout post">
-				            <canvas id="subm"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="subm"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
 			    {% if main != 'month' %}
 			    <div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_subm_M }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3">
+						    <b>{{ titre_subm_M }}</b>
+							<span class="tooltiptext show-for-large">
+							    Nombre de soumissions effectuées par mois.
+							</span>
+						</div>
+					</h3>
 				    <a href="?main=month">
-				        <div class="callout post">
-				            <canvas id="month"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="month"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
 				{% if main != 'results' %}
 				<div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_results }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3short">
+						    <b>{{ titre_results }}</b>
+							<span class="tooltiptextshort show-for-large">
+							    Comparatif des résultats de l'ensemble des soumissions du cours.
+							</span>
+						</div>
+					</h3>
 				    <a href="?main=results">
-				        <div class="callout post">
-				            <canvas id="results"></canvas>
-				        </div>
+					    <div class="tooltipw3canvas" style="width: 100%;">
+				            <div class="callout post">
+				                <canvas id="results"></canvas>
+				            </div>
+							<span class="tooltiptextcanvas show-for-large">
+							    Cliquez pour agrandir
+							</span>
+					    </div>
 					</a>
 				</div>
 				{% endif %}
 				{% if main != 'exercices_subm' %}
 				<div class="medium-6 cell">
-				    <h3 class="titre-1" style="align: 'center'"><b>{{ titre_exo_subm + " (Non Chargé)" }}</b></h3>
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3">
+						    <b>Exercices - Top & Worst</b>
+							<span class="tooltiptext show-for-large">
+							    Moyennes des résultats des soumissions des exercices, pour les 10 meilleurs et les 10 plus mauvais.
+							</span>
+						</div>
+					</h3>
 				    <a href="?main=exercices_subm">
-				        <div class="callout post">
+				        <div class="callout post hovercanva">
 				            <canvas id="exercices_subm"></canvas>
+							<div class="overlay">
+                                <div class="text">Graphique non chargé<br/><b>cliquez pour afficher</b></div>
+                            </div>
+				        </div>
+					</a>
+				</div>
+				{% endif %}
+			    {% if main != 'active_hours' %}
+			    <div class="medium-6 cell">
+				    <h3 class="titre-1" style="align: 'center'">
+					    <div class="tooltipw3">
+						    <b>{{ titre_active_hours }}</b>
+							<span class="tooltiptext show-for-large">
+							    Comparatif des heures durant lesquelles les étudiants effectuent des soumissions.
+							</span>
+						</div>
+					</h3>
+				    <a href="?main=active_hours">
+				        <div class="callout post hovercanva">
+				            <canvas id="active_hours"></canvas>
+							<div class="overlay">
+                                <div class="text">Graphique non chargé<br/><b>cliquez pour afficher</b></div>
+                            </div>
 				        </div>
 					</a>
 				</div>
 				{% endif %}
 			</div>
 		</div>
-		
-		<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 		
     </section>
 
@@ -263,8 +380,8 @@
 			    		        
                 datasets: [{
                     label: 'Soumissions',
-                    backgroundColor: "#3e95cd",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
-                    borderColor: "#3e95cd",
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
+                    borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
@@ -274,8 +391,8 @@
                     ]
                 }, {
                     label: 'Soumissions valides',
-                    backgroundColor: "rgba(60, 186, 159, 0.5)",
-                    borderColor: "#3cba9f",
+                    backgroundColor: {% if theme == 'mono' %}'#424242',{% else %}"rgba(60, 186, 159, 0.5)",{% endif %}
+                    borderColor: {% if theme == 'mono' %}'#424242',{% else %}"#3cba9f",{% endif %}
                     data: [
                         {% for i in range(dataV| length) %}
                             { x: "{{ datesV[i] | safe }}", y: {{ dataV[i] | safe }} },
@@ -314,8 +431,8 @@
 			    		        
                 datasets: [{
                     label: 'Soumissions',
-                    backgroundColor: "#3e95cd",  // utiliser une liste si on veut plusieurs couleurs, ex: ["#3e95cd", "#8e5ea2","#3cba9f", ...]
-                    borderColor: "#3e95cd",
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
+                    borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
@@ -325,8 +442,8 @@
                     ]
                 }, {
                     label: 'Soumissions valides',
-                    backgroundColor: "#3cba9f",
-                    borderColor: "#3cba9f",
+                    backgroundColor: {% if theme == 'mono' %}'#424242',{% else %}"#3cba9f",{% endif %}
+                    borderColor: {% if theme == 'mono' %}'#424242',{% else %}"#3cba9f",{% endif %}
                     data: [
                         {% for i in range(dataV_M| length) %}
                             { x: "{{ datesV_M[i] | safe }}", y: {{ dataV_M[i] | safe }} },
@@ -361,7 +478,14 @@
                 labels: {{ labels_results[1:] | safe }},
                 datasets: [{
                     label: 'Soumissions',
-                    backgroundColor: ["#3cba9f","#3e95cd", "#8e5ea2","#e8c3b9","#c45850", "grey"],
+                    backgroundColor:
+					    {% if theme == 'red' %}
+					    ["#3cba9f","#c45850", "#8e5ea2","#e8c3b9","#3e95cd", "grey"],
+						{% elif theme == 'mono' %}
+						["#424242","grey", "dimgrey","darkgrey","silver", "lightgrey"],
+						{% else %}
+						["#3cba9f","#3e95cd", "#8e5ea2","#e8c3b9","#c45850", "grey"],
+						{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
                     data: {{ data_results[1:] | safe }}
                 }]
@@ -380,7 +504,7 @@
                 labels: {{ exo_subm_labels | safe }},
                 datasets: [{
                     label: 'Pourcentage de soumissions valides',
-                    backgroundColor: ["#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f"],
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
                     data: {{ exo_subm_data | safe }}
                 }]
 	        }
@@ -397,8 +521,44 @@
                 labels: ['exo1', 'exo2', 'exo3', 'exo4', 'exo5', 'exo6', 'exo7', 'exo8', 'exo9', 'exo10', 'exo11', 'exo12', 'exo12', 'exo14', 'exo15', 'exo16', 'exo17', 'exo18', 'exo19', 'exo20'],
                 datasets: [{
                     label: 'Pourcentage de soumissions valides',
-                    backgroundColor: ["#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#c45850","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f","#3cba9f"],
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
                     data: [4.0, 5.0, 7.1, 7.39, 7.64, 8.17, 9.61, 9.96, 11.53, 11.66, 73.92, 76.44, 78.29, 78.99, 81.77, 82.09, 84.89, 90.09, 96.7, 98.18]
+                }]
+	        }
+        });
+    </script>
+	{% endif %}
+	
+	{% if main == 'active_hours' %}
+	<script>
+	    // l'identifiant est celui du canevas
+	    var ctx = document.getElementById('active_hours').getContext('2d');
+	    // création du graphique
+	    var myChart = new Chart(ctx, {
+	        type: '{{ type_active_hours }}',   // le type du graphique
+	        data: {        // les données
+                labels: {{ active_hours_labels | safe }},
+                datasets: [{
+                    label: 'Pourcentage de soumissions',
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
+                    data: {{ active_hours_data | safe }}
+                }]
+	        }
+        });
+    </script>
+	{% else %}
+	<script>
+	    // l'identifiant est celui du canevas
+	    var ctx = document.getElementById('active_hours').getContext('2d');
+	    // création du graphique
+	    var myChart = new Chart(ctx, {
+	        type: 'bar',   // le type du graphique
+	        data: {        // les données
+                labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                datasets: [{
+                    label: 'Pourcentage de soumissions',
+                    backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
+                    data: [3.69, 1.98, 1.06, 0.53, 0.24, 0.1, 0.14, 0.16, 0.25, 1.15, 3.59, 6.12, 7.7, 7.64, 5.76, 6.94, 7.85, 7.81, 8.55, 7.94, 5.22, 4.63, 5.47, 5.48]
                 }]
 	        }
         });
