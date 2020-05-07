@@ -1,3 +1,31 @@
+>>> 07/05/2020
+
+V1.0 du projet, version remise pour Peer-Review.
+
+- Modifications proposées par notre assistant qui ont été appliquées:
+  => "Diminuer" remplacé par Réduire.
+  => Le bouton HELP! renomé en INFOS et cadres d'informations affichés par défaut.
+  => L'organisation des boutons de navigation a été repensée pour éviter toute confusion possible.
+  => On affiche des messages ("tooltips") "Cliquez pour agrandir" pour chaque petit graphique.
+  => Les graphiques non chargé ont une animation speciale qui les recouvrent lorsqu'on passe notre souris dessus.
+  => le graphique "10 top et 10 worst" n'utilise plus qu'une seule couleur, pour eviter la confusion encore une fois.
+  => Les mêmes noms ont été gardés pour la plupart des graphiques mais des tooltips ont été ajouté.
+  => des calendrier ont été intégré aux formulaires.
+- Un graphique "Heures d'activité" a été ajouté aux 3 cours.
+- L'agrandissement qui s'activait en pressant Enter dans les formulaires a été corrigé.
+- Un menu pour navigation sur mobile (ou petits écrans) a été ajouté.
+- Ajout d'explications sur la Home Page et d'un footer en bas de page.
+- Le code a été rapidement nettoyé et les fichiers inutiles déplacés dans le dossier "0-divers".
+- Utilisation de tooltips comme expliqué pour les titres et les graphiques mais aussi pour d'autres boutons.
+- La page d'options a été élargie:
+  => Option pour activer/désactiver l'affichage par défaut des cadres d'informations.
+  => Option pour activer/désactiver les calendriers.
+  => Option pour choisir un thème, parmis différentes couleurs.
+- Corrections et modifications mineures.
+- Ajout du fichier README.
+
+
+
 >>> 28/04/2020
 
 - Ajout de 2 graphiques pour les exercices: Réussites et Réussites cumulées.

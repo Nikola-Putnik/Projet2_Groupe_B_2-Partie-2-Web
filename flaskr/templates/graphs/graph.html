@@ -20,7 +20,9 @@
         <div class="grid-container">
     
             <h1 class="page-title">Nombre de cas par pays</h1>
-            
+			
+            <p class="p-post">Pourquoi avoir laissé cette page?</p>
+			
     		<div class="grid-x">
     			<div class="cell">
                     <div class="callout post" style="padding-top: 0px;">
@@ -37,7 +39,7 @@
                                     labels: {{ labels | safe }},
                                     datasets: [{
                                         label: 'cases',
-    					                backgroundColor: "darkred",  // une liste si on veut en mettre plusieurs: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", ...]
+    					                backgroundColor: "black",  // une liste si on veut en mettre plusieurs: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", ...]
                                         data: {{ data | safe }}
                                     }]
                                 }

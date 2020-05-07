@@ -127,7 +127,7 @@
                     <div class="callout post" style="padding-top: 0px;">
                         <h3 class="titre-1" style="align: 'center'"><b>Covid-19</b></h3>
                         <p class="p-post">
-						    <i>Cette partie n'est pas censée être évaluée, elle sera probablement retirée dans la version finale.</i>
+						    <i>Cette partie n'est pas censée être évaluée, elle sera probablement retirée de la version finale.</i>
 						    <br/>
 						    Vous pouvez choisir d'activer ou de désactiver l'onglet Covid-19 du menu.
 						    <br/>
@@ -141,6 +141,41 @@
 							<p class="p-post link-a" style="margin: 0px 0px 5px 0px;">[{{ modif_time }}] Les modifications ont été appliquées.</p>
 							{% endif %}
                         </p>
+                    </div>
+					
+                    <div class="callout post" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Contenu pour adultes</b></h3>
+                        <p class="p-post">
+						    <i>Notre équipe travaille actuellement sur cette nouvelle fonctionnalité.</i>
+						    <br/><br/>
+						    <b>Avertissement</b>
+							<br/>
+							Ce contenu est interdit aux mineurs d'âge. Ne cliquez que si vous êtes majeur dans votre pays.
+							<br/>
+							En cliquant sur Activer,
+							<br/>
+							&#149; Vous sortez du cadre du projet et renoncez à considérer cette partie de notre application dans votre évaluation.
+							<br/>
+							&#149; Vous acceptez de porter l'entière responsabilité de votre décision.
+							<br/>
+							&#149; Vous donnez votre consentement pour visualiser un contenu potentiellement choquant.
+							<br/>
+							&#149; Vous comprenez que nous ne vous recommandons pas d'activer cette option.
+						    <br/>
+							<a class="button large expanded button-a" data-toggle="AC" style="margin: 15px 0px 0px 0px;">Activer</a>
+						</p>
+                        <div class="callout {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %} is-hidden" data-toggler="is-hidden" id="AC" style="padding-bottom: 2px;">
+                            <div class="grid-x align-middle">
+                        		
+                        		<div class="cell small-12">
+                                    <p>
+                                	    Après discussion au sein de l'équipe, nous avons préféré désactiver le contenu pour adultes pour l'instant.
+                                    </p>
+                                </div>
+                        		
+                            </div>
+                        </div>
+                        
                     </div>
 					
                 </div>

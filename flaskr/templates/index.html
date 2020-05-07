@@ -17,9 +17,25 @@
 						    Bienvenue sur l'<b>application Flask du groupe B2</b>.
 						    <br/>
                             Le site est actuellement en <b>version BETA</b>.
+							<br/>
+							Avant de commencer à utiliser notre application, <b>pourriez vous prendre le temps de lire les encadrés
+							{% if theme == 'blue' %}bleus{% elif theme == 'red' %}rouges{% elif theme == 'green' %}verts{% elif theme == 'mono' %}gris{% endif %}</b>.
                         </p>
                     </div>
-                    <div class="callout post {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% elif theme == 'contrast' %}warning{% endif %}" style="padding-top: 0px;">
+					
+                    <div class="callout post {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% endif %}" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Affichage</b></h3>
+                        <p class="p-post">
+						    Notre site a été pensé pour être affiché sur un écran "large".<br/>
+							Nous entendons par là: une fenêtre ouverte sur toute la largeur d'un écran d'ordinateur.
+							<br/><br/>
+							Votre écran est considéré comme "large" à partir du moment où vous pouvez voir le bouton HOME affiché à coté de notre logo sur le menu.
+							<br/><br/>
+							Le site s'adaptera à la taille d'écrans plus petits mais certaines fonctionnalités ne seront pas optimales ou seront tout simplement absentes.
+                        </p>
+                    </div>
+					
+                    <div class="callout post {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% endif %}" style="padding-top: 0px;">
                         <h3 class="titre-1" style="align: 'center'"><b>Cadres d'informations</b></h3>
                         <p class="p-post">
 						    Des cadres d'informations sont affichés par défaut à divers endroits.
@@ -47,6 +63,21 @@
 							Ainsi, ils ne seront affichés que si vous appuyez sur le bouton <i>Infos</i>.
                         </p>
                     </div>
+					
+                    <div class="callout post {% if theme == 'blue' %}primary{% elif theme == 'red' %}alert{% elif theme == 'green' %}success{% elif theme == 'mono' %}secondary{% endif %}" style="padding-top: 0px;">
+                        <h3 class="titre-1" style="align: 'center'"><b>Temps d'exécution</b></h3>
+                        <p class="p-post">
+						    Lorsque vous ouvrirez les pages des différents cours pour la 1ère fois, le temps de chargement risque d'être moyennement long.
+							Voire très long, selon votre ordinateur ou votre conception de ce qui est "long".
+							<br/><br/>
+							Néanmoins, une fois la page chargée, les données seront enregistrées en mémoire
+							et la plupart des graphiques s'ouvriront instantanément à partir de là.
+							<br/><br/>
+							Le site n'a pas été testé sur HDD mais nous supposons que la vitesse d'exécution est fortement influencée
+							par la vitesse du disque sur lequel les db sont placées. Par conséquent, nous recommandons, si possible, d'installer l'application sur un SSD.
+                        </p>
+                    </div>
+					
                     <div class="callout post" style="padding-top: 0px;">
                         <h3 class="titre-1" style="align: 'center'"><b>Zurb Foundation</b></h3>
                         <p class="p-post">
@@ -54,22 +85,21 @@
 							<br/>
 							Sa grande popularité, son efficacité et sa légèreté en matière de design nous ont convaincu.
 							<br/>
-							Grâce à lui, notre application bénéficie d'une structure dynamique s'adaptant à la largeur des écrans.
-							<br/>
-							Ensuite, d'un point de vue esthétique, Foundation se veut minimaliste se contentant de très faibles retouches esthétiques.
-							<br/>
-							Le design de notre site se base donc sur Foundation mais a été fortement personnalisé à presque tous les niveaux (menus, formes, angles, polices, ...).
-							<br/>
-							Pour plus d'infos, notament par rapport aux avantages techniques, nous vous invitons à visiter leur
+							Grâce à lui, notre application bénéficie notament d'une structure dynamique s'adaptant à la largeur des écrans.
+							<br/><br/>
+							Pour plus d'infos, nous vous invitons à visiter leur
 							<a href="https://get.foundation/index.html" class="link-a">site</a>.
                         </p>
                     </div>
+					
                     <div class="callout post" style="padding-top: 0px;">
                         <h3 class="titre-1" style="align: 'center'"><b>GitHub</b></h3>
                         <p class="p-post">
+						    Ce post ne concerne que l'équipe enseignante (professeur, assistants).
+						    <br/><br/>
 						    Voici le lien vers notre repository:
 							<br/>
-							<a href="https://github.com/Nikola-Putnik/Projet2_Groupe_B_2-Partie-2-Web" class="link-a">https://github.com/Nikola-Putnik/Projet2_Groupe_B_2-Partie-2-Web</a>
+							<a href="https://github.com/Nikola-Putnik/Projet2_Groupe_B_2-Partie-2-Web" class="link-a">.../Projet2_Groupe_B_2-Partie-2-Web</a>
                         </p>
                     </div>
                 </div>

@@ -3,9 +3,9 @@
 
 {% block head %}
 
-    <meta name="description" content="Une première page web">
-    <meta name="keywords" content="HTML,exemple">
-    <meta name="author" content="Jean Tartempion">
+    <meta name="description" content="Graphiques de cours">
+    <meta name="keywords" content="HTML">
+    <meta name="author" content="Groupe B2">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 
@@ -15,6 +15,14 @@
 
 
 {% block body_content %}
+
+    <!--
+	
+	PAGE CONTENANT LES GRAPHIQUES DES COURS
+	
+	La page 'graph_1-exercices-list.html' dispose de plus de commentaires et sa structure est relativement similaire à celle-ci.
+	
+    -->
 
     <section class="main">
         <div class="grid-container">
@@ -26,9 +34,6 @@
                     <a class="button large button-grey" {% if main == 'subm' %}style="background-color: black;"{% endif %} href="/{{ cours }}">Soumissions par Jour</a>
                     <a class="button large button-grey" {% if main == 'month' %}style="background-color: black;"{% endif %} href="?main=month">Soumissions par Mois</a>
 		            <a class="button large button-grey" {% if main == 'results' %}style="background-color: black;"{% endif %} href="?main=results">Résultats</a>
-					<!--
-                    <a class="button large button-grey" {% if titre_graph == 'Exercices' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices">Exercices</a>
-					-->
                     <a class="button large button-a" {% if theme == 'mono' %}style="background-color: black;"{% endif %} href="/{{ cours }}/exercices_list">Exercices</a>
 				    
 					<!-- Titre du graphique -->
@@ -383,10 +388,9 @@
                     backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
-                    //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
                         {% for i in range(data| length) %}  // correspond à: for i in range(len(data))
-                            { x: "{{ dates[i] | safe }}", y: {{ data[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
+                            { x: "{{ dates[i] | safe }}", y: {{ data[i] | safe }} },
                         {% endfor %}
                     ]
                 }, {
@@ -434,10 +438,9 @@
                     backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
-                    //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
                         {% for i in range(data_M| length) %}  // correspond à: for i in range(len(data))
-                            { x: "{{ dates_M[i] | safe }}", y: {{ data_M[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
+                            { x: "{{ dates_M[i] | safe }}", y: {{ data_M[i] | safe }} },
                         {% endfor %}
                     ]
                 }, {

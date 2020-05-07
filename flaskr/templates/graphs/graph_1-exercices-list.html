@@ -3,15 +3,12 @@
 
 {% block head %}
 
-    <!--
-	Pas besoin de toucher a ca pour l'instant, pour l'instant c'est inutile
-    -->
-    <meta name="description" content="Une première page web">
-    <meta name="keywords" content="HTML,exemple">
-    <meta name="author" content="Jean Tartempion">
+    <meta name="description" content="Graphiques d'exercices">
+    <meta name="keywords" content="HTML">
+    <meta name="author" content="Groupe B2">
     
 	<!--
-	Le script de Chart.js qu'on importe, c'est une version Bundle capable de gérer les dates
+	Le script de Chart.js qu'on importe est une version Bundle capable de gérer les dates (moment.js)
     -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 
@@ -24,7 +21,7 @@
 
     <!-- DE MANIÈRE GÉNÉRALE
 	
-	Victor préviens moi si par hasard tu tombe sur ce message
+	PAGE CONTENANT LES GRAPHIQUES DES EXERCICES
 	
 	- tout le code du corps de la page se trouve dans la section "main"
 	  <section class="main">
@@ -49,8 +46,6 @@
 	
 	- <div class="callout post"> sont les "posts" dans lesquels sont actuellement placés nos graphiques.
 	  Ce sont les zones blanches
-	
-	Pour FLASK, vous devriez savoir ce que représente les accolades pour les vairables, conditions, boucles etc
 	
     -->
 	
@@ -160,7 +155,7 @@
 						Une varibale size est assignée à chaque graphique et modifiable par des méthodes GET (les liens se trouvent dans les formulaires d'options
 						Le graphique ci-dessous ne s'affiche que si size == 'default'
 						
-						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché => chercher la condition f size == 'default'
+						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché => chercher la condition: if size == 'default'
 						-->
 					    {% if size == 'default' %}
 					    <!-- Graphique en taille normale -->
@@ -378,11 +373,11 @@
 		    <!-- Graphique en taille large -->
 		    <div class="callout post" style="padding-top: 0px;">
 			    <!-- IMPORTANT
-			    Remarquez que l'id = main
+			    l'id = main
 				main est une variable modifée par méthode GET qui indique quel est le graphique principal
-				main peut donc valoir 3 valeurs différentes (puisqu'on a 3 graphs en tout)
-				les autres canvas portent l'id d'une des valeurs de main (subm, month ou results)
-				Ainsi le {{ main }} de ce canvas vaudra lui aussi subm, month ou results.
+				main peut donc valoir 5 valeurs différentes (puisqu'on a 5 graphs en tout)
+				les autres canvas portent l'id d'une des valeurs de main (subm, month, results, ...)
+				Ainsi le {{ main }} de ce canvas vaudra lui aussi subm, month, results, ou ....
 				-->
 			    <canvas id="{{ main }}"></canvas>
 			</div>
@@ -610,10 +605,9 @@
                     backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
-                    //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
                         {% for i in range(data| length) %}  // correspond à: for i in range(len(data))
-                            { x: "{{ dates[i] | safe }}", y: {{ data[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
+                            { x: "{{ dates[i] | safe }}", y: {{ data[i] | safe }} },
                         {% endfor %}
                     ]
                 }, {
@@ -667,10 +661,9 @@
                     backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3e95cd",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
-                    //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
                         {% for i in range(data_M| length) %}  // correspond à: for i in range(len(data))
-                            { x: "{{ dates_M[i] | safe }}", y: {{ data_M[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
+                            { x: "{{ dates_M[i] | safe }}", y: {{ data_M[i] | safe }} },
                         {% endfor %}
                     ]
                 }, {
@@ -775,10 +768,9 @@
                     backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
                     borderColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
                     fill: false,  // fill: false -> permet de ne pas remplir la zone sous la courbe
-                    //data: {{ data | safe }} ---> TO BE DELETED
                     data: [
                         {% for i in range(data_S| length) %}  // correspond à: for i in range(len(data))
-                            { x: "{{ dates_S[i] | safe }}", y: {{ data_S[i] | safe }} },  // affichez le code source de la page si vous ne voyez pas ce que ça fait
+                            { x: "{{ dates_S[i] | safe }}", y: {{ data_S[i] | safe }} },
                         {% endfor %}
                     ]
                 }]

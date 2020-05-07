@@ -62,13 +62,12 @@ def create_app(test_config=None):
     modif_time = "00:00:00"
     
     global calendar  # calendar = True -> les formulaires utilisent le calendrier
-    calendar = 'False'
+    calendar = 'True'
     
     
     # page principale (HOME)
     @app.route('/')
     def index():
-        
         return render_template('index.html', covid = covid, helpMessage = helpMessage, theme = theme)
     
     
@@ -249,7 +248,8 @@ def create_app(test_config=None):
     
     def exercices(course, sort):
         """
-        pre  : le nom d'un cours (string)
+        pre  : course -> le nom d'un cours (string)
+               sort -> une option de tri (string)
         post : un tuple contenant:
                    0: 1e tuple: 0- une liste avec le nom des tasks (strings)
                                 1- une liste avec les nombres de soumissions correspondant aux dates de la première liste (PAR JOUR)
@@ -312,7 +312,7 @@ def create_app(test_config=None):
         return ((tasks, user_nbr), (tasks_valid, user_nbr_valid), pourcentage)
     
     
-    # TO DO - n'est pas encore utilisée
+    # TO DO - cette fonction n'est pas encore utilisée
     def sort_exercices(sort, tasks, user_nbr, tasks_valid, user_nbr_valid, pourcentage):
         """
         pre  : le nom d'un cours (string)
@@ -357,7 +357,7 @@ def create_app(test_config=None):
         cursor = conn.cursor()
         
         if exercise == None:
-            # ouais je sais ca se répète, mais le temps d'exécution de count est plutot court, donc izi quoi
+            # ouais je sais ca se répète, mais le temps d'exécution de count() est plutot court, donc on va dire que ça passe pour l'instant.
             
             for row in cursor.execute("SELECT count(*) from submissions WHERE course = '{}' ".format(course)):
                 subm = row[0]
@@ -439,10 +439,11 @@ def create_app(test_config=None):
     
     def successes(course, exercise):
         """
-        pre  : le nom d'un cours (string)
-        post : un tuple dont le 1er élément est la liste des resultats possible des soumissions (liste de strings)
-                             le 2em élément est la liste des nombres de soumissions correspondant à ces résultats (liste d'entiers)
-                             le 3em élément est la liste des pourcentages par rapport au total des soumissions correspondant à ces résultats (liste de reels)
+        pre  : course -> le nom d'un cours (string)
+               exercise -> le nom d'un exercice (string)
+        post : un tuple dont le 1er élément est la liste des resultats possible (liste de strings)
+                             le 2em élément est la liste des nombres d'étudiants ayant obtenu ces résultats (liste d'entiers)
+                             le 3em élément est la liste des pourcentages par rapport au total des étudiants correspondant à ces résultats (liste de reels)
         """
         
         # Accès à la base de données
@@ -451,7 +452,7 @@ def create_app(test_config=None):
         # Le curseur permettra l'envoi des commandes SQL
         cursor = conn.cursor()
         
-        if exercise == None: # seul le ELSE est testé pour le moment.
+        if exercise == None: # seul le ELSE est utilisé pour le moment. (exercices)
             
             for row in cursor.execute("SELECT count(*) from user_tasks WHERE course = '{}' ".format(course)):
                 total = row[0]
@@ -492,9 +493,10 @@ def create_app(test_config=None):
     def successesByTime(course, exercise):
         """
         pre  : le nom d'un cours (string)
-        post : un tuple dont le 1er élément est la liste des resultats possible des soumissions (liste de strings)
-                             le 2em élément est la liste des nombres de soumissions correspondant à ces résultats (liste d'entiers)
-                             le 3em élément est la liste des pourcentages par rapport au total des soumissions correspondant à ces résultats (liste de reels)
+        post : un tuple dont le 1er élément est la liste des dates correspondant à la reussite de l'exercice par un/des etudiant(s) (liste de strings)
+                                            -> pour faire simple: l'axe des X
+                             le 2em élément est la liste des nombres cumulés d'étudiants ayant reussi l'exercice à chacune de ces dates (liste d'entiers)
+                                            -> pour faire simple: l'axe des Y
         """
         
         # Accès à la base de données
@@ -537,7 +539,7 @@ def create_app(test_config=None):
     
     
     def exercise_submissions(course):
-        ### la fonctiion qui calcule les top et les pires exos
+        ### la fonction qui calcule les meilleurs et les pires exos
         liste_exo=[]
         listemoyenne=[]
         listetopexo=[]
