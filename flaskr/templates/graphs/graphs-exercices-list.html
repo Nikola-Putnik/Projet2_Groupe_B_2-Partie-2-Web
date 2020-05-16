@@ -28,16 +28,13 @@
 	
 	- <div class="grid-container"> est la "racine" de nos futurs "grid-x".
 	  Il délimite une certaine zone sur la page.
-	  On voit qu'a partir d'une certaine taille, la contenu ne grandi pas peu importe la taille de notre page web.
-	  
-	  Si besoin de visualisation, écriver qqch dans <div class="grid-container"> et en dehors et vous verrez la différence.
+	  On voit qu'a partir d'une certaine taille, le contenu ne grandi pas peu importe la taille de notre page web.
 	  
 	- <div class="grid-x"> permet de contenir des "cellules"
 	
 	- <div class="large-12 cell"> est une cellule.
 	  les cellules définissent une zone de la page dans laquelle on place du code.
 	  Leur taille peut aller de 1 à 12.
-	  Voir une video de débutant pour visualiser le truc plus en détail.
 	
 	  "large-12" signifie que sur un écran large, la cellule occupera toute la largeur du "grid-x" dans laquelle elle se trouve.
 	  Avec "large-6" elle n'occuperait que la moité par ex
@@ -92,7 +89,7 @@
 					<!-- 
 					main est une variable modifiable par des méthodes GET (voir les liens des boutons juste au dessus)
 					
-					Comme vous pouvez le voir avec les conditions, on affiche un graphique différent selon la valeur de main.
+					Comme on peut le voir avec les conditions, on affiche un graphique différent selon la valeur de main.
 					-->
 					{% if main == 'subm' %}
 					
@@ -155,7 +152,7 @@
 						Une varibale size est assignée à chaque graphique et modifiable par des méthodes GET (les liens se trouvent dans les formulaires d'options
 						Le graphique ci-dessous ne s'affiche que si size == 'default'
 						
-						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché => chercher la condition: if size == 'default'
+						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché
 						-->
 					    {% if size == 'default' %}
 					    <!-- Graphique en taille normale -->
@@ -388,7 +385,7 @@
 		    <div class="grid-x grid-margin-x">
 			    <!--
 				On affiche le graphique subm (Soumissions) si main != 'subm'
-				Autrement dit, on affiche le graphique parmis les petits graphiques s'il n'est pas déjà le graphique principal (le main)
+				Autrement dit, on affiche le graphique parmi les petits graphiques s'il n'est pas déjà le graphique principal (le main)
 				-->
 				{% if main != 'subm' %}
 				<div class="medium-6 cell">
@@ -750,7 +747,7 @@
 
     <!-- SCRIPT DU 5e GRAPHIQUE -->
 	<script>
-		// Graphique des réussites par jour (line/courbe)
+		// Graphique des réussites cumulées (line/courbe)
 		
         // l'identifiant est celui du canevas
         var ctx = document.getElementById('successesByTime').getContext('2d');

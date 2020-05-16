@@ -132,6 +132,10 @@ body{
     color: white;
 }
 
+.button-help-hover-disabled:hover{
+    background-color: #8c8c8c;
+}
+
 
 
 .button-a{
@@ -152,6 +156,10 @@ body{
 .button-a:hover{
     background-color: #610B0B;
     color: white;
+}
+
+.button-a-hover-disabled:hover{
+    background-color: darkred;
 }
 
 

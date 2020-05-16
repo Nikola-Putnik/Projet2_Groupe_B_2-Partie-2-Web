@@ -1,3 +1,20 @@
+>>> 16/05/2020
+
+V1.1 version FINALE
+
+- Modifications proposées par les reviews qui ont été appliquées:
+  => Le code a été séparé en plusieurs fichiers [Reviews A, C, D]
+  => Des commentaires/spécifications ont été ajouté aux fonctions qui n'en avaient pas [Review A]
+  => Les boutons "Agrandir"/"Valider"/"Réduire" des cadres d'infos ne deviennent plus foncé lorsque l'utilisateur passe sa souris dessus. [Review A]
+  => Les codes inutilisés et le graphique du préprojet (covid-19) ont été supprimés [Review B]
+  => README: Commandes linux mises à jour [Review B]
+- Le graphique 'Exercices - Notes moyennes' a été mis à jour (meilleur titre, nouvelles options, données plus pertinentes)
+- Modification de la structure de l'application engendré par la séparation en plusieurs fichiers.
+- Corrections et modifications mineures.
+- Mise à jour du fichier README.
+
+
+
 >>> 07/05/2020
 
 V1.0 du projet, version remise pour Peer-Review.

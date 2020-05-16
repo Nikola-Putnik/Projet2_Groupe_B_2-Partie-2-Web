@@ -41,6 +41,10 @@
     color: white;
 }
 
+.button-a-hover-disabled:hover{
+    background-color: #424242;
+}
+
 
 
 /* menu-options */

@@ -182,7 +182,7 @@
 					{% elif main == 'exercices_subm' %}
 					
 					    <!-- Graphique des résultats -->
-						<p class="p-post">Moyennes des résultats des soumissions des exercices, pour les 10 meilleurs et les 10 plus mauvais.</p>
+						<p class="p-post">Moyennes des résultats des étudiants, pour les 10 exercices les moins bien réussis face aux 10 mieux réussis.</p>
 					    <!-- Formulaire d'options -->
                         <form method="GET">
 					        <div class="grid-x align-middle">
@@ -193,6 +193,11 @@
 					                    <div><button type="submit" value="large" class="button button-a" name="size" id="large">Agrandir</button></div>
 					        	        {% elif size == 'large' %}
 					        	        <div><button type="submit" value="default" class="button button-a" name="size" id="default">Réduire</button></div>
+					        	        {% endif %}
+								        {% if min10 == 'True' %}
+					                    <div style="margin-left:10px"><button type="submit" value="False" class="button button-a" name="min10" id="False" />No Minimum</button></div>
+					        	        {% else %}
+					        	        <div style="margin-left:10px"><button type="submit" value="True" class="button button-a" name="min10" id="True" />Minimum 10</button></div>
 					        	        {% endif %}
 								    </div>
 								</div>
@@ -328,9 +333,9 @@
 				<div class="medium-6 cell">
 				    <h3 class="titre-1" style="align: 'center'">
 					    <div class="tooltipw3">
-						    <b>Exercices - Top & Worst</b>
+						    <b>Exercices - Notes moyennes</b>
 							<span class="tooltiptext show-for-large">
-							    Moyennes des résultats des soumissions des exercices, pour les 10 meilleurs et les 10 plus mauvais.
+							    Moyennes des résultats des étudiants, pour les 10 exercices les moins bien réussis face aux 10 exercices les mieux réussis.
 							</span>
 						</div>
 					</h3>
@@ -506,7 +511,7 @@
 	        data: {        // les données
                 labels: {{ exo_subm_labels | safe }},
                 datasets: [{
-                    label: 'Pourcentage de soumissions valides',
+                    label: 'Note moyenne des étutiants',
                     backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
                     data: {{ exo_subm_data | safe }}
                 }]
@@ -523,7 +528,7 @@
 	        data: {        // les données
                 labels: ['exo1', 'exo2', 'exo3', 'exo4', 'exo5', 'exo6', 'exo7', 'exo8', 'exo9', 'exo10', 'exo11', 'exo12', 'exo12', 'exo14', 'exo15', 'exo16', 'exo17', 'exo18', 'exo19', 'exo20'],
                 datasets: [{
-                    label: 'Pourcentage de soumissions valides',
+                    label: 'Note moyenne des étutiants',
                     backgroundColor: {% if theme == 'blue' %}"#3e95cd",{% elif theme == 'red' %}"#c45850",{% elif theme == 'green' %}"#3cba9f",{% elif theme == 'mono' %}'grey',{% endif %}
                     data: [4.0, 5.0, 7.1, 7.39, 7.64, 8.17, 9.61, 9.96, 11.53, 11.66, 73.92, 76.44, 78.29, 78.99, 81.77, 82.09, 84.89, 90.09, 96.7, 98.18]
                 }]
