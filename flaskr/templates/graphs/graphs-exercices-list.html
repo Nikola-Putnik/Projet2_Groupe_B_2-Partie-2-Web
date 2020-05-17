@@ -19,14 +19,13 @@
 
 {% block body_content %}
 
-    <!-- DE MANIÈRE GÉNÉRALE
+    <!-- DE MANIÈRE GÉNÉRALE (pour le Framework CSS que notre groupe a utilisé)
 	
 	PAGE CONTENANT LES GRAPHIQUES DES EXERCICES
 	
 	- tout le code du corps de la page se trouve dans la section "main"
-	  <section class="main">
 	
-	- <div class="grid-container"> est la "racine" de nos futurs "grid-x".
+	- <div class="grid-container"> est la "racine" des "grid-x".
 	  Il délimite une certaine zone sur la page.
 	  On voit qu'a partir d'une certaine taille, le contenu ne grandi pas peu importe la taille de notre page web.
 	  
@@ -52,7 +51,7 @@
             
             <!-- Titre de la page
 			
-            {{ titre }} : ici on a pris le nom du cours (ex: LSINF1101-PYTHON), voir __init__.py
+            {{ titre }} : nom d'un cours (ex: LSINF1101-PYTHON)
             -->
             <h1 class="page-title">{{ titre }}</h1>
             
@@ -152,7 +151,7 @@
 						Une varibale size est assignée à chaque graphique et modifiable par des méthodes GET (les liens se trouvent dans les formulaires d'options
 						Le graphique ci-dessous ne s'affiche que si size == 'default'
 						
-						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché
+						size peut aussi etre égal à 'large', c'est un graphique plus bas qui sera alors affiché (en dehors de "div container")
 						-->
 					    {% if size == 'default' %}
 					    <!-- Graphique en taille normale -->
@@ -369,11 +368,11 @@
 		{% if size == 'large' %}
 		    <!-- Graphique en taille large -->
 		    <div class="callout post" style="padding-top: 0px;">
-			    <!-- IMPORTANT
+			    <!--
 			    l'id = main
 				main est une variable modifée par méthode GET qui indique quel est le graphique principal
-				main peut donc valoir 5 valeurs différentes (puisqu'on a 5 graphs en tout)
-				les autres canvas portent l'id d'une des valeurs de main (subm, month, results, ...)
+				main peut donc valoir 5 valeurs différentes (puisqu'on a 5 graphs en tout pour les exercices)
+				les autres canvas portent l'id d'une des valeurs possibles de main (subm, month, results, ...)
 				Ainsi le {{ main }} de ce canvas vaudra lui aussi subm, month, results, ou ....
 				-->
 			    <canvas id="{{ main }}"></canvas>
@@ -576,6 +575,12 @@
 						</tr>
 						{% endfor %}
 					</table>
+					
+					{% if search != "" %}
+					    Résultats pour: <b>{{ search }}</b>
+						<br/>
+						Nombre de résultats: <b>{{ (tasks_name| length) }}</b>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -586,7 +591,7 @@
 	<script>
 		// Graphique des soumissions par jour (line/courbe)
 		
-        // l'identifiant est celui du canevas
+        // l'identifiant est celui du canvas
         var ctx = document.getElementById('subm').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {
@@ -642,7 +647,7 @@
 	<script>
 		// Graphique des soumissions par mois (bar)
 		
-        // l'identifiant est celui du canevas
+        // l'identifiant est celui du canvas
         var ctx = document.getElementById('month').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {
@@ -693,7 +698,7 @@
 	<script>
 	    // Graphique des résultats (pie chart)
 	
-	    // l'identifiant est celui du canevas
+	    // l'identifiant est celui du canvas
         var ctx = document.getElementById('results').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {
@@ -721,7 +726,7 @@
 	<script>
 	    // Graphique des réussites (doughnut chart)
 	
-	    // l'identifiant est celui du canevas
+	    // l'identifiant est celui du canvas
         var ctx = document.getElementById('successes').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {
@@ -749,7 +754,7 @@
 	<script>
 		// Graphique des réussites cumulées (line/courbe)
 		
-        // l'identifiant est celui du canevas
+        // l'identifiant est celui du canvas
         var ctx = document.getElementById('successesByTime').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {

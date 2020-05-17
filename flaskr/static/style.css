@@ -17,12 +17,6 @@ body{
 
 
 
-/* callout with message */
-
-/* TO-DO */
-
-
-
 /* a (links) */
 
 .link-a{  /* 1ère sorte de lien */
@@ -460,11 +454,6 @@ MAIN SECTION
 	background-color: white;
 }
 
-.post-pseudo{
-    padding: 0px 0px 0px 0px;
-    margin: 0px;
-}
-
 .post-text{
     padding-top: 15px;
 }
@@ -492,7 +481,7 @@ FOOTER
 **************************************/
 
 footer{
-    height: 100px;
+    height: 120px;
     background-color: #222;
 	text-align: center;
 	
@@ -501,7 +490,7 @@ footer{
 .p-footer{
 	color: white;
 	position: relative;
-	top: 40%;
+	top: 33%;
 }
 
 

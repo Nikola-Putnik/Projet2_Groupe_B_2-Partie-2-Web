@@ -181,7 +181,7 @@
 					
 					{% elif main == 'exercices_subm' %}
 					
-					    <!-- Graphique des résultats -->
+					    <!-- Graphique des notes moyennes des exercices -->
 						<p class="p-post">Moyennes des résultats des étudiants, pour les 10 exercices les moins bien réussis face aux 10 mieux réussis.</p>
 					    <!-- Formulaire d'options -->
                         <form method="GET">
@@ -217,7 +217,7 @@
 					
 					{% elif main == 'active_hours' %}
 					
-					    <!-- Graphique des résultats -->
+					    <!-- Graphique des heures d'acitivité -->
 						<p class="p-post">Les heures pendant lesquelles les soumissions sont effectuées, pourcentages par rapport au total de soumissions du cours.</p>
 					    <!-- Formulaire d'options -->
                         <form method="GET">
@@ -377,7 +377,7 @@
 	<script>
 		// Graphique des soumissions par jour (line/courbe)
 		
-        // l'identifiant est celui du canevas
+        // l'identifiant est celui du canvas
         var ctx = document.getElementById('subm').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {
@@ -427,7 +427,7 @@
 	<script>
 		// Graphique des soumissions par mois (bar)
 		
-        // l'identifiant est celui du canevas
+        // l'identifiant est celui du canvas
         var ctx = document.getElementById('month').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {
@@ -477,7 +477,7 @@
 	<script>
 	    // Graphique des résultats (pie chart)
 	
-	    // l'identifiant est celui du canevas
+	    // l'identifiant est celui du canvas
         var ctx = document.getElementById('results').getContext('2d');
         // création du graphique
         var myChart = new Chart(ctx, {
@@ -503,7 +503,9 @@
 	
 	{% if main == 'exercices_subm' %}
 	<script>
-	    // l'identifiant est celui du canevas
+	    // Graphique des notes moyennes (bar)
+		
+	    // l'identifiant est celui du canvas
 	    var ctx = document.getElementById('exercices_subm').getContext('2d');
 	    // création du graphique
 	    var myChart = new Chart(ctx, {
@@ -520,7 +522,9 @@
     </script>
 	{% else %}
 	<script>
-	    // l'identifiant est celui du canevas
+	    // Graphique des notes moyennes (bar) - Non Chargé
+		
+	    // l'identifiant est celui du canvas
 	    var ctx = document.getElementById('exercices_subm').getContext('2d');
 	    // création du graphique
 	    var myChart = new Chart(ctx, {
@@ -539,7 +543,9 @@
 	
 	{% if main == 'active_hours' %}
 	<script>
-	    // l'identifiant est celui du canevas
+	    // Graphique des heures d'activité (bar)
+		
+	    // l'identifiant est celui du canvas
 	    var ctx = document.getElementById('active_hours').getContext('2d');
 	    // création du graphique
 	    var myChart = new Chart(ctx, {
@@ -556,7 +562,9 @@
     </script>
 	{% else %}
 	<script>
-	    // l'identifiant est celui du canevas
+	    // Graphique des heures d'activité (bar) - Non chargé
+		
+	    // l'identifiant est celui du canvas
 	    var ctx = document.getElementById('active_hours').getContext('2d');
 	    // création du graphique
 	    var myChart = new Chart(ctx, {

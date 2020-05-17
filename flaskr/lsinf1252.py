@@ -206,9 +206,9 @@ def lsinf1252():
         titre_graph = titre_subm_M
     elif main == 'results':  # graph des résultats (pie chart)
         titre_graph = titre_results
-    elif main == 'exercices_subm':  # graph des pourcentage de soumissions valides par exercices
+    elif main == 'exercices_subm':  # graph des notes moyennes des exercices (bar)
         titre_graph = titre_exo_subm
-    elif main == 'active_hours':  # graph des pourcentage de soumissions valides par exercices
+    elif main == 'active_hours':  # graph des heures d'activité (bar)
         titre_graph = titre_active_hours
     
     return render_template('graphs/graphs.html', cours = cours, titre = titre_page, titre_graph = titre_graph, size = size, main = main,
@@ -436,9 +436,9 @@ def lsinf1252_exercices_list():
         titre_graph = titre_subm_M
     elif main == 'results':  # graph des résultats (pie chart)
         titre_graph = titre_results
-    elif main == 'successes':  # graph des résultats (pie chart)
+    elif main == 'successes':  # graph des réussites (doughnut chart)
         titre_graph = titre_successes
-    elif main == 'successesByTime':  # graph des résultats (pie chart)
+    elif main == 'successesByTime':  # graph des réussites par temps (line/courbe)
         titre_graph = titre_successesByTime
     
     #######
